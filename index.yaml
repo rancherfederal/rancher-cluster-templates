@@ -1,0 +1,16 @@
+apiVersion: v1
+entries:
+  rancher-cluster-templates:
+  - annotations:
+      catalog.cattle.io/namespace: fleet-default
+      catalog.cattle.io/type: cluster-template
+    apiVersion: v1
+    created: "2023-11-10T17:29:54.337655337Z"
+    description: RGS - Rancher Cluster Templates
+    digest: f305787ea9091951d420fed77f0a1eeaeaa9aa11f3ba0c2aa4f22286f59b640e
+    name: rancher-cluster-templates
+    type: library
+    urls:
+    - https://github.com/rancherfederal/rancher-cluster-templates/releases/download/rancher-cluster-templates-0.0.1/rancher-cluster-templates-0.0.1.tgz
+    version: 0.0.1
+generated: "2023-11-10T17:29:54.337666137Z"
