@@ -1,5 +1,17 @@
 apiVersion: v1
 entries:
+  cluster-template:
+  - annotations:
+      catalog.cattle.io/namespace: fleet-default
+      catalog.cattle.io/type: cluster-template
+    apiVersion: v1
+    created: "2023-11-21T23:36:57.751848342Z"
+    description: Cluster template for rke2
+    digest: 8e81a52c7487f1ba50a7d7bd3246ec78481a190f6bdbc2bdcbbc67ba6cf5bee8
+    name: cluster-template
+    urls:
+    - https://github.com/rancherfederal/rancher-cluster-templates/releases/download/cluster-template-0.0.7/cluster-template-0.0.7.tgz
+    version: 0.0.7
   rancher-cluster-templates:
   - annotations:
       catalog.cattle.io/namespace: fleet-default
@@ -13,4 +25,4 @@ entries:
     urls:
     - https://github.com/rancherfederal/rancher-cluster-templates/releases/download/rancher-cluster-templates-0.0.1/rancher-cluster-templates-0.0.1.tgz
     version: 0.0.1
-generated: "2023-11-10T17:29:54.337666137Z"
+generated: "2023-11-21T23:36:57.751858042Z"
