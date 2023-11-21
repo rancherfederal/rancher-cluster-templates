@@ -1,8 +1,7 @@
-apiVersion: v1
-name: rancher-cluster-templates
-description: RGS - Rancher Cluster Templates
-type: library
-version: 0.0.1
 annotations:
-  catalog.cattle.io/type: cluster-template
   catalog.cattle.io/namespace: fleet-default
+  catalog.cattle.io/type: cluster-template
+apiVersion: v1
+description: Cluster template for rke2
+name: cluster-template
+version: 0.0.7

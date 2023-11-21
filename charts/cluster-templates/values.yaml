@@ -40,3 +40,5 @@ monitoring:
   # specify cutsom values set
   # values:
   #   foo: bar
+
+registries: {}

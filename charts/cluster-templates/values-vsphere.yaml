@@ -1,6 +1,15 @@
 cloudprovider: vsphere
 
 cloudCredentialSecretName: vsphere
+vcenter:
+  host: ""
+  skip_tls_verify: false
+  datacenters: ""
+  username: ""
+  password: ""
+
+vsphere_cpi_cred_secret_name: ""
+vsphere_csi_cred_secret_name: ""
 
 # Specify nodepool options. Can add multiple node groups, specify etcd, controlplane and worker roles.
 nodepools:
@@ -68,10 +77,8 @@ nodepools:
   # If you choose creation type clone a name of what you want to clone is required
   # cloneFrom: ""
 
-  # Contents of cloud-config yaml file to put into the ISO user-data; Format should be:
-  # cloudConfig: |
-  #   #cloud-config
-  #   <custom cloud-config>
+  # Filepath to a cloud-config yaml file to put into the ISO user-data
+  # cloudConfig: ""
 
   # vSphere cloud-init filepath or url to add to guestinfo, filepath will be read and base64 encoded before adding
   # cloudinit: ""

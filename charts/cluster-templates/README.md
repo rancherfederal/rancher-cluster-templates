@@ -1,25 +1,23 @@
-# Cluster Templates Helm Chart
+# rke2 cluster template
 
-| Type | Chart Version | App Version |
-| :--: | :-----------: | :---------: |
-| app  | `v0.0.1` | `v0.0.1` |
+Helm chart that can be used as rke2 cluster template
 
-## Installing the Chart
+### how to use
+
 ```bash
-helm install -n
-```
-```bash
-helm status -n
+helm install --namespace fleet-default --value ./your-values.yaml my-cluster ./charts
 ```
 
-## Uninstalling the Chart
-```bash
-helm uninstall -n
-```
+General cluster options are available through [values.yaml](./values.yaml)
 
-## Example Configurations
-* [Amazon EC2](values-aws.yaml)
-* [Microsoft Azure](values-azure.yaml)
-* [Digital Ocean](values-do.yaml)
-* [Rancher Harvester](values-harvester.yaml)
-* [VMWare vSphere](values-vsphere.yaml)
+For different cloud provider drivers:
+
+[Amazonec2](./values-aws.yaml)
+
+[Vsphere](./values-vsphere.yaml)
+
+[Digitalocean](./values-do.yaml)
+
+[Harvester](./values-harvester.yaml)
+
+[Azure](./values-azure.yaml)

@@ -1,6 +1,7 @@
 cloudprovider: harvester
 
 cloudCredentialSecretName: harvester
+cloudProviderConfigSecretName: secret://harvester
 
 # Specify nodepool options. Can add multiple node groups, specify etcd, controlplane and worker roles.
 nodepools:
@@ -69,3 +70,6 @@ nodepools:
   imageName: default/image-rand
   vmNamespace: default
   sshUser: ubuntu
+  userdata: ""
+  cloudconfig: ""
+  registries: {}

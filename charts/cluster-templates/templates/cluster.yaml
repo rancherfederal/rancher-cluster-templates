@@ -18,17 +18,89 @@ spec:
   {{- if .Values.kubernetesVersion }}
   kubernetesVersion: {{ .Values.kubernetesVersion }}
   {{- end }}
-  {{- if .Values.rke.localClusterAuthEndpoint.enabled }}
-  localClusterAuthEndpoint:
-    enabled: {{ .Values.rke.localClusterAuthEndpoint.enabled }}
-    fqdn: {{ .Values.rke.localClusterAuthEndpoint.fqdn }}
-    caCerts: {{ .Values.rke.localClusterAuthEndpoint.caCerts }}
-  {{- end }}
   # enable network policy
   enableNetworkPolicy: true
   # specify rancher helm chart values deployed into downstream cluster
   # rancherValues: {}
   rkeConfig:
+    machineGlobalConfig:
+      cni: {{ .Values.cni | default "canal" }}
+      disable-kube-proxy: false
+      etcd-expose-metrics: false
+      profile: {{ .Values.profile }}
+      kube-apiserver-arg: {{ .Values.kube_apiserver_arg | toRawJson }}
+      kube-scheduler-arg: {{ .Values.kube_scheduler_arg | toRawJson }}
+      kube-controller-manager-arg: {{ .Values.kube_controller_manager_arg | toRawJson }}
+      kubelet-arg: {{ .Values.kubelet_arg | toRawJson }}
+      write-kubeconfig-mode: {{ .Values.write_kubeconfig_mode }}
+      use-service-account-credentials: {{ .Values.use_service_account_credentials }}
+    {{- if eq $.Values.cloudprovider "harvester" }}
+    chartValues:
+      harvester-cloud-provider:
+        cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
+        clusterName: {{ .Values.cluster.name }}
+    machineSelectorConfig:
+    - config:
+        cloud-provider-config: {{ .Values.cloudProviderConfigSecretName }}
+        cloud-provider-name: harvester
+        {{- if .Values.system_default_registry }}
+        system-default-registry: {{ .Values.system_default_registry }}
+        {{- end }}
+        protect-kernel-defaults: {{ .Values.protect_kernel_defaults | default false }}
+        selinux: {{ .Values.selinux | default false }}
+    {{- else if eq $.Values.cloudprovider "vsphere" }}
+    chartValues:
+      rke2-calico: {}
+      rancher-vsphere-cpi:
+        vCenter:
+          host: {{ .Values.vcenter.host }}
+          username: {{ .Values.vcenter.username }}
+          password: {{ .Values.vcenter.password }}
+          labels:
+            generate: false
+          datacenters: {{ .Values.vcenter.datacenters }}
+      rancher-vsphere-csi:
+        asyncQueryVolume:
+          enabled: true
+        csiController:
+          csiResizer:
+            enabled: true
+        improvedVolumeTopology:
+          enabled: true
+        onlineVolumeExtend:
+          enabled: true
+        triggerCsiFullsync:
+          enabled: true
+        vCenter:
+          datacenters: {{ .Values.vcenter.datacenters }}
+          host: {{ .Values.vcenter.host }}
+          username: {{ .Values.vcenter.username }}
+          password: {{ .Values.vcenter.password }}
+          insecureFlag: {{ .Values.vcenter.skip_tls_verify }}
+    machineSelectorConfig:
+    - config:
+        cloud-provider-name: "rancher-vsphere"
+        {{- if .Values.system_default_registry }}
+        system-default-registry: {{ .Values.system_default_registry }}
+        {{- end }}
+        docker: false
+        protect-kernel-defaults: {{ .Values.protect_kernel_defaults | default false }}
+        selinux: {{ .Values.selinux | default false }}
+    {{- else }}
+    machineSelectorConfig:
+    - config:
+        cloud-provider-name: ""
+        {{- if .Values.system_default_registry }}
+        system-default-registry: {{ .Values.system_default_registry }}
+        {{- end }}
+        docker: false
+        protect-kernel-defaults: {{ .Values.protect_kernel_defaults | default false }}
+        selinux: {{ .Values.selinux | default false }}
+    {{- end }}
+    {{- if .Values.registries }}
+    registries: 
+{{ toYaml .Values.registries | indent 6 }}
+    {{- end }}
     {{- if ne .Values.cloudprovider "custom" }}
     machinePools:
     {{- if .Values.nodepools }} {{ range $index, $nodepool := .Values.nodepools }}
@@ -104,7 +176,7 @@ spec:
       {{- end }}
     {{- end }}
     {{- end }}
-    machineGlobalConfig:
+    # controlPlaneConfig:
       # Path to the file that defines the audit policy configuration
       # audit-policy-file: ""
       # IPv4/IPv6 network CIDRs to use for pod IPs (default: 10.42.0.0/16)
@@ -114,7 +186,7 @@ spec:
       # Cluster Domain (default: "cluster.local")
       # cluster-domain: ""
       # CNI Plugin to deploy, one of none, canal, cilium (default: "canal")
-      cni: calico
+      # cni: calico
       # Do not deploy packaged components and delete any deployed components (valid items: rke2-coredns, rke2-ingress-nginx, rke2-kube-proxy, rke2-metrics-server)
       # disable: false
       # Disable automatic etcd snapshots
@@ -130,23 +202,25 @@ spec:
       # Snapshot interval time in cron spec. eg. every 5 hours '* */5 * * *' (default: "0 */12 * * *")
       # etcd-snapshot-schedule-cron: "0 */12 * * *"
       # Customized flag for kube-apiserver process
-      # kube-apiserver-arg: ""
+      # kube-apiserver-arg: {{ .Values.kube_apiserver_arg }}
       # Customized flag for kube-scheduler process
-      # kube-scheduler-arg: ""
+      # kube-scheduler-arg: {{ .Values.kube_scheduler_arg }}
       # Customized flag for kube-controller-manager process
-      # kube-controller-manager-arg: ""
+      # kube-controller-manager-arg: {{ .Values.kube_controller_manager_arg }}
+      # kubelet-arg: {{ .Values.kubelet_arg }}
       # Validate system configuration against the selected benchmark (valid items: cis-1.5, cis-1.6 )
-      # profile: "cis-1.6"
+      # profile: {{ .Values.profile }}
       # Enable Secret encryption at rest
-      # secrets-encryption: false
+      # protect-kernel-defaults: {{ .Values.protect_kernel_defaults | default false }}
       # IPv4/IPv6 network CIDRs to use for service IPs (default: 10.43.0.0/16)
+      # selinux: {{ .Values.selinux | default false }}
       # service-cidr: "10.43.0.0/16"
       # Port range to reserve for services with NodePort visibility (default: "30000-32767")
       # service-node-port-range: "30000-32767"
       # Add additional hostnames or IPv4/IPv6 addresses as Subject Alternative Names on the server TLS cert
       # tls-san: []
 
-    # machineSelectorConfig:
+    # workerConfig:
     # - config:
         # Node name
         # node-name: ""
@@ -159,17 +233,23 @@ spec:
         # Kubelet resolv.conf file
         # resolv-conf: ""
         # Customized flag for kubelet process
-        # kubelet-arg: ""
+        # kubelet-arg: {{ .Values.kubelet_arg }}
         # Customized flag for kube-proxy process
         # kube-proxy-arg: ""
         # Kernel tuning behavior. If set, error if kernel tunables are different than kubelet defaults. (default: false)
-        # protect-kernel-defaults: false
+        # protect-kernel-defaults: {{ .Values.protect_kernel_defaults | default false }}
         # Enable SELinux in containerd (default: false)
-        # selinux: true
+        # selinux: {{ .Values.selinux | default false }}
         # Cloud provider name
         # cloud-provider-name: ""
         # Cloud provider configuration file path
         # cloud-provider-config: ""
+    {{- if .Values.rke.localClusterAuthEndpoint.enabled }}
+    localClusterAuthEndpoint:
+      enabled: {{ .Values.rke.localClusterAuthEndpoint.enabled }}
+      fqdn: {{ .Values.rke.localClusterAuthEndpoint.fqdn }}
+      caCerts: {{ .Values.rke.localClusterAuthEndpoint.caCerts }}
+    {{- end }}
     upgradeStrategy:
       controlPlaneDrainOptions:
         enabled: false
