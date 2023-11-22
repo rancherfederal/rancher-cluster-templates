@@ -3,10 +3,13 @@ cloudCredentialSecretName: cattle-global-data:cc-rqcgw # required: replace with 
 cluster:
   annotations: {}
   labels:
-    cluster_name: rke2-aws
-  name: rke2-aws
+    cluster_name: aws-rke2-cluster
+  name: aws-rke2-cluster
 kubernetesVersion: v1.25.15+rke2r2
 cni: canal
+system_default_registry: docker.io
+monitoring:
+  enabled: false
 rke:
   localClusterAuthEndpoint:
     enabled: false
@@ -14,7 +17,7 @@ profile: cis-1.23
 selinux: true
 secrets_encryption: true
 protect_kernel_defaults: true
-write_kubeconfig_mode: "0600"
+write_kubeconfig_mode: "0640"
 use_service_account_credentials: true
 pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
 kube_apiserver_arg:
@@ -44,19 +47,19 @@ nodepools:
   worker: false
   labels: {}
   taints: {}
-  quantity: 3
+  quantity: 1
   paused: false
-  name: control-planes
-  ami: ami-0fc5d935ebf8bc3bc # optional: replace with your ami
+  name: control-plane-nodes
+  ami: ami-09c77dc92e45bc3ea # optional: replace with your ami
   deviceName: /dev/sda1
   encryptEbsVolume: false
   endpoint: ""
-  iamInstanceProfile: aws-rgs-rke2-iam-profile-control # required: replace with your iam instance profile
+  iamInstanceProfile: "aws-rgs-rke2-iam-profile-control" # required: replace with your iam instance profile
   insecureTransport: false
   instanceType: m5.xlarge
   region: us-east-1
-  createSecurityGroup: true
-  securityGroups: []
+  createSecurityGroup: false
+  securityGroups: ["aws-rgs-rke2-sg"] # required: replace with your security group
   keypairName: ""
   securityGroupReadonly: false
   sshKeyContents: ""
@@ -70,8 +73,8 @@ nodepools:
   requestSpotInstance: false
   tags: provisioner,rancher,KeepRunning,true
   retries: 5
-  rootSize: 32
-  sshUser: ubuntu
+  rootSize: 64
+  sshUser: rocky
   volumeType: gp3
   vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc
   useEbsOptimizedInstance: false
@@ -79,7 +82,7 @@ nodepools:
   userdata: |
     #cloud-config
     write_files:
-    - path: /etc/sysctl.d/60-rke2-cis.conf
+    - path: /etc/sysctl.conf
       owner: root
       content: |
         vm.swappiness=0
@@ -181,28 +184,33 @@ nodepools:
                             security-scan,
                             tigera-operator]
     runcmd:
-    - useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
-    - systemctl restart systemd-sysctl
-    - apt update
+    - sudo sysctl -p > /dev/null 2>&1
+    - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
+    - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+    - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+    - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
+    - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+    - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
+    - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
   zone: a
 - etcd: false
   controlplane: false
   worker: true
   labels: {}
   taints: {}
-  quantity: 4
+  quantity: 1
   paused: false
-  name: workers
-  ami: ami-0fc5d935ebf8bc3bc # optional: replace with your ami
+  name: worker-nodes
+  ami: ami-09c77dc92e45bc3ea # optional: replace with your ami
   deviceName: /dev/sda1
   encryptEbsVolume: false
   endpoint: ""
-  iamInstanceProfile: aws-rgs-rke2-iam-profile-worker # required: replace with your iam instance profile
+  iamInstanceProfile: "aws-rgs-rke2-iam-profile-worker" # required: replace with your iam instance profile
   insecureTransport: false
   instanceType: m5.2xlarge
   region: us-east-1
-  createSecurityGroup: true
-  securityGroups: []
+  createSecurityGroup: false
+  securityGroups: ["aws-rgs-rke2-sg"] # required: replace with your security group
   keypairName: ""
   securityGroupReadonly: false
   sshKeyContents: ""
@@ -217,7 +225,7 @@ nodepools:
   tags: provisioner,rancher,KeepRunning,true
   retries: 5
   rootSize: 128
-  sshUser: ubuntu
+  sshUser: rocky
   volumeType: gp3
   vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc
   useEbsOptimizedInstance: false
@@ -225,7 +233,7 @@ nodepools:
   userdata: |
     #cloud-config
     write_files:
-    - path: /etc/sysctl.d/60-rke2-cis.conf
+    - path: /etc/sysctl.conf
       owner: root
       content: |
         vm.swappiness=0
@@ -259,6 +267,11 @@ nodepools:
         fs.inotify.max_user_instances=8192
         fs.inotify.max_user_watches=1048576
     runcmd:
-    - systemctl restart systemd-sysctl
-    - apt update
+    - sudo sysctl -p > /dev/null 2>&1
+    - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
+    - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+    - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+    - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
+    - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+    - sudo mkdir -p /etc/rancher/rke2/
   zone: a

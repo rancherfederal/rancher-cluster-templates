@@ -24,17 +24,17 @@ Verified and Tested:
 
 ```bash
 helm repo add cluster-templates https://rancherfederal.github.io/rancher-cluster-templates
-helm install cluster cluster-templates/rancher-cluster-templates -n fleet-default -f values.yaml
+helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-default -f values.yaml
 ```
 
 ```bash
-helm status -n
+helm status cluster -n fleet-default
 ```
 
 ## Uninstalling the Chart
 
 ```bash
-helm uninstall -n
+helm delete cluster -n fleet-default
 ```
 
 ## Example Configurations
