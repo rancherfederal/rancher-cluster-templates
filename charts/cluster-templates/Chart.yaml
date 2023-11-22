@@ -1,8 +1,9 @@
 apiVersion: v1
 name: rancher-cluster-templates
-description: RGS - Rancher Cluster Templates
+description: RGS - Hardened Rancher Cluster Templates
+icon: https://raw.githubusercontent.com/rancherfederal/carbide-docs/main/static/img/carbide-logo.svg
 type: application
-version: 0.1.1
+version: 0.1.2
 annotations:
   catalog.cattle.io/type: cluster-template
   catalog.cattle.io/namespace: fleet-default

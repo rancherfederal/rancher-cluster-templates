@@ -1,5 +1,5 @@
 cloudprovider: amazonec2
-cloudCredentialSecretName: cattle-global-data:cc-rqcgw # required: replace with your cloud credentials
+cloudCredentialSecretName: cattle-global-data:cc-rqcgw # required: replace with your cloud credentials id
 cluster:
   annotations: {}
   labels:
@@ -17,261 +17,261 @@ profile: cis-1.23
 selinux: true
 secrets_encryption: true
 protect_kernel_defaults: true
-write_kubeconfig_mode: "0640"
+write_kubeconfig_mode: '0640'
 use_service_account_credentials: true
-pod-security-admission-config-file: /etc/rancher/rke2/rancher-psact.yaml
 kube_apiserver_arg:
-- tls-min-version=VersionTLS12
-- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-- authorization-mode=RBAC,Node
-- anonymous-auth=false
-- audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
-- audit-log-mode=blocking-strict
-- audit-log-maxage=30
+  - tls-min-version=VersionTLS12
+  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  - authorization-mode=RBAC,Node
+  - anonymous-auth=false
+  - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
+  - audit-log-mode=blocking-strict
+  - audit-log-maxage=30
+  - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
 kube_scheduler_arg:
-- tls-min-version=VersionTLS12
-- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  - tls-min-version=VersionTLS12
+  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 kube_controller_manager_arg:
-- bind-address=127.0.0.1
-- use-service-account-credentials=true
-- tls-min-version=VersionTLS12
-- tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+  - bind-address=127.0.0.1
+  - use-service-account-credentials=true
+  - tls-min-version=VersionTLS12
+  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 kubelet_arg:
-- protect-kernel-defaults=true
-- read-only-port=0
-- authorization-mode=Webhook
-- streaming-connection-idle-timeout=5m
+  - protect-kernel-defaults=true
+  - read-only-port=0
+  - authorization-mode=Webhook
+  - streaming-connection-idle-timeout=5m
 nodepools:
-- etcd: true
-  controlplane: true
-  worker: false
-  labels: {}
-  taints: {}
-  quantity: 1
-  paused: false
-  name: control-plane-nodes
-  ami: ami-09c77dc92e45bc3ea # optional: replace with your ami
-  deviceName: /dev/sda1
-  encryptEbsVolume: false
-  endpoint: ""
-  iamInstanceProfile: "aws-rgs-rke2-iam-profile-control" # required: replace with your iam instance profile
-  insecureTransport: false
-  instanceType: m5.xlarge
-  region: us-east-1
-  createSecurityGroup: false
-  securityGroups: ["aws-rgs-rke2-sg"] # required: replace with your security group
-  keypairName: ""
-  securityGroupReadonly: false
-  sshKeyContents: ""
-  subnetId: subnet-04ce5019b88e4959d # required: replace with your subnet
-  monitoring: false
-  openPort:
-  - "8080"
-  - "8443"
-  - "443"
-  privateAddressOnly: true
-  requestSpotInstance: false
-  tags: provisioner,rancher,KeepRunning,true
-  retries: 5
-  rootSize: 64
-  sshUser: rocky
-  volumeType: gp3
-  vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc
-  useEbsOptimizedInstance: false
-  usePrivateAddress: true
-  userdata: |
-    #cloud-config
-    write_files:
-    - path: /etc/sysctl.conf
-      owner: root
-      content: |
-        vm.swappiness=0
-        vm.panic_on_oom=0
-        vm.overcommit_memory=1
-        kernel.panic=10
-        kernel.panic_on_oops=1
-        vm.max_map_count = 262144
-        net.ipv4.ip_local_port_range=1024 65000
-        net.core.somaxconn=10000
-        net.ipv4.tcp_tw_reuse=1
-        net.ipv4.tcp_fin_timeout=15
-        net.core.somaxconn=4096
-        net.core.netdev_max_backlog=4096
-        net.core.rmem_max=16777216
-        net.core.wmem_max=16777216
-        net.ipv4.tcp_max_syn_backlog=20480
-        net.ipv4.tcp_max_tw_buckets=400000
-        net.ipv4.tcp_no_metrics_save=1
-        net.ipv4.tcp_rmem=4096 87380 16777216
-        net.ipv4.tcp_syn_retries=2
-        net.ipv4.tcp_synack_retries=2
-        net.ipv4.tcp_wmem=4096 65536 16777216
-        net.ipv4.neigh.default.gc_thresh1=8096
-        net.ipv4.neigh.default.gc_thresh2=12288
-        net.ipv4.neigh.default.gc_thresh3=16384
-        net.ipv4.tcp_keepalive_time=600
-        net.ipv4.ip_forward=1
-        net.ipv6.conf.all.disable_ipv6 = 1
-        net.ipv6.conf.default.disable_ipv6 = 1
-        fs.inotify.max_user_instances=8192
-        fs.inotify.max_user_watches=1048576
-    - path: /etc/rancher/rke2/audit-policy.yaml
-      owner: root
-      content: |
-        apiVersion: audit.k8s.io/v1
-        kind: Policy
-        rules:
-        - level: RequestResponse
-    - path: /etc/rancher/rke2/rancher-psact.yaml
-      owner: root
-      content: |
-        apiVersion: apiserver.config.k8s.io/v1
-        kind: AdmissionConfiguration
-        plugins:
-          - name: PodSecurity
-            configuration:
-              apiVersion: pod-security.admission.config.k8s.io/v1
-              kind: PodSecurityConfiguration
-              defaults:
-                enforce: "restricted"
-                enforce-version: "latest"
-                audit: "restricted"
-                audit-version: "latest"
-                warn: "restricted"
-                warn-version: "latest"
-              exemptions:
-                usernames: []
-                runtimeClasses: []
-                namespaces: [calico-apiserver,
-                            calico-system,
-                            carbide-docs-system,
-                            carbide-stigatron-system,
-                            cattle-alerting,
-                            cattle-csp-adapter-system,
-                            cattle-elemental-system,
-                            cattle-epinio-system,
-                            cattle-externalip-system,
-                            cattle-fleet-local-system,
-                            cattle-fleet-system,
-                            cattle-gatekeeper-system,
-                            cattle-global-data,
-                            cattle-global-nt,
-                            cattle-impersonation-system,
-                            cattle-istio,
-                            cattle-istio-system,
-                            cattle-logging,
-                            cattle-logging-system,
-                            cattle-monitoring-system,
-                            cattle-neuvector-system,
-                            cattle-prometheus,
-                            cattle-provisioning-capi-system,
-                            cattle-resources-system,
-                            cattle-sriov-system,
-                            cattle-system,
-                            cattle-ui-plugin-system,
-                            cattle-windows-gmsa-system,
-                            cert-manager,
-                            cis-operator-system,
-                            fleet-default,
-                            fleet-local,
-                            ingress-nginx,
-                            istio-system,
-                            kube-node-lease,
-                            kube-public,
-                            kube-system,
-                            longhorn-system,
-                            rancher-alerting-drivers,
-                            security-scan,
-                            tigera-operator]
-    runcmd:
-    - sudo sysctl -p > /dev/null 2>&1
-    - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-    - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
-    - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
-    - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-    - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
-    - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
-    - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
-  zone: a
-- etcd: false
-  controlplane: false
-  worker: true
-  labels: {}
-  taints: {}
-  quantity: 1
-  paused: false
-  name: worker-nodes
-  ami: ami-09c77dc92e45bc3ea # optional: replace with your ami
-  deviceName: /dev/sda1
-  encryptEbsVolume: false
-  endpoint: ""
-  iamInstanceProfile: "aws-rgs-rke2-iam-profile-worker" # required: replace with your iam instance profile
-  insecureTransport: false
-  instanceType: m5.2xlarge
-  region: us-east-1
-  createSecurityGroup: false
-  securityGroups: ["aws-rgs-rke2-sg"] # required: replace with your security group
-  keypairName: ""
-  securityGroupReadonly: false
-  sshKeyContents: ""
-  subnetId: subnet-04ce5019b88e4959d # required: replace with your subnet
-  monitoring: false
-  openPort:
-  - "8080"
-  - "8443"
-  - "443"
-  privateAddressOnly: true
-  requestSpotInstance: false
-  tags: provisioner,rancher,KeepRunning,true
-  retries: 5
-  rootSize: 128
-  sshUser: rocky
-  volumeType: gp3
-  vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc
-  useEbsOptimizedInstance: false
-  usePrivateAddress: true
-  userdata: |
-    #cloud-config
-    write_files:
-    - path: /etc/sysctl.conf
-      owner: root
-      content: |
-        vm.swappiness=0
-        vm.panic_on_oom=0
-        vm.overcommit_memory=1
-        kernel.panic=10
-        kernel.panic_on_oops=1
-        vm.max_map_count = 262144
-        net.ipv4.ip_local_port_range=1024 65000
-        net.core.somaxconn=10000
-        net.ipv4.tcp_tw_reuse=1
-        net.ipv4.tcp_fin_timeout=15
-        net.core.somaxconn=4096
-        net.core.netdev_max_backlog=4096
-        net.core.rmem_max=16777216
-        net.core.wmem_max=16777216
-        net.ipv4.tcp_max_syn_backlog=20480
-        net.ipv4.tcp_max_tw_buckets=400000
-        net.ipv4.tcp_no_metrics_save=1
-        net.ipv4.tcp_rmem=4096 87380 16777216
-        net.ipv4.tcp_syn_retries=2
-        net.ipv4.tcp_synack_retries=2
-        net.ipv4.tcp_wmem=4096 65536 16777216
-        net.ipv4.neigh.default.gc_thresh1=8096
-        net.ipv4.neigh.default.gc_thresh2=12288
-        net.ipv4.neigh.default.gc_thresh3=16384
-        net.ipv4.tcp_keepalive_time=600
-        net.ipv4.ip_forward=1
-        net.ipv6.conf.all.disable_ipv6 = 1
-        net.ipv6.conf.default.disable_ipv6 = 1
-        fs.inotify.max_user_instances=8192
-        fs.inotify.max_user_watches=1048576
-    runcmd:
-    - sudo sysctl -p > /dev/null 2>&1
-    - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-    - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
-    - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
-    - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-    - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
-    - sudo mkdir -p /etc/rancher/rke2/
-  zone: a
+  - etcd: true
+    controlplane: true
+    worker: false
+    labels: {}
+    taints: {}
+    quantity: 3
+    paused: false
+    name: control-plane-nodes
+    ami: ami-09c77dc92e45bc3ea # optional: replace with your ami id
+    deviceName: /dev/sda1
+    encryptEbsVolume: false
+    endpoint: ''
+    iamInstanceProfile: 'aws-rgs-rke2-iam-profile-control' # required: replace with your iam instance profile name
+    insecureTransport: false
+    instanceType: m5.large
+    region: us-east-1
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-rke2-sg'] # required: replace with your security group name
+    keypairName: ''
+    securityGroupReadonly: false
+    sshKeyContents: ''
+    subnetId: subnet-04ce5019b88e4959d # required: replace with your subnet id
+    monitoring: false
+    openPort:
+      - '8080'
+      - '8443'
+      - '443'
+    privateAddressOnly: true
+    requestSpotInstance: false
+    tags: provisioner,rancher,KeepRunning,true
+    retries: 5
+    rootSize: 64
+    sshUser: rocky
+    volumeType: gp3
+    vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc id
+    useEbsOptimizedInstance: false
+    usePrivateAddress: true
+    userdata: |
+      #cloud-config
+      write_files:
+      - path: /etc/sysctl.conf
+        owner: root
+        content: |
+          vm.swappiness=0
+          vm.panic_on_oom=0
+          vm.overcommit_memory=1
+          kernel.panic=10
+          kernel.panic_on_oops=1
+          vm.max_map_count = 262144
+          net.ipv4.ip_local_port_range=1024 65000
+          net.core.somaxconn=10000
+          net.ipv4.tcp_tw_reuse=1
+          net.ipv4.tcp_fin_timeout=15
+          net.core.somaxconn=4096
+          net.core.netdev_max_backlog=4096
+          net.core.rmem_max=16777216
+          net.core.wmem_max=16777216
+          net.ipv4.tcp_max_syn_backlog=20480
+          net.ipv4.tcp_max_tw_buckets=400000
+          net.ipv4.tcp_no_metrics_save=1
+          net.ipv4.tcp_rmem=4096 87380 16777216
+          net.ipv4.tcp_syn_retries=2
+          net.ipv4.tcp_synack_retries=2
+          net.ipv4.tcp_wmem=4096 65536 16777216
+          net.ipv4.neigh.default.gc_thresh1=8096
+          net.ipv4.neigh.default.gc_thresh2=12288
+          net.ipv4.neigh.default.gc_thresh3=16384
+          net.ipv4.tcp_keepalive_time=600
+          net.ipv4.ip_forward=1
+          net.ipv6.conf.all.disable_ipv6 = 1
+          net.ipv6.conf.default.disable_ipv6 = 1
+          fs.inotify.max_user_instances=8192
+          fs.inotify.max_user_watches=1048576
+      - path: /etc/rancher/rke2/audit-policy.yaml
+        owner: root
+        content: |
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          rules:
+          - level: RequestResponse
+      - path: /etc/rancher/rke2/rancher-pss.yaml
+        owner: root
+        content: |
+          apiVersion: apiserver.config.k8s.io/v1
+          kind: AdmissionConfiguration
+          plugins:
+            - name: PodSecurity
+              configuration:
+                apiVersion: pod-security.admission.config.k8s.io/v1
+                kind: PodSecurityConfiguration
+                defaults:
+                  enforce: "restricted"
+                  enforce-version: "latest"
+                  audit: "restricted"
+                  audit-version: "latest"
+                  warn: "restricted"
+                  warn-version: "latest"
+                exemptions:
+                  usernames: []
+                  runtimeClasses: []
+                  namespaces: [calico-apiserver,
+                              calico-system,
+                              carbide-docs-system,
+                              carbide-stigatron-system,
+                              cattle-alerting,
+                              cattle-csp-adapter-system,
+                              cattle-elemental-system,
+                              cattle-epinio-system,
+                              cattle-externalip-system,
+                              cattle-fleet-local-system,
+                              cattle-fleet-system,
+                              cattle-gatekeeper-system,
+                              cattle-global-data,
+                              cattle-global-nt,
+                              cattle-impersonation-system,
+                              cattle-istio,
+                              cattle-istio-system,
+                              cattle-logging,
+                              cattle-logging-system,
+                              cattle-monitoring-system,
+                              cattle-neuvector-system,
+                              cattle-prometheus,
+                              cattle-provisioning-capi-system,
+                              cattle-resources-system,
+                              cattle-sriov-system,
+                              cattle-system,
+                              cattle-ui-plugin-system,
+                              cattle-windows-gmsa-system,
+                              cert-manager,
+                              cis-operator-system,
+                              fleet-default,
+                              fleet-local,
+                              ingress-nginx,
+                              istio-system,
+                              kube-node-lease,
+                              kube-public,
+                              kube-system,
+                              longhorn-system,
+                              rancher-alerting-drivers,
+                              security-scan,
+                              tigera-operator]
+      runcmd:
+      - sudo sysctl -p > /dev/null 2>&1
+      - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
+      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+      - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+      - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
+      - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+      - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
+      - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
+    zone: a
+  - etcd: false
+    controlplane: false
+    worker: true
+    labels: {}
+    taints: {}
+    quantity: 3
+    paused: false
+    name: worker-nodes
+    ami: ami-09c77dc92e45bc3ea # optional: replace with your ami id
+    deviceName: /dev/sda1
+    encryptEbsVolume: false
+    endpoint: ''
+    iamInstanceProfile: 'aws-rgs-rke2-iam-profile-worker' # required: replace with your iam instance profile name
+    insecureTransport: false
+    instanceType: m5.xlarge
+    region: us-east-1
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-rke2-sg'] # required: replace with your security group name
+    keypairName: ''
+    securityGroupReadonly: false
+    sshKeyContents: ''
+    subnetId: subnet-04ce5019b88e4959d # required: replace with your subnet id
+    monitoring: false
+    openPort:
+      - '8080'
+      - '8443'
+      - '443'
+    privateAddressOnly: true
+    requestSpotInstance: false
+    tags: provisioner,rancher,KeepRunning,true
+    retries: 5
+    rootSize: 128
+    sshUser: rocky
+    volumeType: gp3
+    vpcId: vpc-0126d1d91f8d8dbc0 # required: replace with your vpc id
+    useEbsOptimizedInstance: false
+    usePrivateAddress: true
+    userdata: |
+      #cloud-config
+      write_files:
+      - path: /etc/sysctl.conf
+        owner: root
+        content: |
+          vm.swappiness=0
+          vm.panic_on_oom=0
+          vm.overcommit_memory=1
+          kernel.panic=10
+          kernel.panic_on_oops=1
+          vm.max_map_count = 262144
+          net.ipv4.ip_local_port_range=1024 65000
+          net.core.somaxconn=10000
+          net.ipv4.tcp_tw_reuse=1
+          net.ipv4.tcp_fin_timeout=15
+          net.core.somaxconn=4096
+          net.core.netdev_max_backlog=4096
+          net.core.rmem_max=16777216
+          net.core.wmem_max=16777216
+          net.ipv4.tcp_max_syn_backlog=20480
+          net.ipv4.tcp_max_tw_buckets=400000
+          net.ipv4.tcp_no_metrics_save=1
+          net.ipv4.tcp_rmem=4096 87380 16777216
+          net.ipv4.tcp_syn_retries=2
+          net.ipv4.tcp_synack_retries=2
+          net.ipv4.tcp_wmem=4096 65536 16777216
+          net.ipv4.neigh.default.gc_thresh1=8096
+          net.ipv4.neigh.default.gc_thresh2=12288
+          net.ipv4.neigh.default.gc_thresh3=16384
+          net.ipv4.tcp_keepalive_time=600
+          net.ipv4.ip_forward=1
+          net.ipv6.conf.all.disable_ipv6 = 1
+          net.ipv6.conf.default.disable_ipv6 = 1
+          fs.inotify.max_user_instances=8192
+          fs.inotify.max_user_watches=1048576
+      runcmd:
+      - sudo sysctl -p > /dev/null 2>&1
+      - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
+      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+      - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
+      - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
+      - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+      - sudo mkdir -p /etc/rancher/rke2/
+    zone: a
