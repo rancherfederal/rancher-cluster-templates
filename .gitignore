@@ -4,9 +4,3 @@
 # The files are ignored in the repository and not pushed to source control.
 
 **/.DS_Store
-**/.terraform
-**/.terraform.lock.hcl
-**/terraform.tfvars
-**/*.tfstate
-**/*.tfstate.*
-**/lock.*
