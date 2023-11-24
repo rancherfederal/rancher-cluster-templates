@@ -1,52 +1,48 @@
 cloudprovider: amazonec2
-cloudCredentialSecretName: cattle-global-data:cc-sssl9 # required: replace with your cloud credentials id
+cloudCredentialSecretName: cc-sssl9 # required: replace with your cloud credentials id
 cluster:
   annotations: {}
-  labels:
-    cluster_name: aws-rke2-cluster
+  labels: {}
   name: aws-rke2-cluster
-kubernetesVersion: v1.25.15+rke2r2
-cni: canal
-system_default_registry: docker.io
-#registries:
-#  configs:
-#    rgcrprod.azurecr.us:
-#      authConfigSecretName: registryconfig-auth-wvldn
-#      caBundle: ''
-#      insecureSkipVerify: false
-monitoring:
-  enabled: false
-rke:
-  localClusterAuthEndpoint:
-    enabled: false
-profile: cis-1.23
-selinux: true
-secrets_encryption: true
-protect_kernel_defaults: true
-write_kubeconfig_mode: '0640'
-use_service_account_credentials: true
-kube_apiserver_arg:
-  - tls-min-version=VersionTLS12
-  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-  - authorization-mode=RBAC,Node
-  - anonymous-auth=false
-  - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
-  - audit-log-mode=blocking-strict
-  - audit-log-maxage=30
-  - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
-kube_scheduler_arg:
-  - tls-min-version=VersionTLS12
-  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-kube_controller_manager_arg:
-  - bind-address=127.0.0.1
-  - use-service-account-credentials=true
-  - tls-min-version=VersionTLS12
-  - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-kubelet_arg:
-  - protect-kernel-defaults=true
-  - read-only-port=0
-  - authorization-mode=Webhook
-  - streaming-connection-idle-timeout=5m
+  config:
+    system_default_registry: docker.io
+    kubernetesVersion: v1.25.15+rke2r2
+    cni: canal
+    profile: cis-1.23
+    selinux: true
+    secrets_encryption: true
+    write_kubeconfig_mode: 0640
+    use_service_account_credentials: true
+    protect_kernel_defaults: true
+    kube_controller_manager_arg:
+      - bind-address=127.0.0.1
+      - use-service-account-credentials=true
+      - tls-min-version=VersionTLS12
+      - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    kube_scheduler_arg:
+      - tls-min-version=VersionTLS12
+      - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    kube_apiserver_arg:
+      - tls-min-version=VersionTLS12
+      - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      - authorization-mode=RBAC,Node
+      - anonymous-auth=false
+      - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
+      - audit-log-mode=blocking-strict
+      - audit-log-maxage=30
+      - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
+    kubelet_arg:
+      - protect-kernel-defaults=true
+      - read-only-port=0
+      - authorization-mode=Webhook
+      - streaming-connection-idle-timeout=5m
+  #registries:
+  #  configs:
+  #    rgcrprod.azurecr.us:
+  #      authConfigSecretName: registryconfig-auth-wvldn
+  #      caBundle: ''
+  #      insecureSkipVerify: false
+
 nodepools:
   - etcd: true
     controlplane: true
@@ -56,7 +52,7 @@ nodepools:
     quantity: 3
     paused: false
     name: control-plane-nodes
-    ami: ami-05a5f6298acdb05b6 # optional: replace with your ami id
+    ami: ami-05a5f6298acdb05b6
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
@@ -203,7 +199,7 @@ nodepools:
     quantity: 3
     paused: false
     name: worker-nodes
-    ami: ami-05a5f6298acdb05b6 # optional: replace with your ami id
+    ami: ami-05a5f6298acdb05b6
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
@@ -273,3 +269,11 @@ nodepools:
       - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
       - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
       - sudo mkdir -p /etc/rancher/rke2/
+
+addons:
+  monitoring:
+    enabled: true
+  longhorn:
+    enabled: true
+  neuvector:
+    enabled: true

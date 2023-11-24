@@ -4,16 +4,9 @@
 | :-----: | :-----------: | :---------: |
 | library |   `v0.2.0`    |  `v0.2.0`   |
 
-## Requirements and Prerequsites
+## Important Notes
 
-Required `values.yaml` Variables:
-
-- VPC ID (`vpcId`)
-- Subnet ID (`subnetId`)
-- IAM Instance Profile (`iamInstanceProfile`)
-- Provider Cloud Credentials (`cloudCredentialSecretName`)
-
-Verified and Tested Providers:
+### Verified and Tested Providers:
 
 - AWS Commercial
 - AWS GovCloud
@@ -39,9 +32,8 @@ helm delete cluster -n fleet-default
 
 ## Example Configurations
 
-- [AWS](../../examples/aws/values-aws.yaml)
-  - [Fleet](../../examples/aws/fleet.yaml)
 - [Amazon EC2](values-aws.yaml)
+  - [Example](../../examples/aws/values-aws.yaml)
 - [Microsoft Azure](values-azure.yaml)
 - [Digital Ocean](values-do.yaml)
 - [Rancher Harvester](values-harvester.yaml)

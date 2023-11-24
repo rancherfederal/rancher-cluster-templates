@@ -94,5 +94,3 @@ vcenter: {{ $nodepool.vcenter }}
 vcenterPort: {{ $nodepool.vcenterPort | quote }}
 {{- end }}
 {{- end }}
-
-

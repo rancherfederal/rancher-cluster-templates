@@ -5,6 +5,9 @@ kind: Amazonec2Config
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
+{{- if $nodepool.accessKey }}
+accessKey: {{ $nodepool.accessKey }}
+{{- end }}
 {{- if $nodepool.ami }}
 ami: {{ $nodepool.ami }}
 {{- end }}
@@ -20,6 +23,12 @@ encryptEbsVolume: {{ $nodepool.encryptEbsVolume }}
 {{- if $nodepool.endpoint }}
 endpoint: {{ $nodepool.endpoint }}
 {{- end }}
+{{- if $nodepool.httpEndpoint }}
+httpEndpoint: {{ $nodepool.httpEndpoint }}
+{{- end }}
+{{- if $nodepool.httpTokens }}
+httpTokens: {{ $nodepool.httpTokens }}
+{{- end }}
 {{- if $nodepool.iamInstanceProfile }}
 iamInstanceProfile: {{ $nodepool.iamInstanceProfile }}
 {{- end }}
@@ -32,11 +41,14 @@ instanceType: {{ $nodepool.instanceType }}
 {{- if $nodepool.keypairName }}
 keypairName: {{ $nodepool.keypairName }}
 {{- end }}
+{{- if $nodepool.kmsKey }}
+kmsKey: {{ $nodepool.kmsKey }}
+{{- end }}
 {{- if $nodepool.monitoring }}
 monitoring: {{ $nodepool.monitoring }}
 {{- end }}
 {{- if $nodepool.openPort}}
-openPort: 
+openPort:
 {{- range $i, $port := $nodepool.openPort }}
 - {{ $port | quote }}
 {{- end }}
@@ -55,6 +67,9 @@ retries: {{ $nodepool.retries | quote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
 rootSize: {{ $nodepool.rootSize | quote }}
+{{- end }}
+{{- if $nodepool.secretKey }}
+secretKey: {{ $nodepool.secretKey }}
 {{- end }}
 securityGroup:
 {{- if $nodepool.createSecurityGroup }}
@@ -110,6 +125,9 @@ kind: Amazonec2Config
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
+{{- if $nodepool.accessKey }}
+accessKey: {{ $nodepool.accessKey }}
+{{- end }}
 {{- if $nodepool.ami }}
 ami: {{ $nodepool.ami }}
 {{- end }}
@@ -134,6 +152,12 @@ encryptEbsVolume: {{ $nodepool.encryptEbsVolume }}
 {{- if $nodepool.endpoint }}
 endpoint: {{ $nodepool.endpoint }}
 {{- end }}
+{{- if $nodepool.httpEndpoint }}
+httpEndpoint: {{ $nodepool.httpEndpoint }}
+{{- end }}
+{{- if $nodepool.httpTokens }}
+httpTokens: {{ $nodepool.httpTokens }}
+{{- end }}
 {{- if $nodepool.iamInstanceProfile }}
 iamInstanceProfile: {{ $nodepool.iamInstanceProfile }}
 {{- end }}
@@ -146,11 +170,14 @@ instanceType: {{ $nodepool.instanceType }}
 {{- if $nodepool.keypairName }}
 keypairName: {{ $nodepool.keypairName }}
 {{- end }}
+{{- if $nodepool.kmsKey }}
+kmsKey: {{ $nodepool.kmsKey }}
+{{- end }}
 {{- if $nodepool.monitoring }}
 monitoring: {{ $nodepool.monitoring }}
 {{- end }}
 {{- if $nodepool.openPort}}
-openPort: 
+openPort:
 {{- range $i, $port := $nodepool.openPort }}
 - {{ $port | quote }}
 {{- end }}
@@ -169,6 +196,9 @@ retries: {{ $nodepool.retries | quote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
 rootSize: {{ $nodepool.rootSize | quote }}
+{{- end }}
+{{- if $nodepool.secretKey }}
+secretKey: {{ $nodepool.secretKey }}
 {{- end }}
 {{- if $nodepool.createSecurityGroup }}
 securityGroup:

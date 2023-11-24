@@ -1,0 +1,6 @@
+
+Congratulations! You've successfully deployed a cluster using the Rancher Cluster Templates (by RGS).
+
+Please be patient for the cluster to provision and deploy on your infrastructure.
+
+View the Github: https://github.com/rancherfederal/rancher-cluster-templates

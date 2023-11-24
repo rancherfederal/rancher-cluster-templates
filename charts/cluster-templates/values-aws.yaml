@@ -4,150 +4,149 @@ cloudCredentialSecretName: amazonec2
 
 # Specify nodepool options. Can add multiple node groups, specify etcd, controlplane and worker roles.
 nodepools:
-- etcd: true
-  controlplane: true
-  worker: true
+  - etcd: true
+    controlplane: true
+    worker: true
 
-  # specify node labels
-  labels: {}
+    # specify node labels
+    labels: {}
 
-  # specify node taints
-  taints: {}
+    # specify node taints
+    taints: {}
 
-  # specify nodepool size
-  quantity: 1
+    # specify nodepool size
+    quantity: 1
 
-  # Pause node pool
-  paused: false
+    # Pause node pool
+    paused: false
 
-  # specify displayName
-  # displayName: ""
+    # specify displayName
+    # displayName: ""
 
-  # specify rolling update mechanism
-  # rollingUpdate:
-  #   The maximum number of machines that can be unavailable during the update.
-  #   Value can be an absolute number (ex: 5) or a percentage of desired
-  #   machines (ex: 10%).
-  #   Absolute number is calculated from percentage by rounding down.
-  #   This can not be 0 if MaxSurge is 0.
-  #   Defaults to 0.
-  #   Example: when this is set to 30%, the old MachineSet can be scaled
-  #   down to 70% of desired machines immediately when the rolling update
-  #   starts. Once new machines are ready, old MachineSet can be scaled
-  #   down further, followed by scaling up the new MachineSet, ensuring
-  #   that the total number of machines available at all times
-  #   during the update is at least 70% of desired machines.
-  #   maxUnavailable: "5"
-  #   The maximum number of machines that can be scheduled above the
-  #   desired number of machines.
-  #   Value can be an absolute number (ex: 5) or a percentage of
-  #   desired machines (ex: 10%).
-  #   This can not be 0 if MaxUnavailable is 0.
-  #   Absolute number is calculated from percentage by rounding up.
-  #   Defaults to 1.
-  #   Example: when this is set to 30%, the new MachineSet can be scaled
-  #   up immediately when the rolling update starts, such that the total
-  #   number of old and new machines do not exceed 130% of desired
-  #   machines. Once old machines have been killed, new MachineSet can
-  #   be scaled up further, ensuring that total number of machines running
-  #   at any time during the update is at most 130% of desired machines.
-  #   maxSurge: "1"
+    # specify rolling update mechanism
+    # rollingUpdate:
+    #   The maximum number of machines that can be unavailable during the update.
+    #   Value can be an absolute number (ex: 5) or a percentage of desired
+    #   machines (ex: 10%).
+    #   Absolute number is calculated from percentage by rounding down.
+    #   This can not be 0 if MaxSurge is 0.
+    #   Defaults to 0.
+    #   Example: when this is set to 30%, the old MachineSet can be scaled
+    #   down to 70% of desired machines immediately when the rolling update
+    #   starts. Once new machines are ready, old MachineSet can be scaled
+    #   down further, followed by scaling up the new MachineSet, ensuring
+    #   that the total number of machines available at all times
+    #   during the update is at least 70% of desired machines.
+    #   maxUnavailable: "5"
+    #   The maximum number of machines that can be scheduled above the
+    #   desired number of machines.
+    #   Value can be an absolute number (ex: 5) or a percentage of
+    #   desired machines (ex: 10%).
+    #   This can not be 0 if MaxUnavailable is 0.
+    #   Absolute number is calculated from percentage by rounding up.
+    #   Defaults to 1.
+    #   Example: when this is set to 30%, the new MachineSet can be scaled
+    #   up immediately when the rolling update starts, such that the total
+    #   number of old and new machines do not exceed 130% of desired
+    #   machines. Once old machines have been killed, new MachineSet can
+    #   be scaled up further, ensuring that total number of machines running
+    #   at any time during the update is at most 130% of desired machines.
+    #   maxSurge: "1"
 
-  # specify machineDeployment Labels
-  # machineDeploymentLabels: {}
+    # specify machineDeployment Labels
+    # machineDeploymentLabels: {}
 
-  # specify machineDeployment annotations
-  # machineDeploymentAnnotations: {}
+    # specify machineDeployment annotations
+    # machineDeploymentAnnotations: {}
 
-  # specify nodepool name
-  name: ec2-nodepool-1
+    # specify nodepool name
+    name: ec2-nodepool-1
 
-  # AWS machine image
-  # ami: ""
+    # AWS machine image
+    # ami: ""
 
-  # AWS spot instance duration in minutes (60, 120, 180, 240, 300, or 360)
-  # blockDurationMinutes: 0
+    # AWS spot instance duration in minutes (60, 120, 180, 240, 300, or 360)
+    # blockDurationMinutes: 0
 
-  # AWS root device name
-  deviceName: "/dev/sda1"
+    # AWS root device name
+    deviceName: '/dev/sda1'
 
-  # Encrypt the EBS volume using the AWS Managed CMK
-  encryptEbsVolume: false
-  
-  # Optional endpoint URL (hostname only or fully qualified)
-  endpoint: ""
+    # Encrypt the EBS volume using the AWS Managed CMK
+    encryptEbsVolume: false
 
-  # AWS IAM Instance Profile
-  iamInstanceProfile: ""
+    # Optional endpoint URL (hostname only or fully qualified)
+    endpoint: ''
 
-  # Disable SSL when sending requests
-  insecureTransport: false
+    # AWS IAM Instance Profile
+    iamInstanceProfile: ''
 
-  # AWS instance type
-  instanceType: t3a.medium
+    # Disable SSL when sending requests
+    insecureTransport: false
 
-  # AWS region
-  region: us-west-2
+    # AWS instance type
+    instanceType: t3a.medium
 
-  # Whether to create `rancher-node` security group. If false, can provide with existing security group
-  createSecurityGroup: true
-  # createSecurityGroup: false
-  # securityGroups: []
+    # AWS region
+    region: us-west-2
 
-  # AWS keypair to use
-  keypairName: ""
+    # Whether to create `rancher-node` security group. If false, can provide with existing security group
+    createSecurityGroup: true
+    # createSecurityGroup: false
+    # securityGroups: []
 
-  # Skip adding default rules to security groups
-  securityGroupReadonly: false
+    # AWS keypair to use
+    keypairName: ''
 
-  # File contents for sshKeyContents
-  sshKeyContents: ""
+    # Skip adding default rules to security groups
+    securityGroupReadonly: false
 
-  # AWS VPC subnet id
-  subnetId: ""
+    # File contents for sshKeyContents
+    sshKeyContents: ''
 
-  # Set this flag to enable CloudWatch monitoring
-  monitoring: false
+    # AWS VPC subnet id
+    subnetId: ''
 
-  # Make the specified port number accessible from the Internet
-  # openPort: ["8080", "8443"]
+    # Set this flag to enable CloudWatch monitoring
+    monitoring: false
 
-  # Only use a private IP address
-  privateAddressOnly: false
+    # Make the specified port number accessible from the Internet
+    # openPort: ["8080", "8443"]
 
-  # Set this flag to request spot instance
-  requestSpotInstance: false
+    # Only use a private IP address
+    privateAddressOnly: false
 
-  # AWS Tags (e.g. key1,value1,key2,value2)
-  # tags: "foo,bar"
+    # Set this flag to request spot instance
+    requestSpotInstance: false
 
-  # Set retry count for recoverable failures (use -1 to disable)
-  retries: 5
+    # AWS Tags (e.g. key1,value1,key2,value2)
+    # tags: "foo,bar"
 
-  # AWS root disk size (in GB)
-  rootSize: 16
+    # Set retry count for recoverable failures (use -1 to disable)
+    retries: 5
 
-  # AWS spot instance bid price (in dollar)
-  spotPrice: 0.5
+    # AWS root disk size (in GB)
+    rootSize: 16
 
-  # Set the name of the ssh user
-  sshUser: ubuntu
+    # AWS spot instance bid price (in dollar)
+    spotPrice: 0.5
 
-  # Amazon EBS volume type
-  volumeType: gp2
+    # Set the name of the ssh user
+    sshUser: ubuntu
 
-  # AWS VPC id
-  # vpcId: ""
+    # Amazon EBS volume type
+    volumeType: gp2
 
-  # Create an EBS optimized instance
-  useEbsOptimizedInstance: false
+    # AWS VPC id
+    # vpcId: ""
 
-  # Force the usage of private IP address
-  usePrivateAddress: false
+    # Create an EBS optimized instance
+    useEbsOptimizedInstance: false
 
-  # File contents for userdata
-  userdata: ""
+    # Force the usage of private IP address
+    usePrivateAddress: false
 
-  # AWS zone for instance (i.e. a,b,c,d,e)
-  zone: a
+    # File contents for userdata
+    userdata: ''
 
+    # AWS zone for instance (i.e. a,b,c,d,e)
+    zone: a

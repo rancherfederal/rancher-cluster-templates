@@ -10,12 +10,12 @@ cluster:
   annotations: {}
 
 # specify cloud credential secret name, do not need to be provided if using custom driver
-cloudCredentialSecretName: ""
+cloudCredentialSecretName: ''
 
 # specify cloud provider, options are amazonec2, digitalocean, azure, vsphere or custom
-cloudprovider: "digitalocean"
+cloudprovider: 'digitalocean'
 
-kubernetesVersion: ""
+kubernetesVersion: ''
 
 # general RKE options
 rke:
