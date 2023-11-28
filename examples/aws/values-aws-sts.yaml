@@ -1,7 +1,5 @@
 cloudprovider: amazonec2
 
-cloudCredentialSecretName: cc-nnzdx
-
 rancher:
   cattle:
     url: rancher.ranchers.io
@@ -77,6 +75,9 @@ nodepools:
     paused: false
     name: control-plane-nodes
     ami: ami-05a5f6298acdb05b6
+    accessKey: # accessKey
+    secretKey: # secretKey
+    sessionToken: # sessionToken
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
@@ -224,6 +225,9 @@ nodepools:
     paused: false
     name: worker-nodes
     ami: ami-05a5f6298acdb05b6
+    accessKey: # accessKey
+    secretKey: # secretKey
+    sessionToken: # sessionToken
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''

@@ -2,18 +2,11 @@
 
 > ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes.
 
-### Required Variable Updates:
-
-- Provider Cloud Credentials (`cloudCredentialSecretName`)
-- VPC ID (`vpcId`)
-- Subnet ID (`subnetId`)
-- IAM Instance Profile (`iamInstanceProfile`)
-
 ## Installing the Chart
 
 ```bash
 # fetch the values file (make sure to update variables)
-curl -#OL https://raw.githubusercontent.com/rancherfederal/rancher-cluster-templates/main/examples/aws/values-aws.yaml
+curl -#OL https://raw.githubusercontent.com/rancherfederal/rancher-cluster-templates/main/examples/custom/values-custom.yaml
 ```
 
 ```bash
@@ -21,7 +14,7 @@ curl -#OL https://raw.githubusercontent.com/rancherfederal/rancher-cluster-templ
 helm repo add cluster-templates https://rancherfederal.github.io/rancher-cluster-templates
 
 # install the helm chart
-helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-default -f values-aws.yaml
+helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-default -f values-custom.yaml
 ```
 
 ```bash

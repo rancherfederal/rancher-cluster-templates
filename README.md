@@ -1,5 +1,7 @@
 # Rancher Cluster Templates
 
+> ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes.
+
 This project contains the Helm Chart for Rancher Cluster Templates, which provide declaritive manifests to deploy clusters with the [Rancher Multi-Cluster Manager](https://ranchergovernment.com/products/mcm). Please start with the Helm Chart [README](/charts/cluster-templates/README.md)!
 
 ## Configuration
