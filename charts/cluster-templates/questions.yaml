@@ -20,50 +20,48 @@ questions:
     required: true
     options:
       - amazonec2
-      - digitalocean
       - azure
-      - vsphere
+      - digitalocean
       - harvester
+      - vsphere
       - custom
     group: 'General'
   - variable: kubernetesVersion
-    default: v1.22.6+rke2r1
-    description: 'Specify Kubernetes version'
+    default: v1.26.10+rke2r2
+    description: 'Specify Kubernetes Version'
     label: 'Kubernetes Version'
     type: enum
     required: true
     options:
-      - v1.21.6+rke2r1
-      - v1.21.7+rke2r1
-      - v1.21.8+rke2r1
-      - v1.21.9+rke2r1
-      - v1.22.5+rke2r1
-      - v1.21.6+rke2r1
+      - v1.26.10+rke2r2
+      - v1.25.15+rke2r2
+      - v1.24.17+rke2r2
+      - v1.23.17+rke2r2
     group: 'General'
   - variable: localClusterAuthEndpoint.enabled
     default: false
-    label: 'Local Auth endpoint'
-    description: 'Enable local auth access endpoint'
+    label: 'Local Auth Access Endpoint'
+    description: 'Enable Local Auth Access Endpoint'
     type: boolean
     group: 'Auth Access Endpoint'
     show_subquestion_if: true
     subquestions:
       - variable: localClusterAuthEndpoint.fqdn
         default:
-        description: 'Local auth access endpoint FQDN'
+        description: 'Local Auth Access Endpoint FQDN'
         label: 'Auth Endpoint FQDN'
         type: hostname
         group: 'Auth Access Endpoint'
       - variable: localClusterAuthEndpoint.caCerts
         default:
         label: 'Auth Endpoint Cacerts'
-        description: 'Local auth access endpoint CACerts'
+        description: 'Local Auth Access Endpoint CACerts'
         type: multiline
         group: 'Auth Access Endpoint'
-  - variable: monitoring.enabled
+  - variable: addons.monitoring.enabled
     default: false
-    label: 'Enable monitoring'
-    description: 'Enable monitoring'
+    label: 'Enable Monitoring'
+    description: 'Enable Rancher Monitoring'
     type: boolean
     group: 'Monitoring'
     show_subquestion_if: true
@@ -114,12 +112,12 @@ questions:
     type: boolean
     show_if: cloudprovider=amazonec2 || cloudprovider=vsphere || cloudprovider=azure || cloudprovider=digitalocean || cloudprovider=harvester
     group: 'Nodepools'
-  # EC2
+  # amazonec2
   - variable: nodepools.0.region
     label: 'Region'
-    default: us-west-2
+    default: us-east-1
     type: string
-    description: 'AWS EC2 region'
+    description: 'AWS EC2 Region'
     required: true
     show_if: cloudprovider=amazonec2
     group: 'Nodepools'
@@ -127,7 +125,7 @@ questions:
     label: 'Zone'
     default: a
     type: string
-    description: 'AWS EC2 zone'
+    description: 'AWS EC2 Zone'
     required: true
     show_if: cloudprovider=amazonec2
     group: 'Nodepools'
@@ -287,7 +285,7 @@ questions:
     description: "'vSphere vApp IP protocol for this deployment. Supported values are: IPv4 and IPv6'"
     show_if: cloudprovider=vsphere
     group: 'Nodepools'
-  # HARVESTER
+  # harvester
   - variable: nodepools.0.diskSize
     label: 'Disk Size'
     default: 40
@@ -344,7 +342,7 @@ questions:
     description: 'SSH username'
     show_if: cloudprovider=harvester
     group: 'Nodepools'
-  # DO
+  # digitalocean
   - variable: nodepools.0.image
     label: 'Image'
     default: ubuntu-20-04-x64
@@ -415,7 +413,7 @@ questions:
     description: 'SSH username'
     show_if: cloudprovider=digitalocean
     group: 'Nodepools'
-  # Azure
+  # azure
   - variable: nodepools.0.availabilitySet
     label: 'Availability Set'
     default: docker-machine

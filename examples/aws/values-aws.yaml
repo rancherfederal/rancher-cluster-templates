@@ -1,13 +1,24 @@
 cloudprovider: amazonec2
-cloudCredentialSecretName: cc-sssl9 # required: replace with your cloud credentials id
+
+cloudCredentialSecretName: cc-nnzdx
+
+rancher:
+  cattle:
+    url: rancher.ranchers.io
+
 cluster:
   annotations: {}
   labels: {}
   name: aws-rke2-cluster
   config:
-    system_default_registry: docker.io
+    systemDefaultRegistry: docker.io
     kubernetesVersion: v1.25.15+rke2r2
+    localClusterAuthEndpoint:
+      enabled: false
     cni: canal
+    docker: false
+    disable_kube_proxy: false
+    etcd_expose_metrics: false
     profile: cis-1.23
     selinux: true
     secrets_encryption: true
@@ -36,12 +47,25 @@ cluster:
       - read-only-port=0
       - authorization-mode=Webhook
       - streaming-connection-idle-timeout=5m
-  #registries:
-  #  configs:
-  #    rgcrprod.azurecr.us:
-  #      authConfigSecretName: registryconfig-auth-wvldn
-  #      caBundle: ''
-  #      insecureSkipVerify: false
+    registries:
+      enabled: true
+      configs:
+        - name: rgcrprod.azurecr.us
+          authConfigSecretName: registryconfig-auth-97gjm
+          caBundle: ''
+          insecureSkipVerify: false
+          tlsSecretName: ''
+      mirrors:
+        - name: docker.io
+          endpoints:
+            - rgcrprod.azurecr.us
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
 
 nodepools:
   - etcd: true
@@ -65,7 +89,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-06bd4456df80b128e # required: replace with your subnet id
+    subnetId: subnet-0212fa8bf49d2f821 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -75,7 +99,7 @@ nodepools:
     rootSize: 64
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0e5d9a6881851de57 # required: replace with your vpc id
+    vpcId: vpc-0e8fe916279b4bf8a # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -212,7 +236,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-06bd4456df80b128e # required: replace with your subnet id
+    subnetId: subnet-0212fa8bf49d2f821 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -222,7 +246,7 @@ nodepools:
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0e5d9a6881851de57 # required: replace with your vpc id
+    vpcId: vpc-0e8fe916279b4bf8a # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -273,7 +297,29 @@ nodepools:
 addons:
   monitoring:
     enabled: true
+    values:
+      global:
+        cattle:
+          systemDefaultRegistry: rgcrprod.azurecr.us
   longhorn:
     enabled: true
+    values:
+      global:
+        cattle:
+          systemDefaultRegistry: rgcrprod.azurecr.us
   neuvector:
     enabled: true
+    values:
+      global:
+        cattle:
+          url: https://rancher.ranchers.io
+          systemDefaultRegistry: rgcrprod.azurecr.us
+      controller:
+        ranchersso:
+          enabled: true
+      k3s:
+        enabled: true
+      manager:
+        svc:
+          type: ClusterIP
+      rbac: true

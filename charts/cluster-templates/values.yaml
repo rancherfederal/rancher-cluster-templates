@@ -1,44 +1,157 @@
-# cluster specific values
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+cloudprovider:
+
+# cloud provider credentials (example: cc-sssl9)
+cloudCredentialSecretName:
+# or create cloud credential secret:
+  # createCloudCredentialAWS:
+    # enabled: false
+    # name: aws-creds
+    # accessKey:
+    # secretKey:
+    # region:
+  # createCloudCredentialAzure:
+    # enabled: false
+    # name: azure-creds
+    # clientId:
+    # clientSecret:
+    # subscriptionId:
+    # tenantId:
+    # cloud:
+  # createCloudCredentialDigitalOcean:
+    # enabled: false
+    # name: digitalocean-creds
+    # token:
+  # createCloudCredentialHarvester:
+    # enabled: false
+    # name: harvester-creds
+    # token:
+  # createCloudCredentialVsphere:
+    # enabled: false
+    # name: vsphere-creds
+    # server:
+    # username:
+    # password:
+    # port:
+
+# rancher manager url
+# example: rancher.example.com
+rancher:
+  cattle:
+    url:
+
+# cluster values
 cluster:
-  # specify cluster name
-  name: template-rke2
-
-  # specify cluster labels
-  labels: {}
-
-  # specify cluster annotations
   annotations: {}
+    # key: value
+  labels: {}
+    # key: value
+  name: rke2-cluster
+  config:
+    systemDefaultRegistry: docker.io
+    kubernetesVersion: v1.25.15+rke2r2
+    localClusterAuthEndpoint:
+      enabled: false
+      # fqdn:
+      # caCerts:
+    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+    docker: false
+    disable_kube_proxy: false
+    etcd_expose_metrics: false
+    enableNetworkPolicy: true
+    profile: '' # cis-1.6, cis-1.23
+    selinux: false
+    secrets_encryption: false
+    write_kubeconfig_mode: 0600
+    use_service_account_credentials: false
+    protect_kernel_defaults: false
+    kube_controller_manager_arg:
+    # kube controller manager arguments here
+    kube_scheduler_arg:
+    # kube scheduler arguments here
+    kube_apiserver_arg:
+    # kube apiserver arguments here
+    kubelet_arg:
+    # kubelet arguments here
+    registries:
+      enabled: false
+      # createRegistryAuth:
+        # enabled: false
+        # name: registry-creds
+        # username:
+        # password:
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints:
+            # - registry.example.com
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
 
-# specify cloud credential secret name, do not need to be provided if using custom driver
-cloudCredentialSecretName: ''
+# node and nodepools values
+nodepools:
+  - etcd: true
+    controlplane: true
+    worker: false
+    labels: {}
+    taints: {}
+    quantity: 3
+    paused: false
+    name: control-plane-nodes
+    # cloudprovider values here
 
-# specify cloud provider, options are amazonec2, digitalocean, azure, vsphere or custom
-cloudprovider: 'digitalocean'
+  - etcd: false
+    controlplane: false
+    worker: true
+    labels: {}
+    taints: {}
+    quantity: 3
+    paused: false
+    name: worker-nodes
+    # cloudprovider values here
 
-kubernetesVersion: ''
-
-# general RKE options
-rke:
-  # enable local auth endpoint
-  localClusterAuthEndpoint:
+# addons values
+addons:
+  monitoring:
     enabled: false
-  # specify fqdn of local access endpoint
-  # fqdn: foo.bar.example
-  # specify cacert of local access endpoint
-  # caCerts: ""
+    # version:
+    # values:
+      # values here
 
-# specify user principal ids to be assiged as cluster members
-# clusterMembers:
-# - principalName: "local://u-z8zl5"
-#   roleTemplateName: "cluster-member"
+  longhorn:
+    enabled: false
+    # version:
+    # values:
+      # values here
 
-# enable monitoring
-monitoring:
-  enabled: false
-  # specify which version to install, can be semver range. If version is empty or is semver range, it will pick up the latest version.
-  # version: ""
-  # specify cutsom values set
-  # values:
-  #   foo: bar
-
-registries: {}
+  neuvector:
+    enabled: false
+    # version:
+    # values:
+      # values here
