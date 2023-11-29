@@ -1,50 +1,19 @@
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
 cloudprovider:
 
-# cloud provider credentials (example: cc-sssl9)
+# cloud provider credentials (example: aws-creds)
 cloudCredentialSecretName:
-# or create cloud credential secret:
-  # createCloudCredentialAWS:
-    # enabled: false
-    # name: aws-creds
-    # accessKey:
-    # secretKey:
-    # region:
-  # createCloudCredentialAzure:
-    # enabled: false
-    # name: azure-creds
-    # clientId:
-    # clientSecret:
-    # subscriptionId:
-    # tenantId:
-    # cloud:
-  # createCloudCredentialDigitalOcean:
-    # enabled: false
-    # name: digitalocean-creds
-    # token:
-  # createCloudCredentialHarvester:
-    # enabled: false
-    # name: harvester-creds
-    # token:
-  # createCloudCredentialVsphere:
-    # enabled: false
-    # name: vsphere-creds
-    # server:
-    # username:
-    # password:
-    # port:
 
 # rancher manager url
-# example: rancher.example.com
 rancher:
   cattle:
-    url:
+    url: # rancher.example.com
 
 # cluster values
 cluster:
-  annotations: {}
+  # annotations:
     # key: value
-  labels: {}
+  # labels:
     # key: value
   name: rke2-cluster
   config:
@@ -52,8 +21,8 @@ cluster:
     kubernetesVersion: v1.25.15+rke2r2
     localClusterAuthEndpoint:
       enabled: false
-      # fqdn:
-      # caCerts:
+    # agentEnvVars:
+      # - key:value
     cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
     docker: false
     disable_kube_proxy: false
@@ -66,20 +35,15 @@ cluster:
     use_service_account_credentials: false
     protect_kernel_defaults: false
     kube_controller_manager_arg:
-    # kube controller manager arguments here
+      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
     kube_scheduler_arg:
-    # kube scheduler arguments here
+      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
     kube_apiserver_arg:
-    # kube apiserver arguments here
+      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
     kubelet_arg:
-    # kubelet arguments here
+      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
     registries:
       enabled: false
-      # createRegistryAuth:
-        # enabled: false
-        # name: registry-creds
-        # username:
-        # password:
       # configs:
         # - name: registry.example.com
           # authConfigSecretName: registry-creds
@@ -88,8 +52,7 @@ cluster:
           # tlsSecretName: ''
       # mirrors:
         # - name: docker.io
-          # endpoints:
-            # - registry.example.com
+          # endpoints: ['registry.example.com']
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:

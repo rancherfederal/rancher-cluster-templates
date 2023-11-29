@@ -49,7 +49,7 @@ cluster:
       enabled: true
       configs:
         - name: rgcrprod.azurecr.us
-          authConfigSecretName: registryconfig-auth-97gjm
+          authConfigSecretName: registry-creds
           caBundle: ''
           insecureSkipVerify: false
           tlsSecretName: ''
@@ -75,9 +75,9 @@ nodepools:
     paused: false
     name: control-plane-nodes
     ami: ami-05a5f6298acdb05b6
-    accessKey: # accessKey
-    secretKey: # secretKey
-    sessionToken: # sessionToken
+    accessKey: # access key
+    secretKey: # secret key
+    sessionToken: # session token
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
@@ -225,9 +225,9 @@ nodepools:
     paused: false
     name: worker-nodes
     ami: ami-05a5f6298acdb05b6
-    accessKey: # accessKey
-    secretKey: # secretKey
-    sessionToken: # sessionToken
+    accessKey: # access key
+    secretKey: # secret key
+    sessionToken: # session token
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''

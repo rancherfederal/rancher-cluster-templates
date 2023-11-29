@@ -228,16 +228,16 @@ spec:
           insecureSkipVerify: {{ .insecureSkipVerify }}
           tlsSecretName: {{ .tlsSecretName }}
         {{- end }}
+      {{- if .Values.cluster.config.registries.mirrors }}
       mirrors:
         {{- range .Values.cluster.config.registries.mirrors }}
         {{ .name }}:
-          {{- if .endpoints }}
-          endpoints:
-            {{- range .endpoints }}
+          endpoint:
+            {{- range .endpoint }}
             - {{ . }}
             {{- end }}
-          {{- end }}
         {{- end }}
+      {{- end }}
     {{- end }}
     # rotateCertificates:
     # rotateEncryptionKeys:

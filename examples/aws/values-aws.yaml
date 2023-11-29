@@ -1,6 +1,6 @@
 cloudprovider: amazonec2
 
-cloudCredentialSecretName: cc-nnzdx
+cloudCredentialSecretName: aws-creds
 
 rancher:
   cattle:
@@ -51,7 +51,7 @@ cluster:
       enabled: true
       configs:
         - name: rgcrprod.azurecr.us
-          authConfigSecretName: registryconfig-auth-97gjm
+          authConfigSecretName: registry-creds
           caBundle: ''
           insecureSkipVerify: false
           tlsSecretName: ''
