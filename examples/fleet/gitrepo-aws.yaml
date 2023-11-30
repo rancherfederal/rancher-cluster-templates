@@ -1,7 +1,7 @@
 kind: GitRepo
 apiVersion: fleet.cattle.io/v1alpha1
 metadata:
-  name: rancher-cluster-templates
+  name: cluster-templates-aws
   namespace: fleet-local
 spec:
   branch: main
