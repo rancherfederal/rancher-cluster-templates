@@ -17,8 +17,8 @@ cluster:
     # key: value
   name: rke2-cluster
   config:
-    systemDefaultRegistry: docker.io
-    kubernetesVersion: v1.25.15+rke2r2
+    systemDefaultRegistry: docker.io # default registry
+    kubernetesVersion: v1.26.10+rke2r2 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
     # agentEnvVars:
@@ -34,6 +34,8 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: false
     protect_kernel_defaults: false
+    cloud_provider_name: 'aws' # aws, azure, harvester, vsphere
+    # cloud_provider_config: '' # cloud provider config here (cloud.conf)
     kube_controller_manager_arg:
       # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
     kube_scheduler_arg:
@@ -77,16 +79,16 @@ cluster:
         # skipWaitForDeleteTimeoutSeconds: 0
         # timeout: 120
 
-# node and nodepools values
+# node and nodepool(s) values
 nodepools:
-  - etcd: true
+  - name: control-plane-nodes
+    quantity: 3
+    etcd: true
     controlplane: true
     worker: false
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: control-plane-nodes
     # accessKey: # only required if not using cloud provider credentials
     # secretKey: # only required if not using cloud provider credentials
     # sessionToken: # only required if not using cloud provider credentials
@@ -103,7 +105,7 @@ nodepools:
     instanceType: # instance type
     region: # region
     createSecurityGroup: true
-    securityGroups: ['']
+    securityGroups: [''] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
     # openPort:
     # - "80"
     # - "443"
@@ -127,14 +129,14 @@ nodepools:
     userdata: |
       #cloud-config
 
-  - etcd: false
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
     controlplane: false
     worker: true
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: worker-nodes
     # accessKey: # only required if not using cloud provider credentials
     # secretKey: # only required if not using cloud provider credentials
     # sessionToken: # only required if not using cloud provider credentials

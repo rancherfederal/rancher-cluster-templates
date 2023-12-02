@@ -183,8 +183,8 @@ spec:
     {{- if eq $.Values.cloudprovider "harvester" }}
     machineSelectorConfig:
     - config:
-        cloud-provider-config: {{ .Values.cloudProviderConfigSecretName }}
-        cloud-provider-name: harvester
+        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config | default "secret://harvester" }}
+        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_config | default "harvester" }}
         {{- if .Values.cluster.config.systemDefaultRegistry }}
         system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
         {{- end }}
@@ -193,7 +193,10 @@ spec:
     {{- else if eq $.Values.cloudprovider "vsphere" }}
     machineSelectorConfig:
     - config:
-        cloud-provider-name: "rancher-vsphere"
+        {{- if .Values.cluster.config.cloud_provider_config }}
+        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config }}
+        {{- end }}
+        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_config | default "vsphere" }}
         {{- if .Values.cluster.config.systemDefaultRegistry }}
         system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
         {{- end }}
@@ -203,11 +206,10 @@ spec:
     {{- else }}
     machineSelectorConfig:
     - config:
-        {{- if .Values.cluster.config.cloud_provider_name }}
-        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_name | quote }}
-        {{- else }}
-        cloud-provider-name: ""
+        {{- if .Values.cluster.config.cloud_provider_config }}
+        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config }}
         {{- end }}
+        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_name }}
         {{- if .Values.cluster.config.systemDefaultRegistry }}
         system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
         {{- end }}
