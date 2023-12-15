@@ -1,0 +1,8 @@
+defaultNamespace: fleet-default
+helm:
+  repo: https://rancherfederal.github.io/rancher-cluster-templates
+  chart: rancher-cluster-templates
+  version: 0.3.1
+  releaseName: custom-cluster
+  valuesFiles:
+    - values-custom.yaml

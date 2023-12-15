@@ -1,152 +1,198 @@
-cloudprovider: amazonec2
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+cloudprovider:
 
-cloudCredentialSecretName: amazonec2
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName:
 
-# Specify nodepool options. Can add multiple node groups, specify etcd, controlplane and worker roles.
+# rancher manager url
+rancher:
+  cattle:
+    url: # rancher.example.com
+
+# cluster values
+cluster:
+  # annotations:
+    # key: value
+  # labels:
+    # key: value
+  name: rke2-cluster
+  config:
+    systemDefaultRegistry: docker.io # default registry
+    kubernetesVersion: v1.26.10+rke2r2 # https://github.com/rancher/rke2/releases
+    localClusterAuthEndpoint:
+      enabled: false
+    # agentEnvVars:
+      # - key:value
+    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+    docker: false
+    disable_kube_proxy: false
+    etcd_expose_metrics: false
+    enableNetworkPolicy: true
+    profile: '' # cis-1.6, cis-1.23
+    selinux: false
+    secrets_encryption: false
+    write_kubeconfig_mode: 0600
+    use_service_account_credentials: false
+    protect_kernel_defaults: false
+    cloud_provider_name: 'aws' # aws, azure, harvester, vsphere
+    # cloud_provider_config: '' # cloud provider config here (cloud.conf)
+    kube_controller_manager_arg:
+      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+    kube_scheduler_arg:
+      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+    kube_apiserver_arg:
+      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+    kubelet_arg:
+      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    registries:
+      enabled: false
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints: ['registry.example.com']
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+
+# node and nodepool(s) values
 nodepools:
-  - etcd: true
+  - name: control-plane-nodes
+    quantity: 3
+    etcd: true
     controlplane: true
-    worker: true
-
-    # specify node labels
+    worker: false
     labels: {}
-
-    # specify node taints
     taints: {}
-
-    # specify nodepool size
-    quantity: 1
-
-    # Pause node pool
     paused: false
-
-    # specify displayName
-    # displayName: ""
-
-    # specify rolling update mechanism
-    # rollingUpdate:
-    #   The maximum number of machines that can be unavailable during the update.
-    #   Value can be an absolute number (ex: 5) or a percentage of desired
-    #   machines (ex: 10%).
-    #   Absolute number is calculated from percentage by rounding down.
-    #   This can not be 0 if MaxSurge is 0.
-    #   Defaults to 0.
-    #   Example: when this is set to 30%, the old MachineSet can be scaled
-    #   down to 70% of desired machines immediately when the rolling update
-    #   starts. Once new machines are ready, old MachineSet can be scaled
-    #   down further, followed by scaling up the new MachineSet, ensuring
-    #   that the total number of machines available at all times
-    #   during the update is at least 70% of desired machines.
-    #   maxUnavailable: "5"
-    #   The maximum number of machines that can be scheduled above the
-    #   desired number of machines.
-    #   Value can be an absolute number (ex: 5) or a percentage of
-    #   desired machines (ex: 10%).
-    #   This can not be 0 if MaxUnavailable is 0.
-    #   Absolute number is calculated from percentage by rounding up.
-    #   Defaults to 1.
-    #   Example: when this is set to 30%, the new MachineSet can be scaled
-    #   up immediately when the rolling update starts, such that the total
-    #   number of old and new machines do not exceed 130% of desired
-    #   machines. Once old machines have been killed, new MachineSet can
-    #   be scaled up further, ensuring that total number of machines running
-    #   at any time during the update is at most 130% of desired machines.
-    #   maxSurge: "1"
-
-    # specify machineDeployment Labels
-    # machineDeploymentLabels: {}
-
-    # specify machineDeployment annotations
-    # machineDeploymentAnnotations: {}
-
-    # specify nodepool name
-    name: ec2-nodepool-1
-
-    # AWS machine image
-    # ami: ""
-
-    # AWS spot instance duration in minutes (60, 120, 180, 240, 300, or 360)
+    # accessKey: # only required if not using cloud provider credentials
+    # secretKey: # only required if not using cloud provider credentials
+    # sessionToken: # only required if not using cloud provider credentials
+    ami: # ami id
     # blockDurationMinutes: 0
-
-    # AWS root device name
-    deviceName: '/dev/sda1'
-
-    # Encrypt the EBS volume using the AWS Managed CMK
+    deviceName: /dev/sda1
     encryptEbsVolume: false
-
-    # Optional endpoint URL (hostname only or fully qualified)
+    # kmsKey: ''
     endpoint: ''
-
-    # AWS IAM Instance Profile
-    iamInstanceProfile: ''
-
-    # Disable SSL when sending requests
+    # httpEndpoint: ''
+    # httpTokens: ''
+    iamInstanceProfile: '' # iam instance profile name (https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon)
     insecureTransport: false
-
-    # AWS instance type
-    instanceType: t3a.medium
-
-    # AWS region
-    region: us-west-2
-
-    # Whether to create `rancher-node` security group. If false, can provide with existing security group
+    instanceType: # instance type
+    region: # region
     createSecurityGroup: true
-    # createSecurityGroup: false
-    # securityGroups: []
-
-    # AWS keypair to use
+    securityGroups: [''] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
+    # openPort:
+    # - "80"
+    # - "443"
     keypairName: ''
-
-    # Skip adding default rules to security groups
     securityGroupReadonly: false
-
-    # File contents for sshKeyContents
     sshKeyContents: ''
-
-    # AWS VPC subnet id
-    subnetId: ''
-
-    # Set this flag to enable CloudWatch monitoring
-    monitoring: false
-
-    # Make the specified port number accessible from the Internet
-    # openPort: ["8080", "8443"]
-
-    # Only use a private IP address
-    privateAddressOnly: false
-
-    # Set this flag to request spot instance
-    requestSpotInstance: false
-
-    # AWS Tags (e.g. key1,value1,key2,value2)
-    # tags: "foo,bar"
-
-    # Set retry count for recoverable failures (use -1 to disable)
-    retries: 5
-
-    # AWS root disk size (in GB)
-    rootSize: 16
-
-    # AWS spot instance bid price (in dollar)
-    spotPrice: 0.5
-
-    # Set the name of the ssh user
-    sshUser: ubuntu
-
-    # Amazon EBS volume type
-    volumeType: gp2
-
-    # AWS VPC id
-    # vpcId: ""
-
-    # Create an EBS optimized instance
-    useEbsOptimizedInstance: false
-
-    # Force the usage of private IP address
-    usePrivateAddress: false
-
-    # File contents for userdata
-    userdata: ''
-
-    # AWS zone for instance (i.e. a,b,c,d,e)
+    subnetId: # subnet id
     zone: a
+    monitoring: false
+    privateAddressOnly: true
+    requestSpotInstance: false
+    # spotPrice: ''
+    tags: provisioner,rancher,KeepRunning,true
+    retries: 5
+    rootSize: 64
+    sshUser: ec2-user
+    volumeType: gp3
+    vpcId: # vpc id
+    useEbsOptimizedInstance: false
+    usePrivateAddress: true
+    userdata: |
+      #cloud-config
+
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
+    controlplane: false
+    worker: true
+    labels: {}
+    taints: {}
+    paused: false
+    # accessKey: # only required if not using cloud provider credentials
+    # secretKey: # only required if not using cloud provider credentials
+    # sessionToken: # only required if not using cloud provider credentials
+    ami: # ami id
+    # blockDurationMinutes: 0
+    deviceName: /dev/sda1
+    encryptEbsVolume: false
+    # kmsKey: ''
+    endpoint: ''
+    # httpEndpoint: ''
+    # httpTokens: ''
+    iamInstanceProfile: '' # iam instance profile name
+    insecureTransport: false
+    instanceType: # instance type
+    region: # region
+    createSecurityGroup: true
+    securityGroups: ['']
+    # openPort:
+    # - "80"
+    # - "443"
+    keypairName: ''
+    securityGroupReadonly: false
+    sshKeyContents: ''
+    subnetId: # subnet id
+    zone: a
+    monitoring: false
+    privateAddressOnly: true
+    requestSpotInstance: false
+    # spotPrice: ''
+    tags: provisioner,rancher,KeepRunning,true
+    retries: 5
+    rootSize: 64
+    sshUser: ec2-user
+    volumeType: gp3
+    vpcId: # vpc id
+    useEbsOptimizedInstance: false
+    usePrivateAddress: true
+    userdata: |
+      #cloud-config
+
+# addons values
+addons:
+  monitoring:
+    enabled: false
+    # version:
+    # values:
+      # values here
+
+  longhorn:
+    enabled: false
+    # version:
+    # values:
+      # values here
+
+  neuvector:
+    enabled: false
+    # version:
+    # values:
+      # values here

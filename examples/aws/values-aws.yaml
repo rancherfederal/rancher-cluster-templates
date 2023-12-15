@@ -1,6 +1,6 @@
 cloudprovider: amazonec2
 
-cloudCredentialSecretName: cc-nnzdx
+cloudCredentialSecretName: aws-creds
 
 rancher:
   cattle:
@@ -9,10 +9,10 @@ rancher:
 cluster:
   annotations: {}
   labels: {}
-  name: aws-rke2-cluster
+  name: rke2-cluster-aws
   config:
     systemDefaultRegistry: rgcrprod.azurecr.us
-    kubernetesVersion: v1.25.15+rke2r2
+    kubernetesVersion: v1.26.10+rke2r2
     localClusterAuthEndpoint:
       enabled: false
     cni: canal
@@ -22,9 +22,11 @@ cluster:
     profile: cis-1.23
     selinux: true
     secrets_encryption: true
-    write_kubeconfig_mode: 0640
+    write_kubeconfig_mode: 0600
     use_service_account_credentials: true
     protect_kernel_defaults: true
+    cloud_provider_name: 'aws' # aws, azure, harvester, vsphere
+    # cloud_provider_config: '' # cloud provider config here (cloud.conf)
     kube_controller_manager_arg:
       - bind-address=127.0.0.1
       - use-service-account-credentials=true
@@ -38,10 +40,10 @@ cluster:
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - authorization-mode=RBAC,Node
       - anonymous-auth=false
+      - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
       - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
       - audit-log-mode=blocking-strict
       - audit-log-maxage=30
-      - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
     kubelet_arg:
       - protect-kernel-defaults=true
       - read-only-port=0
@@ -51,7 +53,7 @@ cluster:
       enabled: true
       configs:
         - name: rgcrprod.azurecr.us
-          authConfigSecretName: registryconfig-auth-97gjm
+          authConfigSecretName: registry-creds
           caBundle: ''
           insecureSkipVerify: false
           tlsSecretName: ''
@@ -68,14 +70,14 @@ cluster:
         enabled: false
 
 nodepools:
-  - etcd: true
+  - name: control-plane-nodes
+    quantity: 3
+    etcd: true
     controlplane: true
     worker: false
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: control-plane-nodes
     ami: ami-05a5f6298acdb05b6
     deviceName: /dev/sda1
     encryptEbsVolume: false
@@ -84,12 +86,12 @@ nodepools:
     insecureTransport: false
     instanceType: m5.large
     region: us-east-1
-    createSecurityGroup: true
-    securityGroups: ['']
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-rke2-sg']
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-0212fa8bf49d2f821 # required: replace with your subnet id
+    subnetId: subnet-0b2225cfef59473d4 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -99,7 +101,7 @@ nodepools:
     rootSize: 64
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0e8fe916279b4bf8a # required: replace with your vpc id
+    vpcId: vpc-07ccf27031e43ed3b # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -143,8 +145,17 @@ nodepools:
         content: |
           apiVersion: audit.k8s.io/v1
           kind: Policy
+          metadata:
+            name: rke2-audit-policy
           rules:
-          - level: RequestResponse
+            - level: Metadata
+              resources:
+              - group: ""
+                resources: ["secrets"]
+            - level: RequestResponse
+              resources:
+              - group: ""
+                resources: ["*"]
       - path: /etc/rancher/rke2/rancher-pss.yaml
         owner: root
         content: |
@@ -215,14 +226,14 @@ nodepools:
       - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
       - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
       - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
-  - etcd: false
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
     controlplane: false
     worker: true
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: worker-nodes
     ami: ami-05a5f6298acdb05b6
     deviceName: /dev/sda1
     encryptEbsVolume: false
@@ -231,12 +242,12 @@ nodepools:
     insecureTransport: false
     instanceType: m5.xlarge
     region: us-east-1
-    createSecurityGroup: true
-    securityGroups: ['']
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-rke2-sg']
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-0212fa8bf49d2f821 # required: replace with your subnet id
+    subnetId: subnet-0b2225cfef59473d4 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -246,7 +257,7 @@ nodepools:
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0e8fe916279b4bf8a # required: replace with your vpc id
+    vpcId: vpc-07ccf27031e43ed3b # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |

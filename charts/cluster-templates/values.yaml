@@ -1,59 +1,28 @@
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
 cloudprovider:
 
-# cloud provider credentials (example: cc-sssl9)
+# cloud provider credentials (example: aws-creds)
 cloudCredentialSecretName:
-# or create cloud credential secret:
-  # createCloudCredentialAWS:
-    # enabled: false
-    # name: aws-creds
-    # accessKey:
-    # secretKey:
-    # region:
-  # createCloudCredentialAzure:
-    # enabled: false
-    # name: azure-creds
-    # clientId:
-    # clientSecret:
-    # subscriptionId:
-    # tenantId:
-    # cloud:
-  # createCloudCredentialDigitalOcean:
-    # enabled: false
-    # name: digitalocean-creds
-    # token:
-  # createCloudCredentialHarvester:
-    # enabled: false
-    # name: harvester-creds
-    # token:
-  # createCloudCredentialVsphere:
-    # enabled: false
-    # name: vsphere-creds
-    # server:
-    # username:
-    # password:
-    # port:
 
 # rancher manager url
-# example: rancher.example.com
 rancher:
   cattle:
-    url:
+    url: # rancher.example.com
 
 # cluster values
 cluster:
-  annotations: {}
+  # annotations:
     # key: value
-  labels: {}
+  # labels:
     # key: value
   name: rke2-cluster
   config:
-    systemDefaultRegistry: docker.io
-    kubernetesVersion: v1.25.15+rke2r2
+    systemDefaultRegistry: docker.io # default registry
+    kubernetesVersion: v1.26.10+rke2r2 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
-      # fqdn:
-      # caCerts:
+    # agentEnvVars:
+      # - key:value
     cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
     docker: false
     disable_kube_proxy: false
@@ -65,21 +34,18 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: false
     protect_kernel_defaults: false
+    cloud_provider_name: '' # aws, azure, harvester, vsphere
+    # cloud_provider_config: '' # cloud provider config here (cloud.conf)
     kube_controller_manager_arg:
-    # kube controller manager arguments here
+      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
     kube_scheduler_arg:
-    # kube scheduler arguments here
+      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
     kube_apiserver_arg:
-    # kube apiserver arguments here
+      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
     kubelet_arg:
-    # kubelet arguments here
+      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
     registries:
       enabled: false
-      # createRegistryAuth:
-        # enabled: false
-        # name: registry-creds
-        # username:
-        # password:
       # configs:
         # - name: registry.example.com
           # authConfigSecretName: registry-creds
@@ -88,8 +54,7 @@ cluster:
           # tlsSecretName: ''
       # mirrors:
         # - name: docker.io
-          # endpoints:
-            # - registry.example.com
+          # endpoints: ['registry.example.com']
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
@@ -114,27 +79,27 @@ cluster:
         # skipWaitForDeleteTimeoutSeconds: 0
         # timeout: 120
 
-# node and nodepools values
+# node and nodepool(s) values
 nodepools:
-  - etcd: true
+  - name: control-plane-nodes
+    quantity: 3
+    etcd: true
     controlplane: true
     worker: false
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: control-plane-nodes
-    # cloudprovider values here
+    # cloud provider values here
 
-  - etcd: false
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
     controlplane: false
     worker: true
     labels: {}
     taints: {}
-    quantity: 3
     paused: false
-    name: worker-nodes
-    # cloudprovider values here
+    # cloud provider values here
 
 # addons values
 addons:

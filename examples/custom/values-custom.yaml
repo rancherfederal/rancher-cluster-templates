@@ -7,10 +7,10 @@ rancher:
 cluster:
   annotations: {}
   labels: {}
-  name: custom-rke2-cluster
+  name: rke2-cluster-custom
   config:
     systemDefaultRegistry: docker.io
-    kubernetesVersion: v1.25.15+rke2r2
+    kubernetesVersion: v1.26.10+rke2r2
     localClusterAuthEndpoint:
       enabled: false
     cni: canal
@@ -20,7 +20,7 @@ cluster:
     profile: cis-1.23
     selinux: true
     secrets_encryption: true
-    write_kubeconfig_mode: 0640
+    write_kubeconfig_mode: 0600
     use_service_account_credentials: true
     protect_kernel_defaults: true
     kube_controller_manager_arg:
@@ -36,10 +36,10 @@ cluster:
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - authorization-mode=RBAC,Node
       - anonymous-auth=false
+      - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
       - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
       - audit-log-mode=blocking-strict
       - audit-log-maxage=30
-      - admission-control-config-file=/etc/rancher/rke2/rancher-pss.yaml
     kubelet_arg:
       - protect-kernel-defaults=true
       - read-only-port=0
