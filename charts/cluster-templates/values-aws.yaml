@@ -18,7 +18,7 @@ cluster:
   name: rke2-cluster
   config:
     systemDefaultRegistry: docker.io # default registry
-    kubernetesVersion: v1.26.10+rke2r2 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
     # agentEnvVars:
@@ -86,8 +86,10 @@ nodepools:
     etcd: true
     controlplane: true
     worker: false
-    labels: {}
-    taints: {}
+    # labels:
+      # key: value
+    # taints:
+      # key: value
     paused: false
     # accessKey: # only required if not using cloud provider credentials
     # secretKey: # only required if not using cloud provider credentials
@@ -134,8 +136,10 @@ nodepools:
     etcd: false
     controlplane: false
     worker: true
-    labels: {}
-    taints: {}
+    # labels:
+      # key: value
+    # taints:
+      # key: value
     paused: false
     # accessKey: # only required if not using cloud provider credentials
     # secretKey: # only required if not using cloud provider credentials

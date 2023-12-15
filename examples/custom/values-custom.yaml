@@ -5,12 +5,14 @@ rancher:
     url: rancher.ranchers.io
 
 cluster:
-  annotations: {}
-  labels: {}
+  # annotations:
+    # key: value
+  # labels:
+    # key: value
   name: rke2-cluster-custom
   config:
     systemDefaultRegistry: docker.io
-    kubernetesVersion: v1.26.10+rke2r2
+    kubernetesVersion: v1.26.11+rke2r1
     localClusterAuthEndpoint:
       enabled: false
     cni: canal
@@ -62,19 +64,19 @@ cluster:
 
 addons:
   monitoring:
-    enabled: true
+    enabled: false
     values:
       global:
         cattle:
           systemDefaultRegistry: rgcrprod.azurecr.us
   longhorn:
-    enabled: true
+    enabled: false
     values:
       global:
         cattle:
           systemDefaultRegistry: rgcrprod.azurecr.us
   neuvector:
-    enabled: true
+    enabled: false
     values:
       global:
         cattle:

@@ -5,12 +5,14 @@ rancher:
     url: rancher.ranchers.io
 
 cluster:
-  annotations: {}
-  labels: {}
+  # annotations:
+    # key: value
+  # labels:
+    # key: value
   name: rke2-cluster-aws-sts
   config:
     systemDefaultRegistry: rgcrprod.azurecr.us
-    kubernetesVersion: v1.26.10+rke2r2
+    kubernetesVersion: v1.26.11+rke2r1
     localClusterAuthEndpoint:
       enabled: false
     cni: canal
@@ -92,7 +94,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-0b2225cfef59473d4 # required: replace with your subnet id
+    subnetId: subnet-038485c9ea0d34220 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -102,7 +104,7 @@ nodepools:
     rootSize: 64
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-07ccf27031e43ed3b # required: replace with your vpc id
+    vpcId: vpc-035a7d8ee83254f2b # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -251,7 +253,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-0b2225cfef59473d4 # required: replace with your subnet id
+    subnetId: subnet-038485c9ea0d34220 # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -261,7 +263,7 @@ nodepools:
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-07ccf27031e43ed3b # required: replace with your vpc id
+    vpcId: vpc-035a7d8ee83254f2b # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
