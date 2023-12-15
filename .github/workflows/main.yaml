@@ -1,4 +1,4 @@
-name: Release Helm Chart
+name: Helm Chart Release
 on:
   push:
     branches:
@@ -18,7 +18,16 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Run Helm Chart Releaser
+      - name: Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.5.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Build and Push Helm Chart
+        run: |
+          cd charts/cluster-templates
+          helm package .
+          ls -la
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u rancherfederal --password-stdin
+          export CHART_VERSION=$(grep 'version:' Chart.yaml | tail -n1 | awk '{ print $2}')
+          helm push rancher-cluster-templates-${CHART_VERSION}.tgz oci://ghcr.io/rancherfederal

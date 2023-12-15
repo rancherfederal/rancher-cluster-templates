@@ -29,6 +29,12 @@ helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-def
 ```
 
 ```bash
+helm upgrade -i cluster oci://ghcr.io/rancherfederal/rancher-cluster-templates -n fleet-default -f values.yaml
+```
+
+## Helm Chart Deployment Status
+
+```bash
 helm status cluster -n fleet-default
 ```
 
@@ -50,7 +56,7 @@ helm delete cluster -n fleet-default
 - [Digital Ocean (TBD)](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/charts/cluster-templates/values-digitalocean.yaml)
 - [VMWare vSphere (TBD)](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/charts/cluster-templates/values-vsphere.yaml)
 
-## Secrets Management
+## Chart/Cluster Secrets Management
 
 ### Cloud Credentials
 
