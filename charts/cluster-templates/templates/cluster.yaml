@@ -45,7 +45,9 @@ spec:
     chartValues:
       harvester-cloud-provider:
         cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
-        clusterName: {{ .Values.cluster.name }}
+        global:
+          cattle:
+            clusterName: {{ .Values.cluster.name }}
     {{- else if eq $.Values.cloudprovider "vsphere" }}
     chartValues:
       rke2-calico: {}
@@ -180,30 +182,6 @@ spec:
 {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
       {{- end }}
     {{- end }}
-    {{- if eq $.Values.cloudprovider "harvester" }}
-    machineSelectorConfig:
-    - config:
-        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config | default "secret://harvester" }}
-        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_config | default "harvester" }}
-        {{- if .Values.cluster.config.systemDefaultRegistry }}
-        system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
-        {{- end }}
-        protect-kernel-defaults: {{ .Values.cluster.config.protect_kernel_defaults }}
-        selinux: {{ .Values.cluster.config.selinux }}
-    {{- else if eq $.Values.cloudprovider "vsphere" }}
-    machineSelectorConfig:
-    - config:
-        {{- if .Values.cluster.config.cloud_provider_config }}
-        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config }}
-        {{- end }}
-        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_config | default "vsphere" }}
-        {{- if .Values.cluster.config.systemDefaultRegistry }}
-        system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
-        {{- end }}
-        docker: {{ .Values.cluster.config.docker }}
-        protect-kernel-defaults: {{ .Values.cluster.config.protect_kernel_defaults }}
-        selinux: {{ .Values.cluster.config.selinux }}
-    {{- else }}
     machineSelectorConfig:
     - config:
         {{- if .Values.cluster.config.cloud_provider_config }}
@@ -216,7 +194,6 @@ spec:
         docker: {{ .Values.cluster.config.docker }}
         protect-kernel-defaults: {{ .Values.cluster.config.protect_kernel_defaults }}
         selinux: {{ .Values.cluster.config.selinux }}
-    {{- end }}
     {{- end }}
     # machineSelectorFiles:
     # provisionGeneration:

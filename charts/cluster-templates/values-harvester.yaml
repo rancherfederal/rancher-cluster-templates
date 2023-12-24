@@ -1,7 +1,10 @@
 # be sure to add all "required" values...
 
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider: custom
+cloudprovider: harvester
+
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName:
 
 # rancher manager url
 rancher:
@@ -77,6 +80,94 @@ cluster:
         # ignoreErrors: false
         # skipWaitForDeleteTimeoutSeconds: 0
         # timeout: 120
+
+# node and nodepool(s) values
+nodepools:
+  - name: control-plane-nodes
+    quantity: 3
+    etcd: true
+    controlplane: true
+    worker: false
+    # labels:
+      # key: value
+    # taints:
+      # key: value
+    paused: false
+    # clusterId: # only required if not using cloudCredentialSecretName
+    # clusterType: # only required if not using cloudCredentialSecretName
+    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    cpuCount: # required (example: 4)
+    # diskBus: virtio
+    # diskInfo: ''
+    diskSize: # required (example: 64)
+    imageName: # required (example: default/image-xyz)
+    # keyPairName: ''
+    memorySize: # required (example: 8)
+    # networkInfo: ''
+    # networkModel: virtio
+    networkName: # required (example: default/default)
+    # networkType: ''
+    # sshPassword: ''
+    # sshPort: 22
+    # sshPrivateKeyPath: ''
+    sshUser: # required (example: rocky)
+    # vmAffinity: ''
+    # vmNamespace: default
+    # networkData: |
+      #cloud-config
+    userData: |
+      #cloud-config
+      package_update: true
+      packages:
+        - qemu-guest-agent
+      runcmd:
+        - - systemctl
+          - enable
+          - '--now'
+          - qemu-guest-agent.service
+
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
+    controlplane: false
+    worker: true
+    # labels:
+      # key: value
+    # taints:
+      # key: value
+    paused: false
+    # clusterId: # only required if not using cloudCredentialSecretName
+    # clusterType: # only required if not using cloudCredentialSecretName
+    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    cpuCount: # required (example: 4)
+    # diskBus: virtio
+    # diskInfo: ''
+    diskSize: # required (example: 64)
+    imageName: # required (example: default/image-xyz)
+    # keyPairName: ''
+    memorySize: # required (example: 8)
+    # networkInfo: ''
+    # networkModel: virtio
+    networkName: # required (example: default/default)
+    # networkType: ''
+    # sshPassword: ''
+    # sshPort: 22
+    # sshPrivateKeyPath: ''
+    sshUser: # required (example: rocky)
+    # vmAffinity: ''
+    # vmNamespace: default
+    # networkData: |
+      #cloud-config
+    userData: |
+      #cloud-config
+      package_update: true
+      packages:
+        - qemu-guest-agent
+      runcmd:
+        - - systemctl
+          - enable
+          - '--now'
+          - qemu-guest-agent.service
 
 # addons values
 addons:

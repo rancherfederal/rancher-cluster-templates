@@ -125,6 +125,15 @@ kind: Amazonec2Config
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
+common:
+{{- if $nodepool.labels }}
+  labels:
+{{ toYaml $nodepool.labels | indent 4 }}
+{{- end }}
+{{- if $nodepool.taints }}
+  taints:
+{{ toYaml $nodepool.taints | indent 4 }}
+{{- end }}
 {{- if $nodepool.accessKey }}
 accessKey: {{ $nodepool.accessKey }}
 {{- end }}
@@ -136,15 +145,6 @@ blockDurationMinutes: {{ $nodepool.blockDurationMinutes }}
 {{- end }}
 {{- if $nodepool.deviceName }}
 deviceName: {{ $nodepool.deviceName }}
-{{- end }}
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
-{{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
 {{- end }}
 {{- if $nodepool.encryptEbsVolume }}
 encryptEbsVolume: {{ $nodepool.encryptEbsVolume }}

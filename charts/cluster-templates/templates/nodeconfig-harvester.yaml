@@ -5,25 +5,75 @@ kind: HarvesterConfig
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
+{{- if $nodepool.cloudConfig }}
+cloudConfig: {{$nodepool.cloudconfig }}
 {{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
+{{- if $nodepool.clusterId }}
+clusterId: {{ $nodepool.clusterId }}
 {{- end }}
-diskSize: {{ $nodepool.diskSize | quote }}
-diskBus: {{ $nodepool.diskBus }}
+{{- if $nodepool.clusterType }}
+clusterType: {{ $nodepool.clusterType }}
+{{- end }}
+{{- if $nodepool.cpuCount }}
 cpuCount: {{ $nodepool.cpuCount | quote }}
-memorySize: {{ $nodepool.memorySize | quote }}
-networkName: {{ $nodepool.networkName }}
+{{- end }}
+{{- if $nodepool.diskBus }}
+diskBus: {{ $nodepool.diskBus }}
+{{- end }}
+{{- if $nodepool.diskInfo }}
+diskInfo: {{ $nodepool.diskInfo }}
+{{- end }}
+{{- if $nodepool.diskSize }}
+diskSize: {{ $nodepool.diskSize | quote }}
+{{- end }}
+{{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
-vmNamespace: {{ $nodepool.vmNamespace }}
+{{- end }}
+{{- if $nodepool.keyPairName }}
+keyPairName: {{ $nodepool.keyPairName }}
+{{- end }}
+{{- if $nodepool.kubeconfigContent }}
+kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
+{{- end }}
+{{- if $nodepool.memorySize }}
+memorySize: {{ $nodepool.memorySize | quote }}
+{{- end }}
+{{- if $nodepool.networkData }}
+networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.networkInfo }}
+networkInfo: {{ $nodepool.networkInfo }}
+{{- end }}
+{{- if $nodepool.networkModel }}
+networkModel: {{ $nodepool.networkModel }}
+{{- end }}
+{{- if $nodepool.networkName }}
+networkName: {{ $nodepool.networkName }}
+{{- end }}
+{{- if $nodepool.networkType }}
+networkType: {{ $nodepool.networkType }}
+{{- end }}
+{{- if $nodepool.sshPassword }}
+sshPassword: {{ $nodepool.sshPassword }}
+{{- end }}
+{{- if $nodepool.sshPort }}
+sshPort: {{ $nodepool.sshPort | quote }}
+{{- end }}
+{{- if $nodepool.sshPrivateKeyPath }}
+sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
-userData: {{ $nodepool.userdata | toYaml }}
-cloudConfig: {{$nodepool.cloudconfig | toYaml }}
+{{- end }}
+{{- if $nodepool.userData }}
+userData: {{- $nodepool.userData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.vmAffinity }}
+vmAffinity: {{ $nodepool.vmAffinity}}
+{{- end }}
+{{- if $nodepool.vmNamespace }}
+vmNamespace: {{ $nodepool.vmNamespace }}
+{{- end }}
 ---
 {{- end }}
 {{ $nodepool := .Values.nodepool }}
@@ -42,15 +92,74 @@ common:
   taints:
 {{ toYaml $nodepool.taints | indent 4 }}
 {{- end }}
-diskSize: {{ $nodepool.diskSize | quote }}
-diskBus: {{ $nodepool.diskBus }}
+{{- if $nodepool.cloudConfig }}
+cloudConfig: {{$nodepool.cloudconfig }}
+{{- end }}
+{{- if $nodepool.clusterId }}
+clusterId: {{ $nodepool.clusterId }}
+{{- end }}
+{{- if $nodepool.clusterType }}
+clusterType: {{ $nodepool.clusterType }}
+{{- end }}
+{{- if $nodepool.cpuCount }}
 cpuCount: {{ $nodepool.cpuCount | quote }}
-memorySize: {{ $nodepool.memorySize | quote }}
-networkName: {{ $nodepool.networkName }}
+{{- end }}
+{{- if $nodepool.diskBus }}
+diskBus: {{ $nodepool.diskBus }}
+{{- end }}
+{{- if $nodepool.diskInfo }}
+diskInfo: {{ $nodepool.diskInfo }}
+{{- end }}
+{{- if $nodepool.diskSize }}
+diskSize: {{ $nodepool.diskSize | quote }}
+{{- end }}
+{{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
-vmNamespace: {{ $nodepool.vmNamespace }}
+{{- end }}
+{{- if $nodepool.keyPairName }}
+keyPairName: {{ $nodepool.keyPairName }}
+{{- end }}
+{{- if $nodepool.kubeconfigContent }}
+kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
+{{- end }}
+{{- if $nodepool.memorySize }}
+memorySize: {{ $nodepool.memorySize | quote }}
+{{- end }}
+{{- if $nodepool.networkData }}
+networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.networkInfo }}
+networkInfo: {{ $nodepool.networkInfo }}
+{{- end }}
+{{- if $nodepool.networkModel }}
+networkModel: {{ $nodepool.networkModel }}
+{{- end }}
+{{- if $nodepool.networkName }}
+networkName: {{ $nodepool.networkName }}
+{{- end }}
+{{- if $nodepool.networkType }}
+networkType: {{ $nodepool.networkType }}
+{{- end }}
+{{- if $nodepool.sshPassword }}
+sshPassword: {{ $nodepool.sshPassword }}
+{{- end }}
+{{- if $nodepool.sshPort }}
+sshPort: {{ $nodepool.sshPort | quote }}
+{{- end }}
+{{- if $nodepool.sshPrivateKeyPath }}
+sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
-userData: {{ $nodepool.userdata | toYaml }}
-cloudConfig: {{$nodepool.cloudconfig | toYaml }}
+{{- end }}
+{{- if $nodepool.userData }}
+userData: {{- $nodepool.userData | toYaml | indent 1 }}
+{{- end }}
+{{- if $nodepool.vmAffinity }}
+vmAffinity: {{ $nodepool.vmAffinity }}
+{{- end }}
+{{- if $nodepool.vmNamespace }}
+vmNamespace: {{ $nodepool.vmNamespace }}
+{{- end }}
 {{- end }}
 {{- end }}

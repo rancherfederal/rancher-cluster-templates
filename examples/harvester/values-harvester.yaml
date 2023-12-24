@@ -1,15 +1,13 @@
-# be sure to add all "required" values...
-
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider:
+cloudprovider: harvester
 
 # cloud provider credentials (example: aws-creds)
-cloudCredentialSecretName:
+cloudCredentialSecretName: cc-9bvm4
 
 # rancher manager url
 rancher:
   cattle:
-    url: # required (example: rancher.example.com)
+    url: rancher.ranchers.io
 
 # cluster values
 cluster:
@@ -17,15 +15,15 @@ cluster:
     # key: value
   # labels:
     # key: value
-  name: rke2-cluster
+  name: rke2-cluster-harvester
   config:
-    systemDefaultRegistry: docker.io # default registry
-    kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
+    systemDefaultRegistry: rgcrprod.azurecr.us
+    kubernetesVersion: v1.26.11+rke2r1
     localClusterAuthEndpoint:
       enabled: false
     # agentEnvVars:
       # - key:value
-    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+    cni: canal
     docker: false
     disable_kube_proxy: false
     etcd_expose_metrics: false
@@ -47,39 +45,24 @@ cluster:
     # kubelet_arg:
       # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
     registries:
-      enabled: false
-      # configs:
-        # - name: registry.example.com
-          # authConfigSecretName: registry-creds
-          # caBundle: ''
-          # insecureSkipVerify: false
-          # tlsSecretName: ''
-      # mirrors:
-        # - name: docker.io
-          # endpoints: ['registry.example.com']
+      enabled: true
+      configs:
+        - name: rgcrprod.azurecr.us
+          authConfigSecretName: registry-creds
+          caBundle: ''
+          insecureSkipVerify: false
+          tlsSecretName: ''
+      mirrors:
+        - name: docker.io
+          endpoints:
+            - rgcrprod.azurecr.us
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
         enabled: false
-        # deleteEmptyDirData: true
-        # disableEviction: false
-        # force: false
-        # gracePeriod: -1
-        # ignoreDaemonSets: true
-        # ignoreErrors: false
-        # skipWaitForDeleteTimeoutSeconds: 0
-        # timeout: 120
       workerConcurrency: 10%
       workerDrainOptions:
         enabled: false
-        # deleteEmptyDirData: true
-        # disableEviction: false
-        # force: false
-        # gracePeriod: -1
-        # ignoreDaemonSets: true
-        # ignoreErrors: false
-        # skipWaitForDeleteTimeoutSeconds: 0
-        # timeout: 120
 
 # node and nodepool(s) values
 nodepools:
@@ -93,7 +76,38 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # cloud provider values here
+    # clusterId: # only required if not using cloudCredentialSecretName
+    # clusterType: # only required if not using cloudCredentialSecretName
+    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    cpuCount: 4
+    # diskBus: virtio
+    # diskInfo: ''
+    diskSize: 64
+    imageName: default/image-pckhz
+    # keyPairName: ''
+    memorySize: 8
+    # networkInfo: ''
+    # networkModel: virtio
+    networkName: default/default
+    # networkType: ''
+    # sshPassword: ''
+    # sshPort: 22
+    # sshPrivateKeyPath: ''
+    sshUser: rocky
+    # vmAffinity: ''
+    # vmNamespace: default
+    # networkData: |
+      #cloud-config
+    userData: |
+      #cloud-config
+      package_update: true
+      packages:
+        - qemu-guest-agent
+      runcmd:
+        - - systemctl
+          - enable
+          - '--now'
+          - qemu-guest-agent.service
 
   - name: worker-nodes
     quantity: 3
@@ -105,7 +119,39 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # cloud provider values here
+    # clusterId: # only required if not using cloudCredentialSecretName
+    # clusterType: # only required if not using cloudCredentialSecretName
+    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    cpuCount: 4
+    # diskBus: virtio
+    # diskInfo: ''
+    diskSize: 64
+    imageName: default/image-pckhz
+    # keyPairName: ''
+    memorySize: 8
+    # networkInfo: ''
+    # networkModel: virtio
+    networkName: default/default
+    # networkType: ''
+    # sshPassword: ''
+    # sshPort: 22
+    # sshPrivateKeyPath: ''
+    sshUser: rocky
+    # vmAffinity: ''
+    # vmNamespace: default
+    # networkData: |
+      #cloud-config
+    userData: |
+      #cloud-config
+      package_update: true
+      packages:
+        - qemu-guest-agent
+      runcmd:
+        - - systemctl
+          - enable
+          - '--now'
+          - qemu-guest-agent.service
+
 
 # addons values
 addons:

@@ -3,6 +3,6 @@ helm:
   repo: https://rancherfederal.github.io/rancher-cluster-templates
   chart: rancher-cluster-templates
   version: 0.4.0
-  releaseName: aws-cluster
+  releaseName: harvester-cluster
   valuesFiles:
-    - values-aws.yaml
+    - values-harvester.yaml

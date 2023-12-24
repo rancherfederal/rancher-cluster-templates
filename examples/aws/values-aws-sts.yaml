@@ -25,8 +25,8 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: true
     protect_kernel_defaults: true
-    cloud_provider_name: 'aws' # aws, azure, harvester, vsphere
-    # cloud_provider_config: '' # cloud provider config here (cloud.conf)
+    cloud_provider_name: aws # aws, azure, harvester, vsphere
+    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
     kube_controller_manager_arg:
       - bind-address=127.0.0.1
       - use-service-account-credentials=true
@@ -78,23 +78,23 @@ nodepools:
     labels: {}
     taints: {}
     paused: false
-    ami: ami-05a5f6298acdb05b6
+    ami: ami-079db87dc4c10ac91
     accessKey: # access key
     secretKey: # secret key
     sessionToken: # session token
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
-    iamInstanceProfile: 'aws-rgs-rke2-iam-profile-control' # required: replace with your iam instance profile name
+    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-control' # required: replace with your iam instance profile name
     insecureTransport: false
     instanceType: m5.large
     region: us-east-1
-    createSecurityGroup: true
-    securityGroups: ['']
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-mgmt-cluster-sg']
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-038485c9ea0d34220 # required: replace with your subnet id
+    subnetId: subnet-05eece2b06f039f0d # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -104,7 +104,7 @@ nodepools:
     rootSize: 64
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-035a7d8ee83254f2b # required: replace with your vpc id
+    vpcId: vpc-01900ed4ed547df8f # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -223,7 +223,7 @@ nodepools:
       runcmd:
       - sudo sysctl -p > /dev/null 2>&1
       - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.17-1.el9.noarch.rpm
       - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
       - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
       - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
@@ -237,23 +237,23 @@ nodepools:
     labels: {}
     taints: {}
     paused: false
-    ami: ami-05a5f6298acdb05b6
+    ami: ami-079db87dc4c10ac91
     accessKey: # access key
     secretKey: # secret key
     sessionToken: # session token
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
-    iamInstanceProfile: 'aws-rgs-rke2-iam-profile-worker' # required: replace with your iam instance profile name
+    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-worker' # required: replace with your iam instance profile name
     insecureTransport: false
     instanceType: m5.xlarge
     region: us-east-1
-    createSecurityGroup: true
-    securityGroups: ['']
+    createSecurityGroup: false
+    securityGroups: ['aws-rgs-mgmt-cluster-sg']
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-038485c9ea0d34220 # required: replace with your subnet id
+    subnetId: subnet-05eece2b06f039f0d # required: replace with your subnet id
     zone: a
     monitoring: false
     privateAddressOnly: true
@@ -263,7 +263,7 @@ nodepools:
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-035a7d8ee83254f2b # required: replace with your vpc id
+    vpcId: vpc-01900ed4ed547df8f # required: replace with your vpc id
     useEbsOptimizedInstance: false
     usePrivateAddress: true
     userdata: |
@@ -305,7 +305,7 @@ nodepools:
       runcmd:
       - sudo sysctl -p > /dev/null 2>&1
       - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.16.stable.1/rke2-selinux-0.16-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.16-1.el9.noarch.rpm
+      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el9.noarch.rpm && sudo rpm -i rke2-selinux-0.17-1.el9.noarch.rpm
       - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
       - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
       - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
