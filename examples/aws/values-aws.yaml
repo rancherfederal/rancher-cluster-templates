@@ -98,7 +98,7 @@ cluster:
 # node and nodepool(s) values
 nodepools:
   - name: control-plane-nodes
-    quantity: 3
+    quantity: 1
     etcd: true
     controlplane: true
     worker: false
@@ -113,14 +113,14 @@ nodepools:
     ami: ami-079db87dc4c10ac91 # required (example: ami-123456789)
     # blockDurationMinutes: 0
     deviceName: /dev/sda1
-    encryptEbsVolume: false
+    encryptEbsVolume: true
     # kmsKey: ''
     endpoint: ''
     # httpEndpoint: ''
     # httpTokens: ''
     iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-control' # required (example: rancher-iam-instance-profile) - https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon
     insecureTransport: false
-    instanceType: m5.2xlarge # required (example: m5.2xlarge)
+    instanceType: m5.xlarge # required (example: m5.2xlarge)
     region: us-east-1 # required (example: us-east-1)
     createSecurityGroup: false
     securityGroups: ['aws-rgs-mgmt-cluster-sg'] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
@@ -130,7 +130,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-076aa666bf2adc2a8 # required (example: subnet-123456789)
+    subnetId: subnet-023c444cd94847be2 # required (example: subnet-123456789)
     zone: a # required (example: a)
     monitoring: false
     usePrivateAddress: true
@@ -139,10 +139,10 @@ nodepools:
     # spotPrice: ''
     tags: provisioner,rancher,KeepRunning,true
     retries: 5
-    rootSize: 64
+    rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
+    vpcId: vpc-0d08cfb0972c55aa6 # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
     userData: |
       #cloud-config
@@ -259,6 +259,7 @@ nodepools:
                               cis-operator-system,
                               fleet-default,
                               fleet-local,
+                              harbor-system,
                               ingress-nginx,
                               istio-system,
                               kube-node-lease,
@@ -275,7 +276,7 @@ nodepools:
       - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
       - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
   - name: worker-nodes
-    quantity: 3
+    quantity: 1
     etcd: false
     controlplane: false
     worker: true
@@ -289,11 +290,14 @@ nodepools:
     # sessionToken: # only needed if not using cloudCredentialSecretName
     ami: ami-079db87dc4c10ac91 # required (example: ami-123456789)
     deviceName: /dev/sda1
-    encryptEbsVolume: false
+    encryptEbsVolume: true
+    # kmsKey: ''
     endpoint: ''
+    # httpEndpoint: ''
+    # httpTokens: ''
     iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-worker' # required (example: rancher-iam-instance-profile)
     insecureTransport: false
-    instanceType: m5.2xlarge # required (example: m5.2xlarge)
+    instanceType: m5.xlarge # required (example: m5.2xlarge)
     region: us-east-1 # required (example: us-east-1)
     createSecurityGroup: false
     securityGroups: ['aws-rgs-mgmt-cluster-sg'] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
@@ -303,7 +307,7 @@ nodepools:
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-076aa666bf2adc2a8 # required (example: subnet-123456789)
+    subnetId: subnet-023c444cd94847be2 # required (example: subnet-123456789)
     zone: a # required (example: a)
     monitoring: false
     usePrivateAddress: true
@@ -315,7 +319,7 @@ nodepools:
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
+    vpcId: vpc-0d08cfb0972c55aa6 # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
     userData: |
       #cloud-config
@@ -432,6 +436,7 @@ nodepools:
                               cis-operator-system,
                               fleet-default,
                               fleet-local,
+                              harbor-system,
                               ingress-nginx,
                               istio-system,
                               kube-node-lease,
