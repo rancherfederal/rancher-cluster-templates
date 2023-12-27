@@ -4,7 +4,7 @@
 cloudprovider: harvester
 
 # cloud provider credentials (example: aws-creds)
-cloudCredentialSecretName:
+cloudCredentialSecretName: harvester-creds
 
 # rancher manager url
 rancher:
@@ -17,7 +17,7 @@ cluster:
     # key: value
   # labels:
     # key: value
-  name: rke2-cluster
+  name: rke2-cluster-harvester
   config:
     systemDefaultRegistry: docker.io # default registry
     kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
@@ -38,14 +38,14 @@ cluster:
     protect_kernel_defaults: false
     cloud_provider_name: '' # aws, azure, harvester, vsphere
     # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
-    # kube_controller_manager_arg:
-      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
-    # kube_scheduler_arg:
-      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
-    # kube_apiserver_arg:
-      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
-    # kubelet_arg:
-      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    # kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+      # - kube controller manager arguments here
+    # kube_scheduler_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # - kube scheduler arguments here
+    # kube_apiserver_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+      # - kube apiserver arguments here
+    # kubelet_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+      # - kubelet arguments here
     registries:
       enabled: false
       # configs:
@@ -93,14 +93,14 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # clusterId: # only required if not using cloudCredentialSecretName
-    # clusterType: # only required if not using cloudCredentialSecretName
-    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    # clusterId: # only needed if not using cloudCredentialSecretName
+    # clusterType: # only needed if not using cloudCredentialSecretName
+    # kubeconfigContent: # only needed if not using cloudCredentialSecretName
     cpuCount: # required (example: 4)
     # diskBus: virtio
     # diskInfo: ''
     diskSize: # required (example: 64)
-    imageName: # required (example: default/image-xyz)
+    imageName: # required (example: default/image-abcdefg)
     # keyPairName: ''
     memorySize: # required (example: 8)
     # networkInfo: ''
@@ -118,13 +118,9 @@ nodepools:
     userData: |
       #cloud-config
       package_update: true
-      packages:
-        - qemu-guest-agent
+      packages: ['qemu-guest-agent']
       runcmd:
-        - - systemctl
-          - enable
-          - '--now'
-          - qemu-guest-agent.service
+      - systemctl enable --now qemu-guest-agent.service
 
   - name: worker-nodes
     quantity: 3
@@ -136,9 +132,9 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # clusterId: # only required if not using cloudCredentialSecretName
-    # clusterType: # only required if not using cloudCredentialSecretName
-    # kubeconfigContent: # only required if not using cloudCredentialSecretName
+    # clusterId: # only needed if not using cloudCredentialSecretName
+    # clusterType: # only needed if not using cloudCredentialSecretName
+    # kubeconfigContent: # only needed if not using cloudCredentialSecretName
     cpuCount: # required (example: 4)
     # diskBus: virtio
     # diskInfo: ''
@@ -161,13 +157,9 @@ nodepools:
     userData: |
       #cloud-config
       package_update: true
-      packages:
-        - qemu-guest-agent
+      packages: ['qemu-guest-agent']
       runcmd:
-        - - systemctl
-          - enable
-          - '--now'
-          - qemu-guest-agent.service
+      - systemctl enable --now qemu-guest-agent.service
 
 # addons values
 addons:

@@ -1,11 +1,17 @@
+# be sure to add all "required" values...
+
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
 cloudprovider: amazonec2
 
+# cloud provider credentials (example: aws-creds)
 cloudCredentialSecretName: aws-creds
 
+# rancher manager url
 rancher:
   cattle:
-    url: rancher.ranchers.io
+    url: rancher.ranchers.io # required (example: rancher.example.com)
 
+# cluster values
 cluster:
   # annotations:
     # key: value
@@ -13,15 +19,17 @@ cluster:
     # key: value
   name: rke2-cluster-aws
   config:
-    systemDefaultRegistry: rgcrprod.azurecr.us
-    kubernetesVersion: v1.26.11+rke2r1
+    systemDefaultRegistry: rgcrprod.azurecr.us # default registry
+    kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
-    cni: canal
+    # agentEnvVars:
+      # - key:value
+    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
     docker: false
     disable_kube_proxy: false
     etcd_expose_metrics: false
-    profile: cis-1.23
+    profile: cis-1.23 # cis-1.6, cis-1.23
     selinux: true
     secrets_encryption: true
     write_kubeconfig_mode: 0600
@@ -29,15 +37,15 @@ cluster:
     protect_kernel_defaults: true
     cloud_provider_name: aws # aws, azure, harvester, vsphere
     # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
-    kube_controller_manager_arg:
+    kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       - bind-address=127.0.0.1
       - use-service-account-credentials=true
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    kube_scheduler_arg:
+    kube_scheduler_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    kube_apiserver_arg:
+    kube_apiserver_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - authorization-mode=RBAC,Node
@@ -46,7 +54,7 @@ cluster:
       - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
       - audit-log-mode=blocking-strict
       - audit-log-maxage=30
-    kubelet_arg:
+    kubelet_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
       - protect-kernel-defaults=true
       - read-only-port=0
       - authorization-mode=Webhook
@@ -67,10 +75,27 @@ cluster:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
         enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
       workerConcurrency: 10%
       workerDrainOptions:
         enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
 
+# node and nodepool(s) values
 nodepools:
   - name: control-plane-nodes
     quantity: 3
@@ -82,34 +107,56 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    ami: ami-079db87dc4c10ac91
+    # accessKey: # only needed if not using cloudCredentialSecretName
+    # secretKey: # only needed if not using cloudCredentialSecretName
+    # sessionToken: # only needed if not using cloudCredentialSecretName
+    ami: ami-079db87dc4c10ac91 # required (example: ami-123456789)
+    # blockDurationMinutes: 0
     deviceName: /dev/sda1
     encryptEbsVolume: false
+    # kmsKey: ''
     endpoint: ''
-    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-control' # required: replace with your iam instance profile name
+    # httpEndpoint: ''
+    # httpTokens: ''
+    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-control' # required (example: rancher-iam-instance-profile) - https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon
     insecureTransport: false
-    instanceType: m5.large
-    region: us-east-1
+    instanceType: m5.2xlarge # required (example: m5.2xlarge)
+    region: us-east-1 # required (example: us-east-1)
     createSecurityGroup: false
-    securityGroups: ['aws-rgs-mgmt-cluster-sg']
+    securityGroups: ['aws-rgs-mgmt-cluster-sg'] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
+    # openPort:
+    # - "80"
+    # - "443"
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-05eece2b06f039f0d # required: replace with your subnet id
-    zone: a
+    subnetId: subnet-076aa666bf2adc2a8 # required (example: subnet-123456789)
+    zone: a # required (example: a)
     monitoring: false
+    usePrivateAddress: true
     privateAddressOnly: true
     requestSpotInstance: false
+    # spotPrice: ''
     tags: provisioner,rancher,KeepRunning,true
     retries: 5
     rootSize: 64
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-01900ed4ed547df8f # required: replace with your vpc id
+    vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    usePrivateAddress: true
     userdata: |
       #cloud-config
+      package_update: true
+      packages:
+      - iptables
+      - container-selinux
+      - libnetfilter_conntrack
+      - libnfnetlink
+      - libnftnl
+      - policycoreutils-python-utils
+      - cryptsetup
+      - nfs-utils
+      - iscsi-initiator-utils
       write_files:
       - path: /etc/sysctl.conf
         owner: root
@@ -222,12 +269,9 @@ nodepools:
                               security-scan,
                               tigera-operator]
       runcmd:
-      - sudo sysctl -p > /dev/null 2>&1
-      - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el8.noarch.rpm && sudo rpm -i rke2-selinux-0.17-1.el8.noarch.rpm
-      - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
-      - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-      - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
+      - sudo sysctl -p
+      - sudo yum install -y https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el8.noarch.rpm
+      - sudo systemctl enable --now iscsid
       - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
       - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
   - name: worker-nodes
@@ -240,34 +284,52 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    ami: ami-079db87dc4c10ac91
+    # accessKey: # only needed if not using cloudCredentialSecretName
+    # secretKey: # only needed if not using cloudCredentialSecretName
+    # sessionToken: # only needed if not using cloudCredentialSecretName
+    ami: ami-079db87dc4c10ac91 # required (example: ami-123456789)
     deviceName: /dev/sda1
     encryptEbsVolume: false
     endpoint: ''
-    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-worker' # required: replace with your iam instance profile name
+    iamInstanceProfile: 'aws-rgs-mgmt-cluster-iam-profile-worker' # required (example: rancher-iam-instance-profile)
     insecureTransport: false
-    instanceType: m5.xlarge
-    region: us-east-1
+    instanceType: m5.2xlarge # required (example: m5.2xlarge)
+    region: us-east-1 # required (example: us-east-1)
     createSecurityGroup: false
-    securityGroups: ['aws-rgs-mgmt-cluster-sg']
+    securityGroups: ['aws-rgs-mgmt-cluster-sg'] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
+    # openPort:
+    # - "80"
+    # - "443"
     keypairName: ''
     securityGroupReadonly: false
     sshKeyContents: ''
-    subnetId: subnet-05eece2b06f039f0d # required: replace with your subnet id
-    zone: a
+    subnetId: subnet-076aa666bf2adc2a8 # required (example: subnet-123456789)
+    zone: a # required (example: a)
     monitoring: false
+    usePrivateAddress: true
     privateAddressOnly: true
     requestSpotInstance: false
+    # spotPrice: ''
     tags: provisioner,rancher,KeepRunning,true
     retries: 5
     rootSize: 128
     sshUser: ec2-user
     volumeType: gp3
-    vpcId: vpc-01900ed4ed547df8f # required: replace with your vpc id
+    vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    usePrivateAddress: true
     userdata: |
       #cloud-config
+      package_update: true
+      packages:
+      - iptables
+      - container-selinux
+      - libnetfilter_conntrack
+      - libnfnetlink
+      - libnftnl
+      - policycoreutils-python-utils
+      - cryptsetup
+      - nfs-utils
+      - iscsi-initiator-utils
       write_files:
       - path: /etc/sysctl.conf
         owner: root
@@ -302,41 +364,106 @@ nodepools:
           net.ipv6.conf.default.disable_ipv6 = 1
           fs.inotify.max_user_instances=8192
           fs.inotify.max_user_watches=1048576
+      - path: /etc/rancher/rke2/audit-policy.yaml
+        owner: root
+        content: |
+          apiVersion: audit.k8s.io/v1
+          kind: Policy
+          metadata:
+            name: rke2-audit-policy
+          rules:
+            - level: Metadata
+              resources:
+              - group: ""
+                resources: ["secrets"]
+            - level: RequestResponse
+              resources:
+              - group: ""
+                resources: ["*"]
+      - path: /etc/rancher/rke2/rancher-pss.yaml
+        owner: root
+        content: |
+          apiVersion: apiserver.config.k8s.io/v1
+          kind: AdmissionConfiguration
+          plugins:
+            - name: PodSecurity
+              configuration:
+                apiVersion: pod-security.admission.config.k8s.io/v1
+                kind: PodSecurityConfiguration
+                defaults:
+                  enforce: "restricted"
+                  enforce-version: "latest"
+                  audit: "restricted"
+                  audit-version: "latest"
+                  warn: "restricted"
+                  warn-version: "latest"
+                exemptions:
+                  usernames: []
+                  runtimeClasses: []
+                  namespaces: [calico-apiserver,
+                              calico-system,
+                              carbide-docs-system,
+                              carbide-stigatron-system,
+                              cattle-alerting,
+                              cattle-csp-adapter-system,
+                              cattle-elemental-system,
+                              cattle-epinio-system,
+                              cattle-externalip-system,
+                              cattle-fleet-local-system,
+                              cattle-fleet-system,
+                              cattle-gatekeeper-system,
+                              cattle-global-data,
+                              cattle-global-nt,
+                              cattle-impersonation-system,
+                              cattle-istio,
+                              cattle-istio-system,
+                              cattle-logging,
+                              cattle-logging-system,
+                              cattle-monitoring-system,
+                              cattle-neuvector-system,
+                              cattle-prometheus,
+                              cattle-provisioning-capi-system,
+                              cattle-resources-system,
+                              cattle-sriov-system,
+                              cattle-system,
+                              cattle-ui-plugin-system,
+                              cattle-windows-gmsa-system,
+                              cert-manager,
+                              cis-operator-system,
+                              fleet-default,
+                              fleet-local,
+                              ingress-nginx,
+                              istio-system,
+                              kube-node-lease,
+                              kube-public,
+                              kube-system,
+                              longhorn-system,
+                              rancher-alerting-drivers,
+                              security-scan,
+                              tigera-operator]
       runcmd:
-      - sudo sysctl -p > /dev/null 2>&1
-      - sudo yum install -y iptables container-selinux iptables libnetfilter_conntrack libnfnetlink libnftnl policycoreutils-python-utils cryptsetup nfs-utils iscsi-initiator-utils zip zstd tree jq
-      - sudo curl -#OL https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el8.noarch.rpm && sudo rpm -i rke2-selinux-0.17-1.el8.noarch.rpm
-      - sudo echo "InitiatorName=$(/sbin/iscsi-iname)" > /etc/iscsi/initiatorname.iscsi && systemctl enable --now iscsid
-      - sudo systemctl stop firewalld; systemctl disable firewalld; systemctl stop nm-cloud-setup; systemctl disable nm-cloud-setup; systemctl stop nm-cloud-setup.timer; systemctl disable nm-cloud-setup.timer
-      - sudo echo -e "[keyfile]\nunmanaged-devices=interface-name:cali*;interface-name:flannel*" > /etc/NetworkManager/conf.d/rke2-canal.conf
-      - sudo mkdir -p /etc/rancher/rke2/
+      - sudo sysctl -p
+      - sudo yum install -y https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el8.noarch.rpm
+      - sudo systemctl enable --now iscsid
+      - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
+      - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
 
+# addons values
 addons:
   monitoring:
     enabled: false
-    values:
-      global:
-        cattle:
-          systemDefaultRegistry: rgcrprod.azurecr.us
+    # version:
+    # values:
+      # values here
+
   longhorn:
     enabled: false
-    values:
-      global:
-        cattle:
-          systemDefaultRegistry: rgcrprod.azurecr.us
+    # version:
+    # values:
+      # values here
+
   neuvector:
     enabled: false
-    values:
-      global:
-        cattle:
-          url: https://rancher.ranchers.io
-          systemDefaultRegistry: rgcrprod.azurecr.us
-      controller:
-        ranchersso:
-          enabled: true
-      k3s:
-        enabled: true
-      manager:
-        svc:
-          type: ClusterIP
-      rbac: true
+    # version:
+    # values:
+      # values here

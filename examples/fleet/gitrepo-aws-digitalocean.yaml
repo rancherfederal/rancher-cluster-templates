@@ -1,0 +1,10 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: cluster-templates-digitalocean
+  namespace: fleet-local
+spec:
+  branch: main
+  repo: https://github.com/rancherfederal/rancher-cluster-templates
+  paths:
+  - /examples/digitalocean

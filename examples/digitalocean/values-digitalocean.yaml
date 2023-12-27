@@ -1,10 +1,10 @@
 # be sure to add all "required" values...
 
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider: harvester
+cloudprovider: digitalocean
 
 # cloud provider credentials (example: aws-creds)
-cloudCredentialSecretName: harvester-creds
+cloudCredentialSecretName: digitalocean-creds
 
 # rancher manager url
 rancher:
@@ -17,7 +17,7 @@ cluster:
     # key: value
   # labels:
     # key: value
-  name: rke2-cluster-harvester
+  name: rke2-cluster-digitalocean
   config:
     systemDefaultRegistry: rgcrprod.azurecr.us # default registry
     kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
@@ -35,8 +35,6 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: true
     protect_kernel_defaults: true
-    cloud_provider_name: '' # aws, azure, harvester, vsphere
-    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
     kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       - bind-address=127.0.0.1
       - use-service-account-credentials=true
@@ -107,33 +105,23 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # clusterId: # only needed if not using cloudCredentialSecretName
-    # clusterType: # only needed if not using cloudCredentialSecretName
-    # kubeconfigContent: # only needed if not using cloudCredentialSecretName
-    cpuCount: 4 # required (example: 4)
-    # diskBus: virtio
-    # diskInfo: ''
-    diskSize: 128 # required (example: 64)
-    imageName: default/image-pckhz # required (example: default/image-abcdefg)
-    # keyPairName: ''
-    memorySize: 8 # required (example: 8)
-    # networkInfo: ''
-    # networkModel: virtio
-    networkName: default/default # required (example: default/default)
-    # networkType: ''
-    # sshPassword: ''
+    # accessToken: '' # only needed if not using cloudCredentialSecretName
+    backups: false
+    image: rockylinux-9-x64 # required (example: rockylinux-9-x64)
+    ipv6: false
+    monitoring: false
+    privateNetworking: false
+    region: nyc3 # required (example: nyc3)
+    size: s-4vcpu-8gb # required (example: s-4vcpu-8gb)
+    # sshKeyContents: ''
+    # sshKeyFingerprint: ''
     # sshPort: 22
-    # sshPrivateKeyPath: ''
-    sshUser: rocky # required (example: rocky)
-    # vmAffinity: ''
-    # vmNamespace: default
-    # networkData: |
-      #cloud-config
+    sshUser: root # required (example: rocky)
+    # tags: ''
     userData: |
       #cloud-config
       package_update: true
       packages:
-      - qemu-guest-agent
       - iptables
       - container-selinux
       - libnetfilter_conntrack
@@ -193,71 +181,10 @@ nodepools:
               resources:
               - group: ""
                 resources: ["*"]
-      - path: /etc/rancher/rke2/rancher-pss.yaml
-        owner: root
-        content: |
-          apiVersion: apiserver.config.k8s.io/v1
-          kind: AdmissionConfiguration
-          plugins:
-            - name: PodSecurity
-              configuration:
-                apiVersion: pod-security.admission.config.k8s.io/v1
-                kind: PodSecurityConfiguration
-                defaults:
-                  enforce: "restricted"
-                  enforce-version: "latest"
-                  audit: "restricted"
-                  audit-version: "latest"
-                  warn: "restricted"
-                  warn-version: "latest"
-                exemptions:
-                  usernames: []
-                  runtimeClasses: []
-                  namespaces: [calico-apiserver,
-                              calico-system,
-                              carbide-docs-system,
-                              carbide-stigatron-system,
-                              cattle-alerting,
-                              cattle-csp-adapter-system,
-                              cattle-elemental-system,
-                              cattle-epinio-system,
-                              cattle-externalip-system,
-                              cattle-fleet-local-system,
-                              cattle-fleet-system,
-                              cattle-gatekeeper-system,
-                              cattle-global-data,
-                              cattle-global-nt,
-                              cattle-impersonation-system,
-                              cattle-istio,
-                              cattle-istio-system,
-                              cattle-logging,
-                              cattle-logging-system,
-                              cattle-monitoring-system,
-                              cattle-neuvector-system,
-                              cattle-prometheus,
-                              cattle-provisioning-capi-system,
-                              cattle-resources-system,
-                              cattle-sriov-system,
-                              cattle-system,
-                              cattle-ui-plugin-system,
-                              cattle-windows-gmsa-system,
-                              cert-manager,
-                              cis-operator-system,
-                              fleet-default,
-                              fleet-local,
-                              ingress-nginx,
-                              istio-system,
-                              kube-node-lease,
-                              kube-public,
-                              kube-system,
-                              longhorn-system,
-                              rancher-alerting-drivers,
-                              security-scan,
-                              tigera-operator]
       runcmd:
-      - sudo sysctl -p > /dev/null 2>&1
+      - sudo sysctl -p
       - sudo yum install -y https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el9.noarch.rpm
-      - sudo systemctl enable --now qemu-guest-agent.service; sudo systemctl enable --now iscsid
+      - sudo systemctl enable --now iscsid
       - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
       - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
   - name: worker-nodes
@@ -270,33 +197,23 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # clusterId: # only needed if not using cloudCredentialSecretName
-    # clusterType: # only needed if not using cloudCredentialSecretName
-    # kubeconfigContent: # only needed if not using cloudCredentialSecretName
-    cpuCount: 4 # required (example: 4)
-    # diskBus: virtio
-    # diskInfo: ''
-    diskSize: 128 # required (example: 64)
-    imageName: default/image-pckhz # required (example: default/image-abcdefg)
-    # keyPairName: ''
-    memorySize: 8 # required (example: 8)
-    # networkInfo: ''
-    # networkModel: virtio
-    networkName: default/default # required (example: default/default)
-    # networkType: ''
-    # sshPassword: ''
+    # accessToken: '' # only needed if not using cloudCredentialSecretName
+    backups: false
+    image: rockylinux-9-x64 # required (example: rockylinux-9-x64)
+    ipv6: false
+    monitoring: false
+    privateNetworking: false
+    region: nyc3 # required (example: nyc3)
+    size: s-4vcpu-8gb  # required (example: s-4vcpu-8gb)
+    # sshKeyContents: ''
+    # sshKeyFingerprint: ''
     # sshPort: 22
-    # sshPrivateKeyPath: ''
-    sshUser: rocky # required (example: rocky)
-    # vmAffinity: ''
-    # vmNamespace: default
-    # networkData: |
-      #cloud-config
+    sshUser: root # required (example: rocky)
+    # tags: ''
     userData: |
       #cloud-config
       package_update: true
       packages:
-      - qemu-guest-agent
       - iptables
       - container-selinux
       - libnetfilter_conntrack
@@ -356,71 +273,10 @@ nodepools:
               resources:
               - group: ""
                 resources: ["*"]
-      - path: /etc/rancher/rke2/rancher-pss.yaml
-        owner: root
-        content: |
-          apiVersion: apiserver.config.k8s.io/v1
-          kind: AdmissionConfiguration
-          plugins:
-            - name: PodSecurity
-              configuration:
-                apiVersion: pod-security.admission.config.k8s.io/v1
-                kind: PodSecurityConfiguration
-                defaults:
-                  enforce: "restricted"
-                  enforce-version: "latest"
-                  audit: "restricted"
-                  audit-version: "latest"
-                  warn: "restricted"
-                  warn-version: "latest"
-                exemptions:
-                  usernames: []
-                  runtimeClasses: []
-                  namespaces: [calico-apiserver,
-                              calico-system,
-                              carbide-docs-system,
-                              carbide-stigatron-system,
-                              cattle-alerting,
-                              cattle-csp-adapter-system,
-                              cattle-elemental-system,
-                              cattle-epinio-system,
-                              cattle-externalip-system,
-                              cattle-fleet-local-system,
-                              cattle-fleet-system,
-                              cattle-gatekeeper-system,
-                              cattle-global-data,
-                              cattle-global-nt,
-                              cattle-impersonation-system,
-                              cattle-istio,
-                              cattle-istio-system,
-                              cattle-logging,
-                              cattle-logging-system,
-                              cattle-monitoring-system,
-                              cattle-neuvector-system,
-                              cattle-prometheus,
-                              cattle-provisioning-capi-system,
-                              cattle-resources-system,
-                              cattle-sriov-system,
-                              cattle-system,
-                              cattle-ui-plugin-system,
-                              cattle-windows-gmsa-system,
-                              cert-manager,
-                              cis-operator-system,
-                              fleet-default,
-                              fleet-local,
-                              ingress-nginx,
-                              istio-system,
-                              kube-node-lease,
-                              kube-public,
-                              kube-system,
-                              longhorn-system,
-                              rancher-alerting-drivers,
-                              security-scan,
-                              tigera-operator]
       runcmd:
-      - sudo sysctl -p > /dev/null 2>&1
+      - sudo sysctl -p
       - sudo yum install -y https://github.com/rancher/rke2-selinux/releases/download/v0.17.stable.1/rke2-selinux-0.17-1.el9.noarch.rpm
-      - sudo systemctl enable --now qemu-guest-agent.service; sudo systemctl enable --now iscsid
+      - sudo systemctl enable --now iscsid
       - sudo mkdir -p /opt/rke2-artifacts/ /etc/rancher/rke2/ /var/lib/rancher/rke2/server/manifests/
       - sudo useradd -r -c "etcd user" -s /sbin/nologin -M etcd -U
 

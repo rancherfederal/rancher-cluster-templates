@@ -1,9 +1,13 @@
+# be sure to add all "required" values...
+
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
 cloudprovider: custom
 
 rancher:
   cattle:
-    url: rancher.ranchers.io
+    url: rancher.ranchers.io # required (example: rancher.example.com)
 
+# cluster values
 cluster:
   # annotations:
     # key: value
@@ -11,29 +15,31 @@ cluster:
     # key: value
   name: rke2-cluster-custom
   config:
-    systemDefaultRegistry: docker.io
-    kubernetesVersion: v1.26.11+rke2r1
+    systemDefaultRegistry: rgcrprod.azurecr.us # default registry
+    kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
-    cni: canal
+    # agentEnvVars:
+      # - key:value
+    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
     docker: false
     disable_kube_proxy: false
     etcd_expose_metrics: false
-    profile: cis-1.23
+    profile: cis-1.23 # cis-1.6, cis-1.23
     selinux: true
     secrets_encryption: true
     write_kubeconfig_mode: 0600
     use_service_account_credentials: true
     protect_kernel_defaults: true
-    kube_controller_manager_arg:
+    kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       - bind-address=127.0.0.1
       - use-service-account-credentials=true
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    kube_scheduler_arg:
+    kube_scheduler_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    kube_apiserver_arg:
+    kube_apiserver_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
       - tls-min-version=VersionTLS12
       - tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - authorization-mode=RBAC,Node
@@ -42,52 +48,63 @@ cluster:
       - audit-policy-file=/etc/rancher/rke2/audit-policy.yaml
       - audit-log-mode=blocking-strict
       - audit-log-maxage=30
-    kubelet_arg:
+    kubelet_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
       - protect-kernel-defaults=true
       - read-only-port=0
       - authorization-mode=Webhook
       - streaming-connection-idle-timeout=5m
     registries:
+      enabled: true
       configs:
-        rgcrprod.azurecr.us:
-          authConfigSecretName: registryconfig-auth-97gjm
+        - name: rgcrprod.azurecr.us
+          authConfigSecretName: registry-creds
           caBundle: ''
           insecureSkipVerify: false
           tlsSecretName: ''
+      mirrors:
+        - name: docker.io
+          endpoints:
+            - rgcrprod.azurecr.us
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
         enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
       workerConcurrency: 10%
       workerDrainOptions:
         enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
 
+# addons values
 addons:
   monitoring:
     enabled: false
-    values:
-      global:
-        cattle:
-          systemDefaultRegistry: rgcrprod.azurecr.us
+    # version:
+    # values:
+      # values here
+
   longhorn:
     enabled: false
-    values:
-      global:
-        cattle:
-          systemDefaultRegistry: rgcrprod.azurecr.us
+    # version:
+    # values:
+      # values here
+
   neuvector:
     enabled: false
-    values:
-      global:
-        cattle:
-          url: https://rancher.ranchers.io
-          systemDefaultRegistry: rgcrprod.azurecr.us
-      controller:
-        ranchersso:
-          enabled: true
-      k3s:
-        enabled: true
-      manager:
-        svc:
-          type: ClusterIP
-      rbac: true
+    # version:
+    # values:
+      # values here

@@ -5,28 +5,48 @@ kind: DigitaloceanConfig
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
+{{- if $nodepool.accessToken }}
+accessToken: {{ $nodepool.accessToken }}
 {{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
-{{- end }}
+{{- if $nodepool.backups }}
 backups: {{ $nodepool.backups }}
+{{- end }}
+{{- if $nodepool.image }}
 image: {{ $nodepool.image }}
+{{- end }}
+{{- if $nodepool.ipv6 }}
 ipv6: {{ $nodepool.ipv6 }}
+{{- end }}
+{{- if $nodepool.monitoring }}
 monitoring: {{ $nodepool.monitoring }}
+{{- end }}
+{{- if $nodepool.privateNetworking }}
 privateNetworking: {{ $nodepool.privateNetworking }}
+{{- end }}
+{{- if $nodepool.region }}
 region: {{ $nodepool.region }}
+{{- end }}
+{{- if $nodepool.size }}
 size: {{ $nodepool.size }}
+{{- end }}
+{{- if $nodepool.sshKeyContents }}
 sshKeyContents: {{ $nodepool.sshKeyContents }}
+{{- end }}
+{{- if $nodepool.sshKeyFingerprint }}
 sshKeyFingerprint: {{ $nodepool.sshKeyFingerprint }}
+{{- end }}
+{{- if $nodepool.sshPort }}
 sshPort: {{ $nodepool.sshPort | quote }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
+{{- end }}
+{{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
-userdata: {{ $nodepool.userdata }}
+{{- end }}
+{{- if $nodepool.userdata }}
+userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- end }}
 ---
 {{- end }}
 {{ $nodepool := .Values.nodepool }}
@@ -36,27 +56,47 @@ kind: DigitaloceanConfig
 metadata:
   name: {{ $nodepool.name }}
   namespace: fleet-default
-common:
-{{- if $nodepool.labels }}
-  labels:
-{{ toYaml $nodepool.labels | indent 4 }}
+{{- if $nodepool.accessToken }}
+accessToken: {{ $nodepool.accessToken }}
 {{- end }}
-{{- if $nodepool.taints }}
-  taints:
-{{ toYaml $nodepool.taints | indent 4 }}
-{{- end }}
+{{- if $nodepool.backups }}
 backups: {{ $nodepool.backups }}
+{{- end }}
+{{- if $nodepool.image }}
 image: {{ $nodepool.image }}
+{{- end }}
+{{- if $nodepool.ipv6 }}
 ipv6: {{ $nodepool.ipv6 }}
+{{- end }}
+{{- if $nodepool.monitoring }}
 monitoring: {{ $nodepool.monitoring }}
+{{- end }}
+{{- if $nodepool.privateNetworking }}
 privateNetworking: {{ $nodepool.privateNetworking }}
+{{- end }}
+{{- if $nodepool.region }}
 region: {{ $nodepool.region }}
+{{- end }}
+{{- if $nodepool.size }}
 size: {{ $nodepool.size }}
+{{- end }}
+{{- if $nodepool.sshKeyContents }}
 sshKeyContents: {{ $nodepool.sshKeyContents }}
+{{- end }}
+{{- if $nodepool.sshKeyFingerprint }}
 sshKeyFingerprint: {{ $nodepool.sshKeyFingerprint }}
+{{- end }}
+{{- if $nodepool.sshPort }}
 sshPort: {{ $nodepool.sshPort | quote }}
+{{- end }}
+{{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
+{{- end }}
+{{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
-userdata: {{ $nodepool.userdata }}
+{{- end }}
+{{- if $nodepool.userdata }}
+userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- end }}
 {{- end }}
 {{- end }}

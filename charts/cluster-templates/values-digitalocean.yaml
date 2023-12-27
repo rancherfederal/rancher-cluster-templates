@@ -1,10 +1,10 @@
 # be sure to add all "required" values...
 
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider: amazonec2
+cloudprovider: digitalocean
 
 # cloud provider credentials (example: aws-creds)
-cloudCredentialSecretName: aws-creds
+cloudCredentialSecretName: digitalocean-creds
 
 # rancher manager url
 rancher:
@@ -17,7 +17,7 @@ cluster:
     # key: value
   # labels:
     # key: value
-  name: rke2-cluster-aws
+  name: rke2-cluster-digitalocean
   config:
     systemDefaultRegistry: docker.io # default registry
     kubernetesVersion: v1.26.11+rke2r1 # https://github.com/rancher/rke2/releases
@@ -36,8 +36,6 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: false
     protect_kernel_defaults: false
-    cloud_provider_name: aws # aws, azure, harvester, vsphere
-    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
     # kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       # - kube controller manager arguments here
     # kube_scheduler_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
@@ -93,43 +91,19 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # accessKey: # only needed if not using cloudCredentialSecretName
-    # secretKey: # only needed if not using cloudCredentialSecretName
-    # sessionToken: # only needed if not using cloudCredentialSecretName
-    ami: # required (example: ami-123456789)
-    # blockDurationMinutes: 0
-    deviceName: /dev/sda1
-    encryptEbsVolume: false
-    # kmsKey: ''
-    endpoint: ''
-    # httpEndpoint: ''
-    # httpTokens: ''
-    iamInstanceProfile: # required (example: rancher-iam-instance-profile) - https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon
-    insecureTransport: false
-    instanceType: # required (example: m5.2xlarge)
-    region: # required (example: us-east-1)
-    createSecurityGroup: true
-    securityGroups: [''] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
-    # openPort:
-    # - "80"
-    # - "443"
-    keypairName: ''
-    securityGroupReadonly: false
-    sshKeyContents: ''
-    subnetId: # required (example: subnet-123456789)
-    zone: # required (example: a)
+    # accessToken: '' # only needed if not using cloudCredentialSecretName
+    backups: false
+    image: # required (example: rockylinux-9-x64)
+    ipv6: false
     monitoring: false
-    usePrivateAddress: true
-    privateAddressOnly: true
-    requestSpotInstance: false
-    # spotPrice: ''
+    privateNetworking: false
+    region: # required (example: nyc3)
+    size: # required (example: s-4vcpu-8gb)
+    # sshKeyContents: ''
+    # sshKeyFingerprint: ''
+    # sshPort: 22
+    sshUser: # required (example: rocky)
     # tags: ''
-    retries: 5
-    rootSize: 64
-    sshUser: ec2-user
-    volumeType: gp3
-    vpcId: # required (example: vpc-123456789)
-    useEbsOptimizedInstance: false
     # userdata: |
       #cloud-config
 
@@ -143,43 +117,19 @@ nodepools:
     # taints:
       # key: value
     paused: false
-    # accessKey: '' # only needed if not using cloudCredentialSecretName
-    # secretKey: '' # only needed if not using cloudCredentialSecretName
-    # sessionToken: '' # only needed if not using cloudCredentialSecretName
-    ami: # required (example: ami-123456789)
-    # blockDurationMinutes: 0
-    deviceName: /dev/sda1
-    encryptEbsVolume: false
-    # kmsKey: ''
-    endpoint: ''
-    # httpEndpoint: ''
-    # httpTokens: ''
-    iamInstanceProfile: # required (example: rancher-iam-instance-profile) - https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers/amazon
-    insecureTransport: false
-    instanceType: # required (example: m5.2xlarge)
-    region: # required (example: us-east-1)
-    createSecurityGroup: true
-    securityGroups: [''] # https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade/installation-requirements/port-requirements
-    # openPort:
-    # - "80"
-    # - "443"
-    keypairName: ''
-    securityGroupReadonly: false
-    sshKeyContents: ''
-    subnetId: # required (example: subnet-123456789)
-    zone: # required (example: a)
+    # accessToken: '' # only needed if not using cloudCredentialSecretName
+    backups: false
+    image: # required (example: rockylinux-9-x64)
+    ipv6: false
     monitoring: false
-    usePrivateAddress: false
-    privateAddressOnly: false
-    requestSpotInstance: false
-    # spotPrice: ''
+    privateNetworking: false
+    region: # required (example: nyc3)
+    size: # required (example: s-4vcpu-8gb)
+    # sshKeyContents: ''
+    # sshKeyFingerprint: ''
+    # sshPort: 22
+    sshUser: # required (example: rocky)
     # tags: ''
-    retries: 5
-    rootSize: 64
-    sshUser: ec2-user
-    volumeType: gp3
-    vpcId: # required (example: vpc-123456789)
-    useEbsOptimizedInstance: false
     # userdata: |
       #cloud-config
 

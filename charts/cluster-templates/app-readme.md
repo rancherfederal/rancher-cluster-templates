@@ -2,7 +2,7 @@
 
 |    Type     | Chart Version | App Version |
 | :---------: | :-----------: | :---------: |
-| application |   `v0.4.0`    |  `v0.4.0`   |
+| application |   `v0.4.1`    |  `v0.4.1`   |
 
 ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes. ⚠️
 
@@ -13,13 +13,13 @@
 * AWS Commercial
 * AWS GovCloud
 * Harvester
+* Digital Ocean
 * Custom
 
 ### Pending Development
 
 * VMWare vSphere
 * Microsoft Azure
-* Digital Ocean
 
 ## Installing the Chart
 
@@ -46,27 +46,31 @@ helm delete cluster -n fleet-default
 
 ## Example Configurations
 
-* [Amazon EC2](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/charts/cluster-templates/values-aws.yaml)
-  * [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/aws/values-aws.yaml)
-  * [Example Values with Temporary Credentials](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/aws/values-aws-sts.yaml)
-* [Custom](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/charts/cluster-templates/values-custom.yaml)
-  * [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/custom/values-custom.yaml)
-* [Harvester](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/charts/cluster-templates/values-harvester.yaml)
-  * [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/harvester/values-harvester.yaml)
+* Amazon EC2 -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/aws/values-aws.yaml)
+* Harvester -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/harvester/values-harvester.yaml)
+* Digital Ocean -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/do/values-do.yaml)
+* Custom -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/custom/values-custom.yaml)
 * VMWare vSphere (TBD)
 * Microsoft Azure (TBD)
-* Digital Ocean (TBD)
 
 ## Chart/Cluster Secrets Management
 
 ### Cloud Credentials
 
-If you do not have Cloud Credentials created in the Rancher Manager, you can create them via `kubectl` with the command below.
+If you do not have Cloud Credentials already created within the Rancher Manager, you can create them via `kubectl` with the command(s) below. Eventually, we will be moving these options with the Helm Chart!
 
 #### For AWS Credentials
 
 ```bash
-kubectl create secret -n cattle-global-data generic aws-creds --from-literal=amazonec2credentialConfig-defaultRegion=REGION --from-literal=amazonec2credentialConfig-accessKey=ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=SECRETKEY
+# with long-term credentials (accessKey and secretKey)
+kubectl create secret -n cattle-global-data generic aws-creds-sts --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY
+
+kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/driver=aws
+```
+
+```bash
+# with temporary credentials (accessKey, secretKey, sessionToken)
+kubectl create secret -n cattle-global-data generic aws-creds --from-literal=amazonec2credentialConfig-defaultRegion=$REGION --from-literal=amazonec2credentialConfig-accessKey=$ACCESSKEY --from-literal=amazonec2credentialConfig-secretKey=$SECRETKEY --from-literal=amazonec2credentialConfig-sessonToken=$SESSIONTOKEN
 
 kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/driver=aws
 ```
@@ -74,7 +78,19 @@ kubectl annotate secret -n cattle-global-data aws-creds provisioning.cattle.io/d
 #### For Harvester Credentials
 
 ```bash
-coming soon...
+export CLUSTERID=$(kubectl get clusters.management.cattle.io -o=jsonpath='{range .items[?(@.metadata.labels.provider\.cattle\.io=="harvester")]}{.metadata.name}{"\n"}{end}')
+
+kubectl create secret -n cattle-global-data generic harvester-creds --from-literal=harvestercredentialConfig-clusterId=$CLUSTERID --from-literal=harvestercredentialConfig-clusterType=imported --from-file=harvestercredentialConfig-kubeconfigContent=harvester.yaml
+
+kubectl annotate secret -n cattle-global-data harvester-creds provisioning.cattle.io/driver=harvester
+```
+
+#### For Digital Ocean Credentials
+
+```bash
+kubectl create secret -n cattle-global-data generic digitalocean-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
+
+kubectl annotate secret -n cattle-global-data digitalocean-creds provisioning.cattle.io/driver=digitalocean
 ```
 
 ### Registry Credentials
