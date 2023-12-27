@@ -130,7 +130,7 @@ nodepools:
     volumeType: gp3
     vpcId: # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    # userdata: |
+    # userData: |
       #cloud-config
 
   - name: worker-nodes
@@ -180,7 +180,7 @@ nodepools:
     volumeType: gp3
     vpcId: # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    # userdata: |
+    # userData: |
       #cloud-config
 
 # addons values

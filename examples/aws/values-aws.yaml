@@ -144,7 +144,7 @@ nodepools:
     volumeType: gp3
     vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    userdata: |
+    userData: |
       #cloud-config
       package_update: true
       packages:
@@ -317,7 +317,7 @@ nodepools:
     volumeType: gp3
     vpcId: vpc-0934dc8778cdf65db # required (example: vpc-123456789)
     useEbsOptimizedInstance: false
-    userdata: |
+    userData: |
       #cloud-config
       package_update: true
       packages:

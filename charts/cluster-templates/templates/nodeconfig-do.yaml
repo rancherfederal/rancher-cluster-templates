@@ -44,8 +44,8 @@ sshUser: {{ $nodepool.sshUser }}
 {{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
 {{- end }}
-{{- if $nodepool.userdata }}
-userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- if $nodepool.userData }}
+userdata: {{- $nodepool.userData | toYaml | indent 1 }}
 {{- end }}
 ---
 {{- end }}
@@ -95,8 +95,8 @@ sshUser: {{ $nodepool.sshUser }}
 {{- if $nodepool.tags }}
 tags: {{ $nodepool.tags }}
 {{- end }}
-{{- if $nodepool.userdata }}
-userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- if $nodepool.userData }}
+userdata: {{- $nodepool.userData | toYaml | indent 1 }}
 {{- end }}
 {{- end }}
 {{- end }}

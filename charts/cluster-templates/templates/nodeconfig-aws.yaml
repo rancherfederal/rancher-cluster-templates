@@ -104,8 +104,8 @@ useEbsOptimizedInstance: {{ $nodepool.useEbsOptimizedInstance }}
 {{- if $nodepool.usePrivateAddress }}
 usePrivateAddress: {{ $nodepool.usePrivateAddress }}
 {{- end }}
-{{- if $nodepool.userdata }}
-userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- if $nodepool.userData }}
+userdata: {{- $nodepool.userData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.volumeType }}
 volumeType: {{ $nodepool.volumeType }}
@@ -234,8 +234,8 @@ useEbsOptimizedInstance: {{ $nodepool.useEbsOptimizedInstance }}
 {{- if $nodepool.usePrivateAddress }}
 usePrivateAddress: {{ $nodepool.usePrivateAddress }}
 {{- end }}
-{{- if $nodepool.userdata }}
-userdata: {{- $nodepool.userdata | toYaml | indent 1 }}
+{{- if $nodepool.userData }}
+userdata: {{- $nodepool.userData | toYaml | indent 1 }}
 {{- end }}
 {{- if $nodepool.volumeType }}
 volumeType: {{ $nodepool.volumeType }}

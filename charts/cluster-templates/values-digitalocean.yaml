@@ -104,7 +104,7 @@ nodepools:
     # sshPort: 22
     sshUser: # required (example: rocky)
     # tags: ''
-    # userdata: |
+    # userData: |
       #cloud-config
 
   - name: worker-nodes
@@ -130,7 +130,7 @@ nodepools:
     # sshPort: 22
     sshUser: # required (example: rocky)
     # tags: ''
-    # userdata: |
+    # userData: |
       #cloud-config
 
 # addons values
