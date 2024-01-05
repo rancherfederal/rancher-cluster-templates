@@ -2,7 +2,7 @@
 
 |    Type     | Chart Version | App Version |
 | :---------: | :-----------: | :---------: |
-| application |   `v0.4.2`    |  `v0.4.2`   |
+| application |   `v0.4.3`    |  `v0.4.3`   |
 
 ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes. ⚠️
 
@@ -43,15 +43,6 @@ helm status cluster -n fleet-default
 ```bash
 helm delete cluster -n fleet-default
 ```
-
-## Example Configurations
-
-* Amazon EC2 -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/aws/values-aws.yaml)
-* Harvester -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/harvester/values-harvester.yaml)
-* Digital Ocean -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/do/values-do.yaml)
-* Custom -> [Example Values](https://github.com/rancherfederal/rancher-cluster-templates/blob/main/examples/custom/values-custom.yaml)
-* VMWare vSphere (TBD)
-* Microsoft Azure (TBD)
 
 ## Chart/Cluster Secrets Management
 
