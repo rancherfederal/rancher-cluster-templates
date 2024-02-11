@@ -10,16 +10,16 @@
 
 ### Currently Available
 
-* AWS Commercial
-* AWS GovCloud
-* Harvester
-* Digital Ocean
-* Custom
+- AWS Commercial
+- AWS GovCloud
+- Harvester
+- Digital Ocean
+- Custom
 
-### Pending Development
+### Pending Validation
 
-* VMWare vSphere
-* Microsoft Azure
+- VMWare vSphere
+- Microsoft Azure
 
 ## Installing the Chart
 
@@ -29,7 +29,7 @@ helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-def
 ```
 
 ```bash
-helm upgrade -i cluster oci://ghcr.io/rancherfederal/rancher-cluster-templates -n fleet-default -f values.yaml
+helm upgrade -i cluster oci://ghcr.io/rancherfederal/charts/rancher-cluster-templates -n fleet-default -f values.yaml
 ```
 
 ## Helm Chart Deployment Status
