@@ -50,7 +50,7 @@ monitoring: {{ $nodepool.monitoring }}
 {{- if $nodepool.openPort}}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | quote }}
+- {{ $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.privateAddressOnly }}
@@ -63,10 +63,10 @@ region: {{ $nodepool.region }}
 requestSpotInstance: {{ $nodepool.requestSpotInstance }}
 {{- end }}
 {{- if $nodepool.retries }}
-retries: {{ $nodepool.retries | quote }}
+retries: {{ $nodepool.retries | squote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
-rootSize: {{ $nodepool.rootSize | quote }}
+rootSize: {{ $nodepool.rootSize | squote }}
 {{- end }}
 {{- if $nodepool.secretKey }}
 secretKey: {{ $nodepool.secretKey }}
@@ -179,7 +179,7 @@ monitoring: {{ $nodepool.monitoring }}
 {{- if $nodepool.openPort}}
 openPort:
 {{- range $i, $port := $nodepool.openPort }}
-- {{ $port | quote }}
+- {{ $port | squote }}
 {{- end }}
 {{- end }}
 {{- if $nodepool.privateAddressOnly }}
@@ -192,10 +192,10 @@ region: {{ $nodepool.region }}
 requestSpotInstance: {{ $nodepool.requestSpotInstance }}
 {{- end }}
 {{- if $nodepool.retries }}
-retries: {{ $nodepool.retries | quote }}
+retries: {{ $nodepool.retries | squote }}
 {{- end }}
 {{- if $nodepool.rootSize }}
-rootSize: {{ $nodepool.rootSize | quote }}
+rootSize: {{ $nodepool.rootSize | squote }}
 {{- end }}
 {{- if $nodepool.secretKey }}
 secretKey: {{ $nodepool.secretKey }}

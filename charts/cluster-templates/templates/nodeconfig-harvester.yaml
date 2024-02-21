@@ -15,7 +15,7 @@ clusterId: {{ $nodepool.clusterId }}
 clusterType: {{ $nodepool.clusterType }}
 {{- end }}
 {{- if $nodepool.cpuCount }}
-cpuCount: {{ $nodepool.cpuCount | quote }}
+cpuCount: {{ $nodepool.cpuCount | squote }}
 {{- end }}
 {{- if $nodepool.diskBus }}
 diskBus: {{ $nodepool.diskBus }}
@@ -24,7 +24,7 @@ diskBus: {{ $nodepool.diskBus }}
 diskInfo: {{ $nodepool.diskInfo }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | quote }}
+diskSize: {{ $nodepool.diskSize | squote }}
 {{- end }}
 {{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
@@ -36,7 +36,7 @@ keyPairName: {{ $nodepool.keyPairName }}
 kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
 {{- end }}
 {{- if $nodepool.memorySize }}
-memorySize: {{ $nodepool.memorySize | quote }}
+memorySize: {{ $nodepool.memorySize | squote }}
 {{- end }}
 {{- if $nodepool.networkData }}
 networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
@@ -57,7 +57,7 @@ networkType: {{ $nodepool.networkType }}
 sshPassword: {{ $nodepool.sshPassword }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | quote }}
+sshPort: {{ $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshPrivateKeyPath }}
 sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
@@ -66,7 +66,7 @@ sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
 sshUser: {{ $nodepool.sshUser }}
 {{- end }}
 {{- if $nodepool.userData }}
-userData: {{- $nodepool.userData | toYaml | indent 1 }}
+userData: {{ $nodepool.userData | toYaml }}
 {{- end }}
 {{- if $nodepool.vmAffinity }}
 vmAffinity: {{ $nodepool.vmAffinity}}
@@ -102,7 +102,7 @@ clusterId: {{ $nodepool.clusterId }}
 clusterType: {{ $nodepool.clusterType }}
 {{- end }}
 {{- if $nodepool.cpuCount }}
-cpuCount: {{ $nodepool.cpuCount | quote }}
+cpuCount: {{ $nodepool.cpuCount | squote }}
 {{- end }}
 {{- if $nodepool.diskBus }}
 diskBus: {{ $nodepool.diskBus }}
@@ -111,7 +111,7 @@ diskBus: {{ $nodepool.diskBus }}
 diskInfo: {{ $nodepool.diskInfo }}
 {{- end }}
 {{- if $nodepool.diskSize }}
-diskSize: {{ $nodepool.diskSize | quote }}
+diskSize: {{ $nodepool.diskSize | squote }}
 {{- end }}
 {{- if $nodepool.imageName }}
 imageName: {{ $nodepool.imageName }}
@@ -123,7 +123,7 @@ keyPairName: {{ $nodepool.keyPairName }}
 kubeconfigContent: {{- $nodepool.kubeconfigContent | toYaml }}
 {{- end }}
 {{- if $nodepool.memorySize }}
-memorySize: {{ $nodepool.memorySize | quote }}
+memorySize: {{ $nodepool.memorySize | squote }}
 {{- end }}
 {{- if $nodepool.networkData }}
 networkData: {{- $nodepool.networkData | toYaml | indent 1 }}
@@ -144,7 +144,7 @@ networkType: {{ $nodepool.networkType }}
 sshPassword: {{ $nodepool.sshPassword }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | quote }}
+sshPort: {{ $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshPrivateKeyPath }}
 sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
@@ -153,7 +153,7 @@ sshPrivateKeyPath: {{ $nodepool.sshPrivateKeyPath }}
 sshUser: {{ $nodepool.sshUser }}
 {{- end }}
 {{- if $nodepool.userData }}
-userData: {{- $nodepool.userData | toYaml | indent 1 }}
+userData: {{ $nodepool.userData | toYaml }}
 {{- end }}
 {{- if $nodepool.vmAffinity }}
 vmAffinity: {{ $nodepool.vmAffinity }}

@@ -36,7 +36,7 @@ sshKeyContents: {{ $nodepool.sshKeyContents }}
 sshKeyFingerprint: {{ $nodepool.sshKeyFingerprint }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | quote }}
+sshPort: {{ $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
@@ -87,7 +87,7 @@ sshKeyContents: {{ $nodepool.sshKeyContents }}
 sshKeyFingerprint: {{ $nodepool.sshKeyFingerprint }}
 {{- end }}
 {{- if $nodepool.sshPort }}
-sshPort: {{ $nodepool.sshPort | quote }}
+sshPort: {{ $nodepool.sshPort | squote }}
 {{- end }}
 {{- if $nodepool.sshUser }}
 sshUser: {{ $nodepool.sshUser }}
