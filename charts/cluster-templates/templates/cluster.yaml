@@ -21,9 +21,15 @@ spec:
   {{- end }}
   # clusterAPIConfig:
   # clusterAgentDeploymentCustomization:
-  # defaultClusterRoleForProjectMembers:
-  # defaultPodSecurityAdmissionConfigurationTemplateName:
-  # defaultPodSecurityPolicyTemplateName:
+  {{- if .Values.cluster.config.defaultClusterRoleForProjectMembers }}
+  defaultClusterRoleForProjectMembers: {{ .Values.cluster.config.defaultClusterRoleForProjectMembers }}
+  {{- end }}
+  {{- if .Values.cluster.config.defaultPodSecurityAdmissionConfigurationTemplateName }}
+  defaultPodSecurityAdmissionConfigurationTemplateName: {{ .Values.cluster.config.defaultPodSecurityAdmissionConfigurationTemplateName }}
+  {{- end }}
+  {{- if .Values.cluster.config.defaultPodSecurityPolicyTemplateName }}
+  defaultPodSecurityPolicyTemplateName: {{ .Values.cluster.config.defaultPodSecurityPolicyTemplateName }}
+  {{- end }}
   enableNetworkPolicy: {{ .Values.cluster.config.enableNetworkPolicy }}
   # fleetAgentDeploymentCustomization:
   {{- if .Values.cluster.config.kubernetesVersion }}
@@ -111,11 +117,11 @@ spec:
     {{- if ne .Values.cloudprovider "custom" }}
     machinePools:
     {{- if .Values.nodepools }} {{ range $index, $nodepool := .Values.nodepools }}
-    - controlPlaneRole: {{ $nodepool.controlplane }}
+    - name: {{ $nodepool.name }}
+      quantity: {{ $nodepool.quantity }}
+      controlPlaneRole: {{ $nodepool.controlplane }}
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
-      quantity: {{ $nodepool.quantity }}
-      name: {{ $nodepool.name }}
       machineConfigRef:
         {{- if eq $.Values.cloudprovider "amazonec2" }}
         kind: Amazonec2Config
@@ -129,12 +135,12 @@ spec:
         kind: AzureConfig
         {{- end}}
         name: {{ $nodepool.name }}
-      paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
-      {{- if $nodepool.rollingUpdate }}
-      rollingUpdate:
-        maxUnavailable: {{ $nodepool.rollingUpdate.maxUnavailable }}
-        maxSurge: {{ $nodepool.rollingUpdate.maxSurge }}
+      {{- if $nodepool.drainBeforeDelete }}
+      drainBeforeDelete: {{ $nodepool.drainBeforeDelete }}
+      {{- end }}
+      {{- if $nodepool.drainBeforeDeleteTimeout }}
+      drainBeforeDeleteTimeout: {{ $nodepool.drainBeforeDeleteTimeout }}
       {{- end }}
       {{- if $nodepool.machineDeploymentLabels }}
       machineDeploymentLabels:
@@ -143,16 +149,25 @@ spec:
       {{- if $nodepool.machineDeploymentAnnotations }}
       machineDeploymentAnnotations:
 {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
+      {{- end }}
+      paused: {{ $nodepool.paused }}
+      {{- if $nodepool.rollingUpdate }}
+      rollingUpdate:
+        maxUnavailable: {{ $nodepool.rollingUpdate.maxUnavailable }}
+        maxSurge: {{ $nodepool.rollingUpdate.maxSurge }}
+      {{- end }}
+      {{- if $nodepool.unhealthyNodeTimeout }}
+      unhealthyNodeTimeout: {{ $nodepool.unhealthyNodeTimeout }}
       {{- end }}
       {{- end }}
     {{- end }}
     {{- if .Values.nodepool }}
     {{ $nodepool := .Values.nodepool }}
-    - controlPlaneRole: {{ $nodepool.controlplane }}
+    - name: {{ $nodepool.name }}
+      quantity: {{ $nodepool.quantity }}
+      controlPlaneRole: {{ $nodepool.controlplane }}
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
-      quantity: {{ $nodepool.quantity }}
-      name: {{ $nodepool.name }}
       machineConfigRef:
         {{- if eq $.Values.cloudprovider "amazonec2" }}
         kind: Amazonec2Config
@@ -166,12 +181,12 @@ spec:
         kind: AzureConfig
         {{- end}}
         name: {{ $nodepool.name }}
-      paused: {{ $nodepool.paused }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
-      {{- if $nodepool.rollingUpdate }}
-      rollingUpdate:
-        maxUnavailable: {{ $nodepool.rollingUpdate.maxUnavailable }}
-        maxSurge: {{ $nodepool.rollingUpdate.maxSurge }}
+      {{- if $nodepool.drainBeforeDelete }}
+      drainBeforeDelete: {{ $nodepool.drainBeforeDelete }}
+      {{- end }}
+      {{- if $nodepool.drainBeforeDeleteTimeout }}
+      drainBeforeDeleteTimeout: {{ $nodepool.drainBeforeDeleteTimeout }}
       {{- end }}
       {{- if $nodepool.machineDeploymentLabels }}
       machineDeploymentLabels:
@@ -180,6 +195,15 @@ spec:
       {{- if $nodepool.machineDeploymentAnnotations }}
       machineDeploymentAnnotations:
 {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
+      {{- end }}
+      paused: {{ $nodepool.paused }}
+      {{- if $nodepool.rollingUpdate }}
+      rollingUpdate:
+        maxUnavailable: {{ $nodepool.rollingUpdate.maxUnavailable }}
+        maxSurge: {{ $nodepool.rollingUpdate.maxSurge }}
+      {{- end }}
+      {{- if $nodepool.unhealthyNodeTimeout }}
+      unhealthyNodeTimeout: {{ $nodepool.unhealthyNodeTimeout }}
       {{- end }}
     {{- end }}
     machineSelectorConfig:
@@ -215,6 +239,12 @@ spec:
             {{- range .endpoint }}
             - {{ . }}
             {{- end }}
+          {{- if .rewrite }}
+          rewrite:
+            {{- range $key, $value := .rewrite }}
+            "{{ $key }}": "{{ $value }}"
+            {{- end }}
+          {{- end }}
         {{- end }}
       {{- end }}
     {{- end }}
