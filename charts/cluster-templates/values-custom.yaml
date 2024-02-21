@@ -27,6 +27,9 @@ cluster:
     disable_kube_proxy: false
     etcd_expose_metrics: false
     enableNetworkPolicy: true
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
     profile: '' # cis-1.6, cis-1.23
     selinux: false
     secrets_encryption: false
@@ -52,6 +55,8 @@ cluster:
       # mirrors:
         # - name: docker.io
           # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
@@ -80,18 +85,18 @@ cluster:
 addons:
   monitoring:
     enabled: false
-    # version:
+    # version: 103.0.3+up45.31.1
     # values:
       # values here
 
   longhorn:
     enabled: false
-    # version:
+    # version: 103.2.1+up1.5.3
     # values:
       # values here
 
   neuvector:
     enabled: false
-    # version:
+    # version: 103.0.1+up2.7.1
     # values:
       # values here

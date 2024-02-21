@@ -30,6 +30,9 @@ cluster:
     disable_kube_proxy: false
     etcd_expose_metrics: false
     enableNetworkPolicy: true
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
     profile: '' # cis-1.6, cis-1.23
     selinux: false
     secrets_encryption: false
@@ -55,6 +58,8 @@ cluster:
       # mirrors:
         # - name: docker.io
           # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
     upgradeStrategy:
       controlPlaneConcurrency: 10%
       controlPlaneDrainOptions:
@@ -82,6 +87,7 @@ cluster:
 # node and nodepool(s) values
 nodepools:
   - name: control-plane-nodes
+    # displayName: cp-nodes
     quantity: 3
     etcd: true
     controlplane: true
@@ -89,8 +95,20 @@ nodepools:
     # labels:
       # key: value
     # taints:
+      # effect: value
       # key: value
+      # value: value
     paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
     # accessToken: '' # only needed if not using cloudCredentialSecretName
     backups: false
     image: # required (example: rockylinux-9-x64)
@@ -108,6 +126,7 @@ nodepools:
       #cloud-config
 
   - name: worker-nodes
+    # displayName: wk-nodes
     quantity: 3
     etcd: false
     controlplane: false
@@ -115,8 +134,20 @@ nodepools:
     # labels:
       # key: value
     # taints:
+      # effect: value
       # key: value
+      # value: value
     paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
     # accessToken: '' # only needed if not using cloudCredentialSecretName
     backups: false
     image: # required (example: rockylinux-9-x64)
@@ -137,18 +168,18 @@ nodepools:
 addons:
   monitoring:
     enabled: false
-    # version:
+    # version: 103.0.3+up45.31.1
     # values:
       # values here
 
   longhorn:
     enabled: false
-    # version:
+    # version: 103.2.1+up1.5.3
     # values:
       # values here
 
   neuvector:
     enabled: false
-    # version:
+    # version: 103.0.1+up2.7.1
     # values:
       # values here
