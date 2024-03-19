@@ -20,7 +20,7 @@ cluster:
   name: rke2-cluster-digitalocean
   config:
     systemDefaultRegistry: docker.io # default registry
-    kubernetesVersion: v1.26.12+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.27.10+rke2r1 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
     # agentEnvVars:
@@ -39,6 +39,8 @@ cluster:
     write_kubeconfig_mode: 0600
     use_service_account_credentials: false
     protect_kernel_defaults: false
+    cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
     # kube_controller_manager_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
       # - kube controller manager arguments here
     # kube_scheduler_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
