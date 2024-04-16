@@ -236,7 +236,7 @@ spec:
         {{- range .Values.cluster.config.registries.mirrors }}
         {{ .name }}:
           endpoint:
-            {{- range .endpoint }}
+            {{- range .endpoints }}
             - {{ . }}
             {{- end }}
           {{- if .rewrite }}
