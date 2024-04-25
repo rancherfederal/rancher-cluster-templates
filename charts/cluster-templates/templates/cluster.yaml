@@ -14,7 +14,7 @@ metadata:
 spec:
   {{- if .Values.cluster.config.agentEnvs }}
   agentEnvVars:
-{{ toYaml .Values.cluster.config.agentEnvs | indent 4 }}
+  {{ toYaml .Values.cluster.config.agentEnvs | indent 4 }}
   {{- end }}
   {{- if .Values.cloudCredentialSecretName }}
   cloudCredentialSecretName: cattle-global-data:{{ .Values.cloudCredentialSecretName }}
@@ -54,7 +54,8 @@ spec:
         global:
           cattle:
             clusterName: {{ .Values.cluster.name }}
-    {{- else if eq $.Values.cloudprovider "vsphere" }}
+    {{- end }}
+    {{- if eq $.Values.cloudprovider "vsphere" }}
     chartValues:
       rke2-calico: {}
       rancher-vsphere-cpi:
@@ -88,31 +89,63 @@ spec:
     # etcdSnapshotCreate:
     # etcdSnapshotRestore:
     # infrastructureRef:
+    {{- if .Values.cluster.config.globalConfig }}
     machineGlobalConfig:
-      cni: {{ .Values.cluster.config.cni }}
-      disable-kube-proxy: {{ .Values.cluster.config.disable_kube_proxy }}
-      etcd-expose-metrics: {{ .Values.cluster.config.etcd_expose_metrics }}
-      {{- if .Values.cluster.config.profile }}
-      profile: {{ .Values.cluster.config.profile }}
+      {{- if .Values.cluster.config.globalConfig.cni }}
+      cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
-      {{- if .Values.cluster.config.kube_controller_manager_arg }}
-      kube-controller-manager-arg: {{ .Values.cluster.config.kube_controller_manager_arg | toRawJson }}
+      {{- if .Values.cluster.config.globalConfig.disable_kube_proxy }}
+      disable-kube-proxy: {{ .Values.cluster.config.globalConfig.disable_kube_proxy }}
       {{- end }}
-      {{- if .Values.cluster.config.kube_scheduler_arg }}
-      kube-scheduler-arg: {{ .Values.cluster.config.kube_scheduler_arg | toRawJson }}
+      {{- if .Values.cluster.config.globalConfig.etcd_expose_metrics }}
+      etcd-expose-metrics: {{ .Values.cluster.config.globalConfig.etcd_expose_metrics }}
       {{- end }}
-      {{- if .Values.cluster.config.kube_apiserver_arg }}
-      kube-apiserver-arg: {{ .Values.cluster.config.kube_apiserver_arg | toRawJson }}
+      {{- if .Values.cluster.config.globalConfig.profile }}
+      profile: {{ .Values.cluster.config.globalConfig.profile }}
       {{- end }}
-      {{- if .Values.cluster.config.kubelet_arg }}
-      kubelet-arg: {{ .Values.cluster.config.kubelet_arg | toRawJson }}
+      {{- if .Values.cluster.config.globalConfig.selinux }}
+      selinux: {{ .Values.cluster.config.globalConfig.selinux }}
       {{- end }}
-      {{- if .Values.cluster.config.write_kubeconfig_mode }}
-      write-kubeconfig-mode: {{ .Values.cluster.config.write_kubeconfig_mode }}
+      {{- if .Values.cluster.config.globalConfig.docker }}
+      docker: {{ .Values.cluster.config.globalConfig.docker }}
       {{- end }}
-      {{- if .Values.cluster.config.use_service_account_credentials }}
-      use-service-account-credentials: {{ .Values.cluster.config.use_service_account_credentials }}
+      {{- if .Values.cluster.config.globalConfig.systemDefaultRegistry }}
+      system-default-registry: {{ .Values.cluster.config.globalConfig.systemDefaultRegistry }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.secrets_encryption }}
+      secrets-encryption: {{ .Values.cluster.config.globalConfig.secrets_encryption }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.write_kubeconfig_mode }}
+      write-kubeconfig-mode: {{ .Values.cluster.config.globalConfig.write_kubeconfig_mode }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.use_service_account_credentials }}
+      use-service-account-credentials: {{ .Values.cluster.config.globalConfig.use_service_account_credentials }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.protect_kernel_defaults }}
+      protect-kernel-defaults: {{ .Values.cluster.config.globalConfig.protect_kernel_defaults }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.cloud_provider_name }}
+      cloud-provider-name: {{ .Values.cluster.config.globalConfig.cloud_provider_name }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.cloud_provider_config }}
+      cloud-provider-config: {{ .Values.cluster.config.globalConfig.cloud_provider_config }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.kube_controller_manager_arg }}
+      kube-controller-manager-arg: {{ .Values.cluster.config.globalConfig.kube_controller_manager_arg | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.kube_scheduler_arg }}
+      kube-scheduler-arg: {{ .Values.cluster.config.globalConfig.kube_scheduler_arg | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.kube_apiserver_arg }}
+      kube-apiserver-arg: {{ .Values.cluster.config.globalConfig.kube_apiserver_arg | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.kubelet_proxy_arg }}
+      kubelet-proxy-arg: {{ .Values.cluster.config.globalConfig.kubelet_proxy_arg | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.kubelet_arg }}
+      kubelet-arg: {{ .Values.cluster.config.globalConfig.kubelet_arg | toRawJson }}
+      {{- end }}
+    {{- end }}
     # machinePoolDefaults:
     {{- if ne .Values.cloudprovider "custom" }}
     machinePools:
@@ -144,11 +177,11 @@ spec:
       {{- end }}
       {{- if $nodepool.machineDeploymentLabels }}
       machineDeploymentLabels:
-{{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
+      {{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
       {{- end }}
       {{- if $nodepool.machineDeploymentAnnotations }}
       machineDeploymentAnnotations:
-{{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
+      {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
       {{- end }}
       paused: {{ $nodepool.paused }}
       {{- if $nodepool.rollingUpdate }}
@@ -190,11 +223,11 @@ spec:
       {{- end }}
       {{- if $nodepool.machineDeploymentLabels }}
       machineDeploymentLabels:
-{{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
+      {{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
       {{- end }}
       {{- if $nodepool.machineDeploymentAnnotations }}
       machineDeploymentAnnotations:
-{{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
+      {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
       {{- end }}
       paused: {{ $nodepool.paused }}
       {{- if $nodepool.rollingUpdate }}
@@ -206,18 +239,129 @@ spec:
       unhealthyNodeTimeout: {{ $nodepool.unhealthyNodeTimeout }}
       {{- end }}
     {{- end }}
+    {{- if or .Values.cluster.config.controlPlaneConfig .Values.cluster.config.workerConfig}}
     machineSelectorConfig:
+    {{- if .Values.cluster.config.controlPlaneConfig }}
     - config:
-        {{- if .Values.cluster.config.cloud_provider_config }}
-        cloud-provider-config: {{ .Values.cluster.config.cloud_provider_config }}
+        {{- if .Values.cluster.config.controlPlaneConfig.cni }}
+        cni: {{ .Values.cluster.config.controlPlaneConfig.cni }}
         {{- end }}
-        cloud-provider-name: {{ .Values.cluster.config.cloud_provider_name }}
-        {{- if .Values.cluster.config.systemDefaultRegistry }}
-        system-default-registry: {{ .Values.cluster.config.systemDefaultRegistry }}
+        {{- if .Values.cluster.config.controlPlaneConfig.disable_kube_proxy }}
+        disable-kube-proxy: {{ .Values.cluster.config.controlPlaneConfig.disable_kube_proxy }}
         {{- end }}
-        docker: {{ .Values.cluster.config.docker }}
-        protect-kernel-defaults: {{ .Values.cluster.config.protect_kernel_defaults }}
-        selinux: {{ .Values.cluster.config.selinux }}
+        {{- if .Values.cluster.config.controlPlaneConfig.etcd_expose_metrics }}
+        etcd-expose-metrics: {{ .Values.cluster.config.controlPlaneConfig.etcd_expose_metrics }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.profile }}
+        profile: {{ .Values.cluster.config.controlPlaneConfig.profile }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.selinux }}
+        selinux: {{ .Values.cluster.config.controlPlaneConfig.selinux }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.docker }}
+        docker: {{ .Values.cluster.config.controlPlaneConfig.docker }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.systemDefaultRegistry }}
+        system-default-registry: {{ .Values.cluster.config.controlPlaneConfig.systemDefaultRegistry }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.secrets_encryption }}
+        secrets-encryption: {{ .Values.cluster.config.controlPlaneConfig.secrets_encryption }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.write_kubeconfig_mode }}
+        write-kubeconfig-mode: {{ .Values.cluster.config.controlPlaneConfig.write_kubeconfig_mode }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.use_service_account_credentials }}
+        use-service-account-credentials: {{ .Values.cluster.config.controlPlaneConfig.use_service_account_credentials }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.protect_kernel_defaults }}
+        protect-kernel-defaults: {{ .Values.cluster.config.controlPlaneConfig.protect_kernel_defaults }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.cloud_provider_name }}
+        cloud-provider-name: {{ .Values.cluster.config.controlPlaneConfig.cloud_provider_name }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.cloud_provider_config }}
+        cloud-provider-config: {{ .Values.cluster.config.controlPlaneConfig.cloud_provider_config }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kube_controller_manager_arg }}
+        kube-controller-manager-arg: {{ .Values.cluster.config.controlPlaneConfig.kube_controller_manager_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kube_scheduler_arg }}
+        kube-scheduler-arg: {{ .Values.cluster.config.controlPlaneConfig.kube_scheduler_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kube_apiserver_arg }}
+        kube-apiserver-arg: {{ .Values.cluster.config.controlPlaneConfig.kube_apiserver_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kubelet_proxy_arg }}
+        kubelet-proxy-arg: {{ .Values.cluster.config.controlPlaneConfig.kubelet_proxy_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.kubelet_arg }}
+        kubelet-arg: {{ .Values.cluster.config.controlPlaneConfig.kubelet_arg | toRawJson }}
+        {{- end }}
+      machineLabelSelector:
+        matchLabels:
+          node-role.kubernetes.io/control-plane: true
+    {{- end }}
+    {{- if .Values.cluster.config.workerConfig }}
+    - config:
+        {{- if .Values.cluster.config.workerConfig.cni }}
+        cni: {{ .Values.cluster.config.workerConfig.cni }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.disable_kube_proxy }}
+        disable-kube-proxy: {{ .Values.cluster.config.workerConfig.disable_kube_proxy }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.etcd_expose_metrics }}
+        etcd-expose-metrics: {{ .Values.cluster.config.workerConfig.etcd_expose_metrics }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.profile }}
+        profile: {{ .Values.cluster.config.workerConfig.profile }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.selinux }}
+        selinux: {{ .Values.cluster.config.workerConfig.selinux }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.docker }}
+        docker: {{ .Values.cluster.config.workerConfig.docker }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.systemDefaultRegistry }}
+        system-default-registry: {{ .Values.cluster.config.workerConfig.systemDefaultRegistry }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.secrets_encryption }}
+        secrets-encryption: {{ .Values.cluster.config.workerConfig.secrets_encryption }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.write_kubeconfig_mode }}
+        write-kubeconfig-mode: {{ .Values.cluster.config.workerConfig.write_kubeconfig_mode }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.use_service_account_credentials }}
+        use-service-account-credentials: {{ .Values.cluster.config.workerConfig.use_service_account_credentials }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.protect_kernel_defaults }}
+        protect-kernel-defaults: {{ .Values.cluster.config.workerConfig.protect_kernel_defaults }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.cloud_provider_name }}
+        cloud-provider-name: {{ .Values.cluster.config.workerConfig.cloud_provider_name }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.cloud_provider_config }}
+        cloud-provider-config: {{ .Values.cluster.config.workerConfig.cloud_provider_config }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.kube_controller_manager_arg }}
+        kube-controller-manager-arg: {{ .Values.cluster.config.workerConfig.kube_controller_manager_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.kube_scheduler_arg }}
+        kube-scheduler-arg: {{ .Values.cluster.config.workerConfig.kube_scheduler_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.kube_apiserver_arg }}
+        kube-apiserver-arg: {{ .Values.cluster.config.workerConfig.kube_apiserver_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.kubelet_proxy_arg }}
+        kubelet-proxy-arg: {{ .Values.cluster.config.workerConfig.kubelet_proxy_arg | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.kubelet_arg }}
+        kubelet-arg: {{ .Values.cluster.config.workerConfig.kubelet_arg | toRawJson }}
+        {{- end }}
+      machineLabelSelector:
+        matchLabels:
+          rke.cattle.io/worker-role: true
+      {{- end }}
+    {{- end }}
     {{- end }}
     # machineSelectorFiles:
     # provisionGeneration:
