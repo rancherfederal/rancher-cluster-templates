@@ -94,6 +94,15 @@ spec:
       {{- if .Values.cluster.config.globalConfig.cni }}
       cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.disable }}
+      disable: {{ .Values.cluster.config.globalConfig.disable | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.disable_scheduler }}
+      disable-scheduler: {{ .Values.cluster.config.globalConfig.disable_scheduler }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.disable_cloud_controller }}
+      disable-cloud-controller: {{ .Values.cluster.config.globalConfig.disable_cloud_controller }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.disable_kube_proxy }}
       disable-kube-proxy: {{ .Values.cluster.config.globalConfig.disable_kube_proxy }}
       {{- end }}
@@ -246,6 +255,15 @@ spec:
         {{- if .Values.cluster.config.controlPlaneConfig.cni }}
         cni: {{ .Values.cluster.config.controlPlaneConfig.cni }}
         {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable }}
+        disable: {{ .Values.cluster.config.globalConfig.disable | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable_scheduler }}
+        disable-scheduler: {{ .Values.cluster.config.globalConfig.disable_scheduler }}
+        {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable_cloud_controller }}
+        disable-cloud-controller: {{ .Values.cluster.config.globalConfig.disable_cloud_controller }}
+        {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.disable_kube_proxy }}
         disable-kube-proxy: {{ .Values.cluster.config.controlPlaneConfig.disable_kube_proxy }}
         {{- end }}
@@ -305,6 +323,15 @@ spec:
     - config:
         {{- if .Values.cluster.config.workerConfig.cni }}
         cni: {{ .Values.cluster.config.workerConfig.cni }}
+        {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable }}
+        disable: {{ .Values.cluster.config.globalConfig.disable  | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable_scheduler }}
+        disable-scheduler: {{ .Values.cluster.config.globalConfig.disable_scheduler }}
+        {{- end }}
+        {{- if .Values.cluster.config.globalConfig.disable_cloud_controller }}
+        disable-cloud-controller: {{ .Values.cluster.config.globalConfig.disable_cloud_controller }}
         {{- end }}
         {{- if .Values.cluster.config.workerConfig.disable_kube_proxy }}
         disable-kube-proxy: {{ .Values.cluster.config.workerConfig.disable_kube_proxy }}

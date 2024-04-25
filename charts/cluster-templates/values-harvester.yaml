@@ -32,6 +32,12 @@ cluster:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
       docker: false
+      # disable:
+        # - rke2-coredns
+        # - rke2-ingress-nginx
+        # - rke2-metrics-server
+      disable_scheduler: false
+      disable_cloud_controller: false
       disable_kube_proxy: false
       etcd_expose_metrics: false
       profile: '' # cis-1.6, cis-1.23
