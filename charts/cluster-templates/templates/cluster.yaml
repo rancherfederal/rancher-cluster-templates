@@ -94,6 +94,9 @@ spec:
       {{- if .Values.cluster.config.globalConfig.cni }}
       cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.docker }}
+      docker: {{ .Values.cluster.config.globalConfig.docker }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.disable }}
       disable: {{ .Values.cluster.config.globalConfig.disable | toRawJson }}
       {{- end }}
@@ -115,8 +118,11 @@ spec:
       {{- if .Values.cluster.config.globalConfig.selinux }}
       selinux: {{ .Values.cluster.config.globalConfig.selinux }}
       {{- end }}
-      {{- if .Values.cluster.config.globalConfig.docker }}
-      docker: {{ .Values.cluster.config.globalConfig.docker }}
+      {{- if .Values.cluster.config.globalConfig.tls_san }}
+      tls-san: {{ .Values.cluster.config.globalConfig.tls_san  | toRawJson }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.token }}
+      token: {{ .Values.cluster.config.globalConfig.token }}
       {{- end }}
       {{- if .Values.cluster.config.globalConfig.systemDefaultRegistry }}
       system-default-registry: {{ .Values.cluster.config.globalConfig.systemDefaultRegistry }}
@@ -255,6 +261,9 @@ spec:
         {{- if .Values.cluster.config.controlPlaneConfig.cni }}
         cni: {{ .Values.cluster.config.controlPlaneConfig.cni }}
         {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.docker }}
+        docker: {{ .Values.cluster.config.controlPlaneConfig.docker }}
+        {{- end }}
         {{- if .Values.cluster.config.globalConfig.disable }}
         disable: {{ .Values.cluster.config.globalConfig.disable | toRawJson }}
         {{- end }}
@@ -276,8 +285,11 @@ spec:
         {{- if .Values.cluster.config.controlPlaneConfig.selinux }}
         selinux: {{ .Values.cluster.config.controlPlaneConfig.selinux }}
         {{- end }}
-        {{- if .Values.cluster.config.controlPlaneConfig.docker }}
-        docker: {{ .Values.cluster.config.controlPlaneConfig.docker }}
+        {{- if .Values.cluster.config.controlPlaneConfig.tls_san }}
+        tls-san: {{ .Values.cluster.config.controlPlaneConfig.tls_san  | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.token }}
+        token: {{ .Values.cluster.config.controlPlaneConfig.token }}
         {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.systemDefaultRegistry }}
         system-default-registry: {{ .Values.cluster.config.controlPlaneConfig.systemDefaultRegistry }}
@@ -324,6 +336,9 @@ spec:
         {{- if .Values.cluster.config.workerConfig.cni }}
         cni: {{ .Values.cluster.config.workerConfig.cni }}
         {{- end }}
+        {{- if .Values.cluster.config.workerConfig.docker }}
+        docker: {{ .Values.cluster.config.workerConfig.docker }}
+        {{- end }}
         {{- if .Values.cluster.config.globalConfig.disable }}
         disable: {{ .Values.cluster.config.globalConfig.disable  | toRawJson }}
         {{- end }}
@@ -345,8 +360,11 @@ spec:
         {{- if .Values.cluster.config.workerConfig.selinux }}
         selinux: {{ .Values.cluster.config.workerConfig.selinux }}
         {{- end }}
-        {{- if .Values.cluster.config.workerConfig.docker }}
-        docker: {{ .Values.cluster.config.workerConfig.docker }}
+        {{- if .Values.cluster.config.workerConfig.tls_san }}
+        tls-san: {{ .Values.cluster.config.workerConfig.tls_san  | toRawJson }}
+        {{- end }}
+        {{- if .Values.cluster.config.workerConfig.token }}
+        token: {{ .Values.cluster.config.workerConfig.token }}
         {{- end }}
         {{- if .Values.cluster.config.workerConfig.systemDefaultRegistry }}
         system-default-registry: {{ .Values.cluster.config.workerConfig.systemDefaultRegistry }}
