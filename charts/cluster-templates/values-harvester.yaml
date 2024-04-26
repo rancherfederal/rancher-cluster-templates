@@ -215,18 +215,18 @@ nodepools:
 addons:
   monitoring:
     enabled: false
-    # version: 103.0.3+up45.31.1
+    # version: 103.0.4+up45.31.1
     # values:
       # values here
 
   longhorn:
     enabled: false
-    # version: 103.2.1+up1.5.3
+    # version: 103.2.2+up1.5.4
     # values:
       # values here
 
   neuvector:
     enabled: false
-    # version: 103.0.1+up2.7.1
+    # version: 103.0.2+up2.7.3
     # values:
       # values here
