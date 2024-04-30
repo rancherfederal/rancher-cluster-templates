@@ -1,0 +1,161 @@
+# be sure to add all "required" values...
+
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+cloudprovider: elemental
+
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName:
+
+# rancher manager url
+rancher:
+  cattle:
+    url: # required (example: rancher.example.com)
+
+# cluster values
+cluster:
+  # annotations:
+    # key: value
+  # labels:
+    # key: value
+  name: elemental-cluster
+  config:
+    systemDefaultRegistry: docker.io # default registry
+    kubernetesVersion: v1.27.12+rke2r1 # https://github.com/rancher/rke2/releases
+    localClusterAuthEndpoint:
+      enabled: false
+    # agentEnvVars:
+      # - key:value
+    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+    docker: false
+    disable_kube_proxy: false
+    etcd_expose_metrics: false
+    enableNetworkPolicy: true
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
+    profile: '' # cis-1.6, cis-1.23
+    selinux: false
+    secrets_encryption: false
+    write_kubeconfig_mode: 0600
+    use_service_account_credentials: false
+    protect_kernel_defaults: false
+    cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
+    # kube_controller_manager_arg:
+      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+    # kube_scheduler_arg:
+      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+    # kube_apiserver_arg:
+      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+    # kubelet_arg:
+      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    registries:
+      enabled: false
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+
+# node and nodepool(s) values
+nodepools:
+  - name: control-plane
+    # displayName: cp-nodes
+    quantity: 3
+    etcd: true
+    controlplane: true
+    worker: false
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    # cloud provider values here
+    selector:
+
+  - name: worker
+    # displayName: wk-nodes
+    quantity: 3
+    etcd: false
+    controlplane: false
+    worker: true
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    # cloud provider values here
+    selector:
+
+# addons values
+addons:
+  monitoring:
+    enabled: false
+    # version: 103.0.3+up45.31.1
+    # values:
+      # values here
+
+  longhorn:
+    enabled: false
+    # version: 103.2.1+up1.5.3
+    # values:
+      # values here
+
+  neuvector:
+    enabled: false
+    # version: 103.0.1+up2.7.1
+    # values:
+      # values here

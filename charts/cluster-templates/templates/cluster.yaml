@@ -227,6 +227,9 @@ spec:
         kind: DigitaloceanConfig
         {{- else if eq $.Values.cloudprovider "azure" }}
         kind: AzureConfig
+        {{- else if eq $.Values.cloudprovider "elemental" }}
+        apiVersion: elemental.cattle.io/v1beta1
+        kind: MachineInventorySelectorTemplate 
         {{- end}}
         name: {{ $nodepool.name }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
