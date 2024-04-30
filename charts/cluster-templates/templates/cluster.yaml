@@ -181,52 +181,6 @@ spec:
         kind: DigitaloceanConfig
         {{- else if eq $.Values.cloudprovider "azure" }}
         kind: AzureConfig
-        {{- end}}
-        name: {{ $nodepool.name }}
-      displayName: {{ $nodepool.displayName | default $nodepool.name }}
-      {{- if $nodepool.drainBeforeDelete }}
-      drainBeforeDelete: {{ $nodepool.drainBeforeDelete }}
-      {{- end }}
-      {{- if $nodepool.drainBeforeDeleteTimeout }}
-      drainBeforeDeleteTimeout: {{ $nodepool.drainBeforeDeleteTimeout }}
-      {{- end }}
-      {{- if $nodepool.machineDeploymentLabels }}
-      machineDeploymentLabels:
-      {{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
-      {{- end }}
-      {{- if $nodepool.machineDeploymentAnnotations }}
-      machineDeploymentAnnotations:
-      {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
-      {{- end }}
-      paused: {{ $nodepool.paused }}
-      {{- if $nodepool.rollingUpdate }}
-      rollingUpdate:
-        maxUnavailable: {{ $nodepool.rollingUpdate.maxUnavailable }}
-        maxSurge: {{ $nodepool.rollingUpdate.maxSurge }}
-      {{- end }}
-      {{- if $nodepool.unhealthyNodeTimeout }}
-      unhealthyNodeTimeout: {{ $nodepool.unhealthyNodeTimeout }}
-      {{- end }}
-      {{- end }}
-    {{- end }}
-    {{- if .Values.nodepool }}
-    {{ $nodepool := .Values.nodepool }}
-    - name: {{ $nodepool.name }}
-      quantity: {{ $nodepool.quantity }}
-      controlPlaneRole: {{ $nodepool.controlplane }}
-      etcdRole: {{ $nodepool.etcd }}
-      workerRole: {{ $nodepool.worker }}
-      machineConfigRef:
-        {{- if eq $.Values.cloudprovider "amazonec2" }}
-        kind: Amazonec2Config
-        {{- else if eq $.Values.cloudprovider "vsphere" }}
-        kind: VmwarevsphereConfig
-        {{- else if eq $.Values.cloudprovider "harvester" }}
-        kind: HarvesterConfig
-        {{- else if eq $.Values.cloudprovider "digitalocean" }}
-        kind: DigitaloceanConfig
-        {{- else if eq $.Values.cloudprovider "azure" }}
-        kind: AzureConfig
         {{- else if eq $.Values.cloudprovider "elemental" }}
         apiVersion: elemental.cattle.io/v1beta1
         kind: MachineInventorySelectorTemplate 
@@ -255,6 +209,7 @@ spec:
       {{- end }}
       {{- if $nodepool.unhealthyNodeTimeout }}
       unhealthyNodeTimeout: {{ $nodepool.unhealthyNodeTimeout }}
+      {{- end }}
       {{- end }}
     {{- end }}
     {{- if or .Values.cluster.config.controlPlaneConfig .Values.cluster.config.workerConfig}}
