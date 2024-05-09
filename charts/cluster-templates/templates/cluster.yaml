@@ -381,7 +381,7 @@ spec:
       {{- if .Values.cluster.config.registries.mirrors }}
       mirrors:
         {{- range .Values.cluster.config.registries.mirrors }}
-        {{ .name }}:
+        {{ .name | quote }}:
           endpoint:
             {{- range .endpoints }}
             - {{ . }}
