@@ -111,8 +111,8 @@ nodepools:
     # rollingUpdate:
       # maxUnavailable: 1
       # maxSurge: 1
-    # cloud provider values here
-    selector:
+    selector: # https://elemental.docs.rancher.com/machineinventoryselectortemplate-reference
+      # key: value
 
   - name: worker
     # displayName: wk-nodes
@@ -137,8 +137,8 @@ nodepools:
     # rollingUpdate:
       # maxUnavailable: 1
       # maxSurge: 1
-    # cloud provider values here
-    selector:
+    selector: # https://elemental.docs.rancher.com/machineinventoryselectortemplate-reference
+      # key: value
 
 # addons values
 addons:
