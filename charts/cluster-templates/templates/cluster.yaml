@@ -46,7 +46,10 @@ spec:
   {{- end }}
   # redeploySystemAgentGeneration:
   rkeConfig:
-    # additionalManifest:
+    {{- with $.Values.cluster.config.additionalManifests }}
+    additionalManifest:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     {{- if eq $.Values.cloudprovider "harvester" }}
     chartValues:
       harvester-cloud-provider:

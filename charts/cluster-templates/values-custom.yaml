@@ -20,6 +20,19 @@ cluster:
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
+      
+    # additionalManifests: |-
+    #   apiVersion: v1
+    #   kind: Pod
+    #   metadata:
+    #     name: example-manifest
+    #   spec:
+    #     containers:
+    #     - name: example
+    #       image: example:1.0.0
+    #       ports:
+    #       - containerPort: 80
+
     # agentEnvVars:
       # - key:value
     # defaultClusterRoleForProjectMembers: ''
