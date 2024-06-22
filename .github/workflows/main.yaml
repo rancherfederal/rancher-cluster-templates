@@ -1,22 +1,18 @@
-name: Release Helm Chart(s)
+name: Release Workflow
 on:
   push:
     branches:
       - main
 
 jobs:
-  release:
+  chart-release:
+    name: Chart Release Job
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Run Helm Chart Releaser
         uses: helm/chart-releaser-action@v1.6.0
