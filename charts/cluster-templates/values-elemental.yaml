@@ -17,10 +17,10 @@ cluster:
     # key: value
   # labels:
     # key: value
-  name: elemental-cluster
+  name: rke2-cluster-elemental
   config:
-    systemDefaultRegistry: docker.io # default registry
-    kubernetesVersion: v1.27.12+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.28.10+rke2r1 # https://github.com/rancher/rke2/releases
+    enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
     # additionalManifests: |-
@@ -36,30 +36,49 @@ cluster:
     #       - containerPort: 80
     # agentEnvVars:
       # - key:value
-    cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
-    docker: false
-    disable_kube_proxy: false
-    etcd_expose_metrics: false
-    enableNetworkPolicy: true
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''
-    profile: '' # cis-1.6, cis-1.23
-    selinux: false
-    secrets_encryption: false
-    write_kubeconfig_mode: 0600
-    use_service_account_credentials: false
-    protect_kernel_defaults: false
-    cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
-    # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
-    # kube_controller_manager_arg:
-      # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
-    # kube_scheduler_arg:
-      # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
-    # kube_apiserver_arg:
-      # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
-    # kubelet_arg:
-      # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    globalConfig:
+      systemDefaultRegistry: docker.io # default registry
+      cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+      docker: false
+      # token: ''
+      # tls-san:
+        # - url
+        # - ip
+      # disable:
+        # - rke2-coredns
+        # - rke2-ingress-nginx
+        # - rke2-metrics-server
+      disable_scheduler: false
+      disable_cloud_controller: false
+      disable_kube_proxy: false
+      etcd_expose_metrics: false
+      profile: '' # cis-1.6, cis-1.23
+      selinux: false
+      secrets_encryption: false
+      write_kubeconfig_mode: 0600
+      use_service_account_credentials: false
+      protect_kernel_defaults: false
+      cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+      # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
+      # kube_controller_manager_arg:
+        # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+      # kube_scheduler_arg:
+        # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # kube_apiserver_arg:
+        # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+      # kube_proxy_arg:
+        # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
+      # kubelet_arg:
+        # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    # controlPlaneConfig:
+      # same options as globalConfig
+      # only will apply to the control plane nodes
+    # workerConfig:
+      # same options as globalConfig
+      # only will apply to the worker nodes
     registries:
       enabled: false
       # configs:

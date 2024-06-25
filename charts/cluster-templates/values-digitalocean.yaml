@@ -19,7 +19,7 @@ cluster:
     # key: value
   name: rke2-cluster-digitalocean
   config:
-    kubernetesVersion: v1.27.12+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.28.10+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
@@ -69,8 +69,8 @@ cluster:
         # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
       # kube_apiserver_arg:
         # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
-      # kube_proxy_arg: # (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
-        # - kube proxy arguments here
+      # kube_proxy_arg:
+        # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
       # kubelet_arg:
         # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
     # controlPlaneConfig:
