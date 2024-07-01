@@ -20,7 +20,7 @@ cluster:
   name: elemental-cluster
   config:
     systemDefaultRegistry: docker.io # default registry
-    kubernetesVersion: v1.27.12+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.28.10+rke2r1 # https://github.com/rancher/rke2/releases
     localClusterAuthEndpoint:
       enabled: false
     # additionalManifests: |-
