@@ -28,7 +28,7 @@ questions:
       - custom
     group: 'General'
   - variable: kubernetesVersion
-    default: v1.27.12+rke2r1
+    default: v1.28.10+rke2r1
     description: 'Specify Kubernetes Version'
     label: 'Kubernetes Version'
     type: enum
