@@ -19,7 +19,7 @@ cluster:
     # key: value
   name: rke2-cluster-aws
   config:
-    kubernetesVersion: v1.28.11+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.28.12+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
