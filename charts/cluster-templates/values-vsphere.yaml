@@ -1,0 +1,49 @@
+cloudCredentialSecretName: cc-xxxxx # You can find or create this secret in Cluster Management -> Cloud Credentials
+cloudprovider: vsphere
+
+### Configure information about the cluster you are creating here
+cluster:
+  name: exampleCluster
+  kubernetesVersion: v1.28.13+k3s1
+
+### Configure information about vCenter
+vcenter:
+  host: "vcenter.lab"
+  # BUG: Though these have default values defined in cluster.yaml, they will render the following error:
+  # nil pointer evaluating interface {}.asyncQueryVolume
+  # You must provide these values for now (10/01/2024)
+  vsphere:
+    asyncQueryVolume:
+      enabled: true
+    csiController:
+      csiResizer:
+        enabled: true
+    improvedVolumeTopology:
+      enabled: true
+    onlineVolumeExtend:
+      enabled: true
+    triggerCsiFullsync:
+      enabled: true
+
+# Rancher Manager URL
+rancher:
+  cattle:
+    url: "rancher.example.com"
+
+# For a complete list of config options, please look here:
+# https://github.com/rancherfederal/rancher-cluster-templates/blob/customWork/charts/cluster-templates/templates/nodeconfig-vsphere.yaml
+nodepools:
+  - name: "control-plane"
+    quantity: 1
+    datacenter: "/Datacenter"
+    datastore: "/Datacenter/datastore/vsanDatastore"
+    cloneFrom: "/Datacenter/vm/Rocky9.4-minimal"
+    etcd: true
+    controlplane: true
+    worker: true
+    cpuCount: 2
+    diskSize: 20000
+    memorySize: 4096
+    cloudConfig: |
+      #cloud-config
+      echo "Put your cloud config here"
