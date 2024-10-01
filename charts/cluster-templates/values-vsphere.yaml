@@ -1,10 +1,10 @@
-cloudCredentialSecretName: cc-xxxxx # You can find or create this secret in Cluster Management -> Cloud Credentials
-cloudprovider: vsphere
+cloudCredentialSecretName: "cc-xxxxx" # You can find or create this secret in Cluster Management -> Cloud Credentials
+cloudprovider: "vsphere"
 
 ### Configure information about the cluster you are creating here
 cluster:
-  name: exampleCluster
-  kubernetesVersion: v1.28.13+k3s1
+  name: "exampleCluster"
+  kubernetesVersion: "v1.28.13+k3s1"
 
 ### Configure information about vCenter
 vcenter:
