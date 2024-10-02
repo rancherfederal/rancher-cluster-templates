@@ -1,10 +1,16 @@
 cloudCredentialSecretName: "cc-xxxxx" # You can find or create this secret in Cluster Management -> Cloud Credentials
 cloudprovider: "vsphere"
 
+# Rancher Manager URL
+rancher:
+  cattle:
+    url: "rancher.example.com"
+
 ### Configure information about the cluster you are creating here
 cluster:
   name: "exampleCluster"
-  kubernetesVersion: "v1.28.13+k3s1"
+  config:
+    kubernetesVersion: "v1.28.13+k3s1"
 
 ### Configure information about vCenter
 vcenter:
@@ -25,19 +31,19 @@ vcenter:
     triggerCsiFullsync:
       enabled: true
 
-# Rancher Manager URL
-rancher:
-  cattle:
-    url: "rancher.example.com"
-
 # For a complete list of config options, please look here:
 # https://github.com/rancherfederal/rancher-cluster-templates/blob/customWork/charts/cluster-templates/templates/nodeconfig-vsphere.yaml
 nodepools:
   - name: "control-plane"
     quantity: 1
     datacenter: "/Datacenter"
-    datastore: "/Datacenter/datastore/vsanDatastore"
-    cloneFrom: "/Datacenter/vm/Rocky9.4-minimal"
+  # Specify one creationType: vm, template, library, legacy
+    creationType: "library" 
+  # Your cloneFrom should match the corresponding creationType, etc.
+    contentLibrary: "MyContentLibrary"
+    cloneFrom: "Rocky9.4-minimal"
+   #datastore: "/Datacenter/datastore/vsanDatastore"
+   #cloneFrom: "/Datacenter/vm/Rocky9.4-minimal"
     etcd: true
     controlplane: true
     worker: true
