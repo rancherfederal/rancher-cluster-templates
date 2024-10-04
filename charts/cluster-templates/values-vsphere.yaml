@@ -15,21 +15,6 @@ cluster:
 ### Configure information about vCenter
 vcenter:
   host: "vcenter.lab"
-  # BUG: Though these have default values defined in cluster.yaml, they will render the following error:
-  # nil pointer evaluating interface {}.asyncQueryVolume
-  # You must provide these values for now (10/01/2024)
-  vsphere:
-    asyncQueryVolume:
-      enabled: true
-    csiController:
-      csiResizer:
-        enabled: true
-    improvedVolumeTopology:
-      enabled: true
-    onlineVolumeExtend:
-      enabled: true
-    triggerCsiFullsync:
-      enabled: true
 
 # For a complete list of config options, please look here:
 # https://github.com/rancherfederal/rancher-cluster-templates/blob/customWork/charts/cluster-templates/templates/nodeconfig-vsphere.yaml
