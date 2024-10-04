@@ -23,6 +23,12 @@ cluster:
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
+    # chartValues: |-
+    #   harvester-cloud-provider:
+    #     cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
+    #     global:
+    #       cattle:
+    #         clusterName: {{ .Values.cluster.name }}
     # additionalManifests: |-
     #   apiVersion: v1
     #   kind: Pod
