@@ -46,11 +46,14 @@ spec:
   {{- end }}
   # redeploySystemAgentGeneration:
   rkeConfig:
+    {{- with $.Values.cluster.config.chartValues }}
+    chartValues:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     {{- with $.Values.cluster.config.additionalManifests }}
     additionalManifest:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    chartValues: {}
     # etcd:
     # etcdSnapshotCreate:
     # etcdSnapshotRestore:
