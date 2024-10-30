@@ -61,8 +61,8 @@ cluster:
       disable_cloud_controller: false
       disable_kube_proxy: false
       etcd_expose_metrics: false
-      profile: '' # cis-1.6, cis-1.23
-      selinux: false
+      profile: '' # cis, cis-1.23, or cis-1.6 # https://docs.rke2.io/security/hardening_guide
+      selinux: false # rke2-selinux and container-selinux be installed on the nodes # https://docs.rke2.io/security/selinux
       secrets_encryption: false
       write_kubeconfig_mode: 0600
       use_service_account_credentials: false
