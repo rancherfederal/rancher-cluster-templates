@@ -63,6 +63,9 @@ spec:
       {{- if .Values.cluster.config.globalConfig.cni }}
       cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.flannelBackend }}
+      flannel-backend: {{ .Values.cluster.config.globalConfig.flannelBackend }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.docker }}
       docker: {{ .Values.cluster.config.globalConfig.docker }}
       {{- end }}
