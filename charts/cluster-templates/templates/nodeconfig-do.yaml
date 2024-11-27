@@ -1,9 +1,11 @@
+{{- /* Defines clustername variable for use inside of range functions within this chart. */}}
+{{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "digitalocean" }}
 {{- range $index, $nodepool := .Values.nodepools }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: DigitaloceanConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 {{- if $nodepool.accessToken }}
 accessToken: {{ $nodepool.accessToken }}
@@ -54,7 +56,7 @@ userdata: {{- $nodepool.userData | toYaml | indent 1 }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: DigitaloceanConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 {{- if $nodepool.accessToken }}
 accessToken: {{ $nodepool.accessToken }}

@@ -1,9 +1,11 @@
+{{- /* Defines clustername variable for use inside of range functions within this chart. */}}
+{{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "harvester" }}
 {{- range $index, $nodepool := .Values.nodepools }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: HarvesterConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 {{- if $nodepool.cloudConfig }}
 cloudConfig: {{$nodepool.cloudconfig }}
@@ -81,7 +83,7 @@ vmNamespace: {{ $nodepool.vmNamespace }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: HarvesterConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
