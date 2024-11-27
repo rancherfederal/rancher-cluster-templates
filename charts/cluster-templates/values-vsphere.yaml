@@ -1,10 +1,16 @@
-cloudCredentialSecretName: "cc-xxxxx" # You can find or create this secret in Cluster Management -> Cloud Credentials
-cloudprovider: "vsphere"
+# be sure to add all "required" values...
 
-# Rancher Manager URL
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+# https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/use-new-nodes-in-an-infra-provider
+cloudprovider: vsphere # required
+
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName: vsphere-creds # required
+
+# rancher manager url
 rancher:
   cattle:
-    url: "rancher.example.com"
+    url: # required (example: rancher.example.com)
 
 ### Configure information about the cluster you are creating here
 cluster:
@@ -24,7 +30,7 @@ nodepools:
     datacenter: "/Datacenter"
     datastore: "/Datacenter/datastore/vsanDatastore"
   # Specify one creationType: vm, template, library, legacy
-    creationType: "library" 
+    creationType: "library"
   # cloneFrom will need to match the corresponding creationType
   # For example, if you were cloning from a template, you would use:
   # creationType: "template"

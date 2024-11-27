@@ -1,10 +1,11 @@
 # be sure to add all "required" values...
 
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider: amazonec2
+# https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/use-new-nodes-in-an-infra-provider
+cloudprovider: amazonec2 # required
 
 # cloud provider credentials (example: aws-creds)
-cloudCredentialSecretName: aws-creds
+cloudCredentialSecretName: aws-creds # required
 
 # rancher manager url
 rancher:
@@ -19,7 +20,7 @@ cluster:
     # key: value
   name: rke2-cluster-aws
   config:
-    kubernetesVersion: v1.29.8+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.30.6+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
