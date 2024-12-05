@@ -1,9 +1,10 @@
+{{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "amazonec2" }}
 {{- range $index, $nodepool := .Values.nodepools }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: Amazonec2Config
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 {{- if $nodepool.accessKey }}
 accessKey: {{ $nodepool.accessKey }}
@@ -123,7 +124,7 @@ zone: {{ $nodepool.zone }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: Amazonec2Config
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}

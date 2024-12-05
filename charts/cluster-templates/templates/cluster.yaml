@@ -1,3 +1,4 @@
+{{- $clustername := .Values.cluster.name -}}
 apiVersion: provisioning.cattle.io/v1
 kind: Cluster
 metadata:
@@ -154,7 +155,7 @@ spec:
         apiVersion: elemental.cattle.io/v1beta1
         kind: MachineInventorySelectorTemplate
         {{- end}}
-        name: {{ $nodepool.name }}
+        name: {{ $clustername }}-{{ $nodepool.name }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
       {{- if $nodepool.drainBeforeDelete }}
       drainBeforeDelete: {{ $nodepool.drainBeforeDelete }}
