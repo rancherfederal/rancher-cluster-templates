@@ -14,7 +14,7 @@ metadata:
 spec:
   {{- if .Values.cluster.config.agentEnvs }}
   agentEnvVars:
-  {{ toYaml .Values.cluster.config.agentEnvs | indent 4 }}
+{{ toYaml .Values.cluster.config.agentEnvs | indent 4 }}
   {{- end }}
   {{- if .Values.cloudCredentialSecretName }}
   cloudCredentialSecretName: cattle-global-data:{{ .Values.cloudCredentialSecretName }}
