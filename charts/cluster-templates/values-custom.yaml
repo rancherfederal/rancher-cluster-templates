@@ -32,7 +32,8 @@ cluster:
     #       ports:
     #       - containerPort: 80
     # agentEnvVars:
-      # - key:value
+      # - name: key
+      #   value: value
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''
