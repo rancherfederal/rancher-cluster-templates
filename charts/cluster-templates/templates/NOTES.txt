@@ -1,6 +1,6 @@
 
 Congratulations! You've successfully deployed a cluster using the Helm Chart for Rancher Cluster Templates by Rancher Government Solutions. Please be patient for the cluster to provision and deploy on your infrastructure.
 
-View the Cluster -> https://{{ .Values.rancher.cattle.url }}/dashboard/c/_/manager/provisioning.cattle.io.cluster/fleet-default/{{ .Values.cluster.name }}
+View the Cluster -> https://{{ .Values.rancher.cattle.url | default "<rancher-url>" }}/dashboard/c/_/manager/provisioning.cattle.io.cluster/fleet-default/{{ .Values.cluster.name }}
 
 View the Docs -> https://github.com/rancherfederal/rancher-cluster-templates
