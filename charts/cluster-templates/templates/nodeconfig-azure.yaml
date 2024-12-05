@@ -1,4 +1,3 @@
-{{- /* Defines clustername variable for use inside of range functions within this chart. */}}
 {{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "azure" }}
 {{- range $index, $nodepool := .Values.nodepools }}
