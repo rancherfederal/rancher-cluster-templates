@@ -1,3 +1,4 @@
+{{- $clustername := .Values.cluster.name -}}
 apiVersion: provisioning.cattle.io/v1
 kind: Cluster
 metadata:
@@ -12,9 +13,9 @@ metadata:
   name: {{ .Values.cluster.name }}
   namespace: fleet-default
 spec:
-  {{- if .Values.cluster.config.agentEnvs }}
+  {{- if .Values.cluster.config.agentEnvVars }}
   agentEnvVars:
-  {{ toYaml .Values.cluster.config.agentEnvs | indent 4 }}
+{{ toYaml .Values.cluster.config.agentEnvVars | indent 4 }}
   {{- end }}
   {{- if .Values.cloudCredentialSecretName }}
   cloudCredentialSecretName: cattle-global-data:{{ .Values.cloudCredentialSecretName }}
@@ -155,9 +156,9 @@ spec:
         kind: AzureConfig
         {{- else if eq $.Values.cloudprovider "elemental" }}
         apiVersion: elemental.cattle.io/v1beta1
-        kind: MachineInventorySelectorTemplate 
+        kind: MachineInventorySelectorTemplate
         {{- end}}
-        name: {{ $nodepool.name }}
+        name: {{ $clustername }}-{{ $nodepool.name }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
       {{- if $nodepool.drainBeforeDelete }}
       drainBeforeDelete: {{ $nodepool.drainBeforeDelete }}

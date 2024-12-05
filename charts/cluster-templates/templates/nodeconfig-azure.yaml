@@ -1,9 +1,10 @@
+{{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "azure" }}
 {{- range $index, $nodepool := .Values.nodepools }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: AzureConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
@@ -50,7 +51,7 @@ vnet: {{ $nodepool.vnet }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: AzureConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}

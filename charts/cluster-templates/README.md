@@ -14,11 +14,11 @@
 - AWS GovCloud
 - Harvester
 - Digital Ocean
+- VMWare vSphere
 - Custom
 
 ### Pending Validation
 
-- VMWare vSphere
 - Microsoft Azure
 
 ## Installing the Chart
@@ -85,6 +85,15 @@ kubectl annotate secret -n cattle-global-data harvester-creds provisioning.cattl
 kubectl create secret -n cattle-global-data generic digitalocean-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
 
 kubectl annotate secret -n cattle-global-data digitalocean-creds provisioning.cattle.io/driver=digitalocean
+```
+
+
+#### For VMWare vSphere Credentials
+
+```bash
+kubectl create secret -n cattle-global-data generic vsphere-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
+
+kubectl annotate secret -n cattle-global-data vsphere-creds provisioning.cattle.io/driver=digitalocean
 ```
 
 ### Registry Credentials

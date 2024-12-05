@@ -1,7 +1,8 @@
 # be sure to add all "required" values...
 
 # amazonec2, azure, digitalocean, harvester, vsphere, custom
-cloudprovider: custom
+# https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/use-new-nodes-in-an-infra-provider
+cloudprovider: custom # required
 
 # rancher manager url
 rancher:
@@ -16,7 +17,7 @@ cluster:
     # key: value
   name: rke2-cluster-custom
   config:
-    kubernetesVersion: v1.29.8+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.30.6+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
@@ -32,7 +33,8 @@ cluster:
     #       ports:
     #       - containerPort: 80
     # agentEnvVars:
-      # - key:value
+      # - name: key
+      #   value: value
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''

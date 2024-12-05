@@ -1,9 +1,10 @@
+{{- $clustername := .Values.cluster.name -}}
 {{- if eq .Values.cloudprovider "vsphere" }}
 {{- range $index, $nodepool := .Values.nodepools }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: VmwarevsphereConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
@@ -51,7 +52,7 @@ vcenterPort: {{ $nodepool.vcenterPort | squote }}
 apiVersion: rke-machine-config.cattle.io/v1
 kind: VmwarevsphereConfig
 metadata:
-  name: {{ $nodepool.name }}
+  name: {{ $clustername }}-{{ $nodepool.name }}
   namespace: fleet-default
 common:
 {{- if $nodepool.labels }}
