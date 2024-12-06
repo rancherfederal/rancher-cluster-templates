@@ -17,11 +17,11 @@ cluster:
   name: "exampleCluster"
   config:
     kubernetesVersion: "v1.28.13+k3s1"
-    cni: "canal" # Possible values: canal, calico, cilium, multus, none
-  # If you want to disable the CNI, you can use the following configuration:
-  # cni: "none"
-  # globalConfig:
-  #   flannelBackend: "none"
+    globalConfig:
+      cni: "canal" # Possible values: canal, calico, cilium, multus, none
+    # If you want to disable the CNI, you can use the following configuration:
+    # cni: "none"
+    # flannelBackend: "none"
 
 ### Configure information about vCenter
 vcenter:
