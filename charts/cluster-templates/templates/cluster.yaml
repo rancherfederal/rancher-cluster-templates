@@ -168,11 +168,11 @@ spec:
       {{- end }}
       {{- if $nodepool.machineDeploymentLabels }}
       machineDeploymentLabels:
-      {{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
+{{ toYaml $nodepool.machineDeploymentLabels | indent 8 }}
       {{- end }}
       {{- if $nodepool.machineDeploymentAnnotations }}
       machineDeploymentAnnotations:
-      {{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
+{{ toYaml $nodepool.machineDeploymentAnnotations | indent 8 }}
       {{- end }}
       paused: {{ $nodepool.paused }}
       {{- if $nodepool.rollingUpdate }}
