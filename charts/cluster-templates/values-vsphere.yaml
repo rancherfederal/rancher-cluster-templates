@@ -12,38 +12,81 @@ rancher:
   cattle:
     url: # required (example: rancher.example.com)
 
-### Configure information about the cluster you are creating here
-cluster:
-  name: "exampleCluster"
-  config:
-    kubernetesVersion: "v1.28.13+k3s1"
-
-### Configure information about vCenter
+# vcenter url
 vcenter:
-  host: "vcenter.lab"
+  host: # required (example: vmware.local)
 
-# For a complete list of config options, please look here:
-# https://github.com/rancherfederal/rancher-cluster-templates/blob/customWork/charts/cluster-templates/templates/nodeconfig-vsphere.yaml
+# cluster values
+cluster:
+  # annotations:
+    # key: value
+  # labels:
+    # key: value
+  name: rke2-cluster-vsphere
+
 nodepools:
-  - name: "control-plane"
-    quantity: 1
-    datacenter: "/Datacenter"
-    datastore: "/Datacenter/datastore/vsanDatastore"
-  # Specify one creationType: vm, template, library, legacy
-    creationType: "library"
-  # cloneFrom will need to match the corresponding creationType
-  # For example, if you were cloning from a template, you would use:
-  # creationType: "template"
-  # cloneFrom: "/Datacenter/vm/Rocky9.4-minimal"
-    cloneFrom: "Rocky9.4-minimal"
-    contentLibrary: "MyContentLibrary"
-    cloneFrom: "Rocky9.4-minimal"
+  - name: control-plane-nodes
+    quantity: 3
     etcd: true
     controlplane: true
-    worker: true
-    cpuCount: 2
+    worker: false
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    datacenter: # required (example: /Datacenter)
+    datastore: # required (example: /Datacenter/datastore/vsanDatastore)
+    creationType: # required (example: vm, template, library, legacy)
+    cloneFrom: # requried - cloneFrom will need to match the corresponding creationType
+    contentLibrary: # required
+    cpuCount: 4
+    memorySize: 8192
     diskSize: 20000
-    memorySize: 4096
-    cloudConfig: |
+    # cloudConfig: |
       #cloud-config
-      echo "Put your cloud config here"
+
+  - name: worker-nodes
+    quantity: 3
+    etcd: false
+    controlplane: false
+    worker: true
+    # labels:
+      # key: value
+    # taints:
+      # effect: value
+      # key: value
+      # value: value
+    paused: false
+    # drainBeforeDelete: true
+    # drainBeforeDeleteTimeout: 30s
+    # unhealthyNodeTimeout: 60s
+    # machineDeploymentLabels:
+      # key: value
+    # machineDeploymentAnnotations:
+      # key: value
+    # rollingUpdate:
+      # maxUnavailable: 1
+      # maxSurge: 1
+    datacenter: # required (example: /Datacenter)
+    datastore: # required (example: /Datacenter/datastore/vsanDatastore)
+    creationType: # required (example: vm, template, library, legacy)
+    cloneFrom: # requried - cloneFrom will need to match the corresponding creationType
+    contentLibrary: # required
+    cpuCount: 4
+    memorySize: 8192
+    diskSize: 20000
+    # cloudConfig: |
+      #cloud-config
