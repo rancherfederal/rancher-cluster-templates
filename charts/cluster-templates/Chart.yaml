@@ -3,8 +3,8 @@ name: rancher-cluster-templates
 description: Hardened Rancher Cluster Templates by Rancher Government
 icon: https://raw.githubusercontent.com/rancherfederal/carbide-docs/main/static/img/carbide-logo.svg
 type: application
-version: 0.6.0
-appVersion: 0.6.0
+version: 0.6.1
+appVersion: 0.6.1
 annotations:
   catalog.cattle.io/type: cluster-template
   catalog.cattle.io/namespace: fleet-default
