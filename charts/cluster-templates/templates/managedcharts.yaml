@@ -56,6 +56,46 @@ spec:
 ---
 {{- end }}
 {{- end }}
+{{- if .Values.addons.logging }}
+{{- if .Values.addons.logging.enabled }}
+apiVersion: management.cattle.io/v3
+kind: ManagedChart
+metadata:
+  name: logging-crd-{{ .Values.cluster.name }}
+  namespace: fleet-default
+spec:
+  chart: "rancher-logging-crd"
+  repoName: "rancher-charts"
+  releaseName: "rancher-logging-crd"
+  version: {{ .Values.addons.logging.version }}
+  {{- if .Values.addons.logging.values }}
+  values:
+{{ toYaml .Values.addons.logging.values | indent 4 }}
+  {{- end }}
+  defaultNamespace: "cattle-logging-system"
+  targets:
+  - clusterName: {{ .Values.cluster.name }}
+---
+apiVersion: management.cattle.io/v3
+kind: ManagedChart
+metadata:
+  name: logging-{{ .Values.cluster.name }}
+  namespace: fleet-default
+spec:
+  chart: "rancher-logging"
+  repoName: "rancher-charts"
+  releaseName: "rancher-logging"
+  version: {{ .Values.addons.logging.version }}
+  {{- if .Values.addons.logging.values }}
+  values:
+{{ toYaml .Values.addons.logging.values | indent 4 }}
+  {{- end }}
+  defaultNamespace: "cattle-logging-system"
+  targets:
+  - clusterName: {{ .Values.cluster.name }}
+---
+{{- end }}
+{{- end }}
 {{- if .Values.addons.longhorn }}
 {{- if .Values.addons.longhorn.enabled }}
 apiVersion: management.cattle.io/v3

@@ -20,7 +20,7 @@ cluster:
     # key: value
   name: rke2-cluster
   config:
-    kubernetesVersion: v1.30.6+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.30.7+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
@@ -178,20 +178,30 @@ nodepools:
 
 # addons values
 addons:
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-monitoring/104.1.2%2Bup57.0.3
   monitoring:
     enabled: false
-    # version: 103.0.4+up45.31.1
+    # version: 104.1.2+up57.0.3
     # values:
       # values here
 
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-logging/104.1.2%2Bup4.8.0
+  logging:
+    enabled: false
+    # version: 104.1.2+up4.8.0
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/longhorn/104.2.1%2Bup1.7.2
   longhorn:
     enabled: false
-    # version: 103.2.2+up1.5.4
+    # version: 104.2.1+up1.7.2
     # values:
       # values here
 
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/neuvector/104.0.2%2Bup2.8.0
   neuvector:
     enabled: false
-    # version: 103.0.2+up2.7.3
+    # version: 104.0.2+up2.8.0
     # values:
       # values here

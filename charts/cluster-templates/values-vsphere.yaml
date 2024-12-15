@@ -23,7 +23,112 @@ cluster:
   # labels:
     # key: value
   name: rke2-cluster-vsphere
+  config:
+    kubernetesVersion: v1.30.7+rke2r1 # https://github.com/rancher/rke2/releases
+    enableNetworkPolicy: true
+    localClusterAuthEndpoint:
+      enabled: false
+    # chartValues: |-
+    #   harvester-cloud-provider:
+    #     cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
+    #     global:
+    #       cattle:
+    #         clusterName: {{ .Values.cluster.name }}
+    # additionalManifests: |-
+    #   apiVersion: v1
+    #   kind: Pod
+    #   metadata:
+    #     name: example-manifest
+    #   spec:
+    #     containers:
+    #     - name: example
+    #       image: example:1.0.0
+    #       ports:
+    #       - containerPort: 80
+    # agentEnvVars:
+      # - name: key
+      #   value: value
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
+    globalConfig:
+      systemDefaultRegistry: docker.io # default registry
+      cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+      docker: false
+      # token: ''
+      # tls-san:
+        # - url
+        # - ip
+      # disable:
+        # - rke2-coredns
+        # - rke2-ingress-nginx
+        # - rke2-metrics-server
+      disable_scheduler: false
+      disable_cloud_controller: false
+      disable_kube_proxy: false
+      etcd_expose_metrics: false
+      profile: '' # cis, cis-1.23, or cis-1.6 # https://docs.rke2.io/security/hardening_guide
+      selinux: false # rke2-selinux and container-selinux be installed on the nodes # https://docs.rke2.io/security/selinux
+      secrets_encryption: false
+      write_kubeconfig_mode: 0600
+      use_service_account_credentials: false
+      protect_kernel_defaults: false
+      cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+      # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
+      # kube_controller_manager_arg:
+        # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+      # kube_scheduler_arg:
+        # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # kube_apiserver_arg:
+        # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+      # kube_proxy_arg:
+        # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
+      # kubelet_arg:
+        # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    # controlPlaneConfig:
+      # same options as globalConfig
+      # only will apply to the control plane nodes
+    # workerConfig:
+      # same options as globalConfig
+      # only will apply to the worker nodes
+    registries:
+      enabled: false
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
 
+# node and nodepool(s) values
 nodepools:
   - name: control-plane-nodes
     quantity: 3
@@ -90,3 +195,33 @@ nodepools:
     diskSize: 20000
     # cloudConfig: |
       #cloud-config
+
+# addons values
+addons:
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-monitoring/104.1.2%2Bup57.0.3
+  monitoring:
+    enabled: false
+    # version: 104.1.2+up57.0.3
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/rancher-logging/104.1.2%2Bup4.8.0
+  logging:
+    enabled: false
+    # version: 104.1.2+up4.8.0
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/longhorn/104.2.1%2Bup1.7.2
+  longhorn:
+    enabled: false
+    # version: 104.2.1+up1.7.2
+    # values:
+      # values here
+
+  # https://github.com/rancher/charts/tree/release-v2.9/charts/neuvector/104.0.2%2Bup2.8.0
+  neuvector:
+    enabled: false
+    # version: 104.0.2+up2.8.0
+    # values:
+      # values here
