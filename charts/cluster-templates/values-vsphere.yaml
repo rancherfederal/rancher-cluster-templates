@@ -160,6 +160,12 @@ nodepools:
     cpuCount: 4
     memorySize: 8192
     diskSize: 20000
+    # network:
+    # pool:
+    # vappIpallocationpolicy: # 'fixedAllocated'
+    # vappIpprotocol: # 'IPv4'
+    # vappProperty: # '["ipaddress=ip#SETIPAADDRESSVAPPPROPERTY:","gateway=${gateway:#SETGATEWAYVAPPPROPERTY}","dns=${dns:#SETDNSVAPPPROPERTY}",]'
+    # vappTransport: 'com.vmware.guestInfo'
     # cloudConfig: |
       #cloud-config
 
@@ -193,6 +199,12 @@ nodepools:
     cpuCount: 4
     memorySize: 8192
     diskSize: 20000
+    # network:
+    # pool:
+    # vappIpallocationpolicy: # 'fixedAllocated'
+    # vappIpprotocol: # 'IPv4'
+    # vappProperty: # '["ipaddress=ip#SETIPAADDRESSVAPPPROPERTY:","gateway=${gateway:#SETGATEWAYVAPPPROPERTY}","dns=${dns:#SETDNSVAPPPROPERTY}",]'
+    # vappTransport: 'com.vmware.guestInfo'
     # cloudConfig: |
       #cloud-config
 
