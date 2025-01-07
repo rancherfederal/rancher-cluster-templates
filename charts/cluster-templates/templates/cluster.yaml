@@ -64,6 +64,12 @@ spec:
       {{- if .Values.cluster.config.globalConfig.cni }}
       cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.cluster_cidr }}
+      cluster-cidr: {{ .Values.cluster.config.globalConfig.cluster_cidr }}
+      {{- end }}
+      {{- if .Values.cluster.config.globalConfig.service_cidr }}
+      service-cidr: {{ .Values.cluster.config.globalConfig.service_cidr }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.docker }}
       docker: {{ .Values.cluster.config.globalConfig.docker }}
       {{- end }}
