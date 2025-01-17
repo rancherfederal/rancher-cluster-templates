@@ -24,7 +24,7 @@ cluster:
     # key: value
   name: rke2-cluster-vsphere
   config:
-    kubernetesVersion: v1.30.7+rke2r1 # https://github.com/rancher/rke2/releases
+    kubernetesVersion: v1.30.8+rke2r1 # https://github.com/rancher/rke2/releases
     enableNetworkPolicy: true
     localClusterAuthEndpoint:
       enabled: false
