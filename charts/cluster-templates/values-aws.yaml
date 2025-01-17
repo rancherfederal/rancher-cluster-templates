@@ -44,6 +44,8 @@ cluster:
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
       docker: false
       # token: ''
       # tls-san:
