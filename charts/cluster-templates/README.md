@@ -2,7 +2,7 @@
 
 |    Type     | Chart Version | App Version |
 | :---------: | :-----------: | :---------: |
-| application |    `0.6.1`    |   `0.6.1`   |
+| application |    `0.7.0`    |   `0.7.0`   |
 
 ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes. ⚠️
 
