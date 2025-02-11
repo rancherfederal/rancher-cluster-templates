@@ -4,6 +4,28 @@ entries:
   - annotations:
       catalog.cattle.io/namespace: fleet-default
       catalog.cattle.io/type: cluster-template
+      classification: UNCLASSIFIED
+    apiVersion: v2
+    appVersion: 0.7.0
+    created: "2025-02-11T22:55:57.27474756Z"
+    description: Hardened Rancher Cluster Templates by Rancher Government
+    digest: 3a7dfd0e1fbb699da292e002f45ad80125f2887935b6ec2ccb02dabcdb129ca4
+    home: https://github.com/rancherfederal
+    icon: https://raw.githubusercontent.com/rancherfederal/carbide-docs/main/static/img/carbide-logo.svg
+    maintainers:
+    - email: support@ranchergovernment.com
+      name: Rancher Government
+      url: https://ranchergovernment.com
+    name: rancher-cluster-templates
+    sources:
+    - https://github.com/rancherfederal/rancher-cluster-templates
+    type: application
+    urls:
+    - https://github.com/rancherfederal/rancher-cluster-templates/releases/download/rancher-cluster-templates-0.7.0/rancher-cluster-templates-0.7.0.tgz
+    version: 0.7.0
+  - annotations:
+      catalog.cattle.io/namespace: fleet-default
+      catalog.cattle.io/type: cluster-template
     apiVersion: v2
     appVersion: 0.6.1
     created: "2024-12-15T16:52:29.25628318Z"
@@ -260,4 +282,4 @@ entries:
     urls:
     - https://github.com/rancherfederal/rancher-cluster-templates/releases/download/rancher-cluster-templates-0.0.1/rancher-cluster-templates-0.0.1.tgz
     version: 0.0.1
-generated: "2024-12-15T16:52:29.256434693Z"
+generated: "2025-02-11T22:55:57.274895197Z"
