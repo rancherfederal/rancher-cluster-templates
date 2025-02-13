@@ -76,10 +76,7 @@ spec:
         {{- end }}
       {{- end }}
     {{- end }}
-    {{- if .Values.cluster.config.etcdSnapshotCreate }}
-    etcdSnapshotCreate:
-      generation: {{ .Values.cluster.config.etcdSnapshotCreate.generation }}
-    {{- end }}
+    # etcdSnapshotCreate:
     # etcdSnapshotRestore:
     # infrastructureRef:
     {{- if .Values.cluster.config.globalConfig }}
