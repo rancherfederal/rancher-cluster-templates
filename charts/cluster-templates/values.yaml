@@ -47,8 +47,6 @@ cluster:
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''
-    # etcdSnapshotCreate:
-    #   generation: 4
     # etcd:
     #   disableSnapshots: false
     #   snapshotRetention: 5
