@@ -47,6 +47,27 @@ cluster:
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''
+    # etcd:
+    #   disableSnapshots: false
+    #   snapshotRetention: 5
+    #   snapshotScheduleCron: 0 */5 * * *
+    #   s3:
+    #     bucket: rancherbackups
+    #     ## namespace:secret for S3 credentials - add secret before creating cluster
+    #     cloudCredentialName: cattle-global-data:minio-creds
+    #     folder: rancher
+    #     region: dummyregion
+    #     skipSSLVerify: false
+    #     endpoint: minio.35.202.130.254.xip.io
+    #     endpointCA: |-
+    #       -----BEGIN CERTIFICATE-----
+    #       MIIFGTCCAwGgAwIBAgIQIT9/2VetbaxLqS0BUGURpTANBgkqhkiG9w0BAQsFADAf
+    #       MR0wGwYDVQQDExRDUEggUm9vdCBDQSBTSEEyNTYtMTAeFw0yMDA5MzAxMDMwMDBa
+    #       Fw00MDA5MzAxMDM5NTlaMB8xHTAbB8aeF9M3vx4qSSD2Va6ObojjFiVvsDfhbeFv
+    #       +O7G+PGdZro/14JWSXSZ0oWca7yTxOFvyzw2VrXvnYeZg7zGZVS/DfT2Cp1bY1on
+    #       lpTcaR3bYN9DshK7B1dYHJN08L7Njcom2UCFQ0KxMqUsiSo77PX9LZ1t9x3cWcwO
+    #       enB7OQXmMSzTJTRhgw==
+    #       -----END CERTIFICATE-----
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
