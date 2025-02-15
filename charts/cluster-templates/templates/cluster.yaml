@@ -63,7 +63,7 @@ spec:
       {{- if .Values.cluster.config.etcd.s3 }}
       s3:
         bucket: {{ .Values.cluster.config.etcd.s3.bucket }}
-        cloudCredentialName: {{ .Values.cluster.config.etcd.s3.cloudCredentialName }}
+        cloudCredentialName: cattle-global-data:{{ .Values.cluster.config.etcd.s3.cloudCredentialSecretName }}
         {{- if .Values.cluster.config.etcd.s3.folder }}
         folder: {{ .Values.cluster.config.etcd.s3.folder }}
         {{- end }}
