@@ -55,7 +55,27 @@ spec:
     additionalManifest:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    # etcd:
+    {{- if .Values.cluster.config.etcd }}
+    etcd:
+      disableSnapshots: {{ .Values.cluster.config.etcd.disableSnapshots }}
+      snapshotRetention: {{ .Values.cluster.config.etcd.snapshotRetention }}
+      snapshotScheduleCron: {{ .Values.cluster.config.etcd.snapshotScheduleCron }}
+      {{- if .Values.cluster.config.etcd.s3 }}
+      s3:
+        bucket: {{ .Values.cluster.config.etcd.s3.bucket }}
+        cloudCredentialName: cattle-global-data:{{ .Values.cluster.config.etcd.s3.cloudCredentialSecretName }}
+        {{- if .Values.cluster.config.etcd.s3.folder }}
+        folder: {{ .Values.cluster.config.etcd.s3.folder }}
+        {{- end }}
+        region: {{ .Values.cluster.config.etcd.s3.region }}
+        skipSSLVerify: {{ .Values.cluster.config.etcd.s3.skipSSLVerify }}
+        endpoint: {{ .Values.cluster.config.etcd.s3.endpoint }}
+        {{- if .Values.cluster.config.etcd.s3.endpointCA }}
+        endpointCA: |-
+{{ .Values.cluster.config.etcd.s3.endpointCA | indent 10 }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
     # etcdSnapshotCreate:
     # etcdSnapshotRestore:
     # infrastructureRef:

@@ -47,6 +47,20 @@ cluster:
     # defaultClusterRoleForProjectMembers: ''
     # defaultPodSecurityAdmissionConfigurationTemplateName: ''
     # defaultPodSecurityPolicyTemplateName: ''
+    # etcd:
+    #   disableSnapshots: false
+    #   snapshotRetention: 5
+    #   snapshotScheduleCron: 0 */5 * * *
+    #   s3:
+    #     bucket: rancherbackups
+    #     cloudCredentialSecretName: minio-creds
+    #     folder: rancher
+    #     region: dummyregion
+    #     skipSSLVerify: false
+    #     endpoint: # minio.example.com
+    #     endpointCA: |-
+    #       -----BEGIN CERTIFICATE-----
+    #       -----END CERTIFICATE-----
     globalConfig:
       systemDefaultRegistry: docker.io # default registry
       cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
