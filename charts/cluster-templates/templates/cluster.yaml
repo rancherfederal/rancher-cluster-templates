@@ -41,6 +41,8 @@ spec:
     enabled: {{ .Values.cluster.config.localClusterAuthEndpoint.enabled }}
     fqdn: {{ .Values.cluster.config.localClusterAuthEndpoint.fqdn }}
     caCerts: {{ .Values.cluster.config.localClusterAuthEndpoint.caCerts }}
+  {{- else }}
+  localClusterAuthEndpoint: {}
   {{- end }}
   # redeploySystemAgentGeneration:
   rkeConfig:
