@@ -91,9 +91,9 @@ kubectl annotate secret -n cattle-global-data digitalocean-creds provisioning.ca
 #### For VMWare vSphere Credentials
 
 ```bash
-kubectl create secret -n cattle-global-data generic vsphere-creds --from-literal=digitaloceancredentialConfig-accessToken=$TOKEN
+kubectl create secret -n cattle-global-data generic vsphere-creds --from-literal=vmwarevspherecredentialConfig-username=$USERNAME --from-literal=vmwarevspherecredentialConfig-password=$PASSWORD --from-literal=vmwarevspherecredentialConfig-vcenter=$VCENTER_HOST --from-literal=vmwarevspherecredentialConfig-vcenterPort=$VCENTER_PORT
 
-kubectl annotate secret -n cattle-global-data vsphere-creds provisioning.cattle.io/driver=digitalocean
+kubectl annotate secret -n cattle-global-data vsphere-creds provisioning.cattle.io/driver=vmwarevsphere
 ```
 
 ### Registry Credentials
