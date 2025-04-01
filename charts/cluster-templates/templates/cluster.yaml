@@ -166,6 +166,14 @@ spec:
       controlPlaneRole: {{ $nodepool.controlplane }}
       etcdRole: {{ $nodepool.etcd }}
       workerRole: {{ $nodepool.worker }}
+      {{- if $nodepool.labels }}
+      labels:
+{{ toYaml $nodepool.labels | indent 8 }}
+      {{- end }}
+      {{- if $nodepool.taints }}
+      taints:
+{{ toYaml $nodepool.taints | indent 8 }}
+      {{- end }}
       machineConfigRef:
         {{- if eq $.Values.cloudprovider "amazonec2" }}
         kind: Amazonec2Config
