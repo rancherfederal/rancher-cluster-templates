@@ -1,0 +1,42 @@
+{{- $clustername := .Values.cluster.name }}
+{{- if eq .Values.cloudprovider "nutanix" }}
+{{- range $index, $nodepool := .Values.nodepools }}
+{{- $nodepool := merge $nodepool $.Values.global.nodepools }}
+apiVersion: rke-machine-config.cattle.io/v1
+kind: NutanixConfig
+metadata:
+  name: {{ $clustername }}-{{ $nodepool.name }}
+  namespace: fleet-default
+{{- if $nodepool.cloudInit }}
+cloudInit: |-
+{{ $nodepool.cloudInit | indent 2 }}
+{{- end }}
+cluster: {{ $nodepool.cluster }}
+endpoint: {{ $nodepool.endpoint }}
+insecure: {{ $nodepool.insecure | default "true" }}
+password: {{ $nodepool.password }}
+port: {{ $nodepool.port | default "9440" | quote }}
+storageContainer: {{ $nodepool.storageContainer }}
+diskSize: {{ $nodepool.diskSize | default "0" | quote }}
+username: {{ $nodepool.username | default "admin" }}
+vmCores: {{ $nodepool.vmCores | default "2" | quote }}
+vmCpuPassthrough: {{ $nodepool.vmCpuPassthrough | default "false" }}
+vmCpus: {{ $nodepool.vmCpus | default "2" | quote }}
+vmImage: {{ $nodepool.vmImage }}
+vmImageSize: {{ $nodepool.vmImageSize | default "200" | quote }}
+vmMem: {{ $nodepool.vmMem | default "8192" | quote }}
+{{- if $nodepool.vmNetwork }}
+vmNetwork:
+{{ toYaml $nodepool.vmNetwork | indent 2 }}
+{{- end }}
+{{- if $nodepool.project }}
+project: {{ $nodepool.project | default "_internal" | quote }}
+{{- end }}
+{{- if $nodepool.vmCategories }}
+vmCategories:
+{{ toYaml $nodepool.vmCategories | indent 2 }}
+{{- end }}
+vmSerialPort: {{ $nodepool.vmSerialPort | default "false" }}
+---
+{{- end }}
+{{- end }}
