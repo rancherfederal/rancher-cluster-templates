@@ -1,0 +1,229 @@
+# be sure to add all "required" values...
+
+# amazonec2, azure, digitalocean, harvester, vsphere, custom
+# https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/launch-kubernetes-with-rancher/use-new-nodes-in-an-infra-provider
+cloudprovider: nutanix # required
+
+# cloud provider credentials (example: aws-creds)
+cloudCredentialSecretName: nutanix-creds # required
+
+# rancher manager url
+rancher:
+  cattle:
+    url: # required (example: rancher.example.com)
+
+# cluster values
+cluster:
+  # labels:
+    # key: value
+  # annotations:
+    # key: value
+  name: rke2-cluster-vsphere
+  config:
+    kubernetesVersion: v1.31.5+rke2r1 # https://github.com/rancher/rke2/releases
+    enableNetworkPolicy: true
+    localClusterAuthEndpoint:
+      enabled: false
+    # chartValues: |-
+    #   harvester-cloud-provider:
+    #     cloudConfigPath: /var/lib/rancher/rke2/etc/config-files/cloud-provider-config
+    #     global:
+    #       cattle:
+    #         clusterName: {{ .Values.cluster.name }}
+    # additionalManifests: |-
+    #   apiVersion: v1
+    #   kind: Pod
+    #   metadata:
+    #     name: example-manifest
+    #   spec:
+    #     containers:
+    #     - name: example
+    #       image: example:1.0.0
+    #       ports:
+    #       - containerPort: 80
+    # agentEnvVars:
+      # - name: key
+      #   value: value
+    # defaultClusterRoleForProjectMembers: ''
+    # defaultPodSecurityAdmissionConfigurationTemplateName: ''
+    # defaultPodSecurityPolicyTemplateName: ''
+    # etcd:
+    #   disableSnapshots: false
+    #   snapshotRetention: 5
+    #   snapshotScheduleCron: 0 */5 * * *
+    #   s3:
+    #     bucket: rancherbackups
+    #     cloudCredentialSecretName: minio-creds
+    #     folder: rancher
+    #     region: dummyregion
+    #     skipSSLVerify: false
+    #     endpoint: # minio.example.com
+    #     endpointCA: |-
+    #       -----BEGIN CERTIFICATE-----
+    #       -----END CERTIFICATE-----
+    globalConfig:
+      systemDefaultRegistry: docker.io # default registry
+      cni: canal # canal, calico, cilium, multus,canal, multus,calico, multus,cilium
+      # cluster-cidr: 10.42.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      # service-cidr: 10.43.0.0/16 # https://docs.rke2.io/networking/basic_network_options
+      docker: false
+      # token: ''
+      # tls_san:
+        # - url
+        # - ip
+      # disable:
+        # - rke2-coredns
+        # - rke2-ingress-nginx
+        # - rke2-metrics-server
+      disable_scheduler: false
+      disable_cloud_controller: false
+      disable_kube_proxy: false
+      etcd_expose_metrics: false
+      profile: '' # cis, cis-1.23, or cis-1.6 # https://docs.rke2.io/security/hardening_guide
+      selinux: false # rke2-selinux and container-selinux be installed on the nodes # https://docs.rke2.io/security/selinux
+      secrets_encryption: false
+      write_kubeconfig_mode: 0600
+      use_service_account_credentials: false
+      protect_kernel_defaults: false
+      cloud_provider_name: '' # https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/kubernetes-clusters-in-rancher-setup/set-up-cloud-providers
+      # cloud_provider_config: '' # cloud provider config secret here (example: secret://fleet-default:cloudprovider)
+      # kube_controller_manager_arg:
+        # - kube controller manager arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager)
+      # kube_scheduler_arg:
+        # - kube scheduler arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler)
+      # kube_apiserver_arg:
+        # - kube apiserver arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver)
+      # kube_proxy_arg:
+        # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
+      # kubelet_arg:
+        # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+    # controlPlaneConfig:
+      # same options as globalConfig
+      # only will apply to the control plane nodes
+    # workerConfig:
+      # same options as globalConfig
+      # only will apply to the worker nodes
+    registries:
+      enabled: false
+      # configs:
+        # - name: registry.example.com
+          # authConfigSecretName: registry-creds
+          # caBundle: ''
+          # insecureSkipVerify: false
+          # tlsSecretName: ''
+      # mirrors:
+        # - name: docker.io
+          # endpoints: ['registry.example.com']
+      # rewrite:
+         # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+    upgradeStrategy:
+      controlPlaneConcurrency: 10%
+      controlPlaneDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+      workerConcurrency: 10%
+      workerDrainOptions:
+        enabled: false
+        # deleteEmptyDirData: true
+        # disableEviction: false
+        # force: false
+        # gracePeriod: -1
+        # ignoreDaemonSets: true
+        # ignoreErrors: false
+        # skipWaitForDeleteTimeoutSeconds: 0
+        # timeout: 120
+
+
+global:
+  nodepools:
+    cluster: PHX-SPOC020-1
+    project: BootcampInfra
+    vmImage: ubuntu-22.04-server-cloudimg-amd64.img
+    vmNetwork:
+    - vlan2010
+    vmCategories: 
+    - AppType=Kubernetes
+    cloudInit: |-
+      #cloud-config 
+      package_update: true
+      package_upgrade: true
+      packages:
+        - open-iscsi
+        - nfs-common
+      runcmd:
+        - systemctl stop ufw && systemctl disable ufw
+
+
+# Specify nodepool options. Can add multiple node groups, specify etcd, controlplane and worker roles.
+nodepools:
+
+## control plane nodepool configs
+- etcd: false
+  controlplane: true
+  worker: false
+  quantity: 1
+  name: control
+
+## etcd nodepool configs
+- etcd: true
+  controlplane: false
+  worker: false
+  quantity: 1
+  name: etcd
+
+## worker nodepool configs
+- etcd: false
+  controlplane: false
+  worker: true
+  quantity: 1
+  name: worker
+
+## example additional worker nodepool with overridden configs
+# - etcd: false
+#   controlplane: false
+#   worker: true
+#   quantity: 1
+#   name: stacked
+#   labels: {}
+#   taints: {}
+#   paused: false
+#   displayName: "Rancher Cluster on Nutanix"
+#   cluster: PHX-SPOC020-1
+#   project: BootcampInfra
+#   storageContainer: null
+#   diskSize: "0"
+#   vmCategories: 
+#   - AppType=Kubernetes
+#   vmCores: "2"
+#   vmCpuPassthrough: false
+#   vmCpus: "2"
+#   vmImage: ubuntu-22.04-server-cloudimg-amd64.img
+#   vmImageSize: "250"
+#   vmMem: "8192"
+#   vmNetwork:
+#   - vlan2010
+#   vmSerialPort: false
+#   cloudInit: |-
+#     #cloud-config 
+#     package_update: true
+#     package_upgrade: true
+#     packages:
+#       - open-iscsi
+#       - nfs-common
+#     runcmd:
+#       - systemctl stop ufw && systemctl disable ufw
+#     users:
+#       - default
+#       - name: nutanix
+#       groups: sudo
+#       shell: /bin/bash
+#       sudo: ['ALL=(ALL) NOPASSWD:ALL']
+#       ssh-authorized-keys:
+#        - <ssh-public-key>
