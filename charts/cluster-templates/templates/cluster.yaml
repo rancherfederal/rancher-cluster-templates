@@ -180,6 +180,8 @@ spec:
         {{- else if eq $.Values.cloudprovider "elemental" }}
         apiVersion: elemental.cattle.io/v1beta1
         kind: MachineInventorySelectorTemplate
+        {{- else if eq $.Values.cloudprovider "nutanix" }}
+        kind: NutanixConfig
         {{- end}}
         name: {{ $clustername }}-{{ $nodepool.name }}
       displayName: {{ $nodepool.displayName | default $nodepool.name }}
