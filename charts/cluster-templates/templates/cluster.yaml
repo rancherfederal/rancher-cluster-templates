@@ -389,6 +389,9 @@ spec:
             {{- range .endpoints }}
             - {{ . }}
             {{- end }}
+          {{- if .fallback }}
+          fallback: {{ .fallback }}
+          {{- end }}
           {{- if .rewrite }}
           rewrite:
             {{- range $key, $value := .rewrite }}

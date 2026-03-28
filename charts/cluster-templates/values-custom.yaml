@@ -105,6 +105,7 @@ cluster:
       # mirrors:
         # - name: docker.io
           # endpoints: ['registry.example.com']
+          # fallback: true
       # rewrite:
          # "^rancher/(.*)": "mirrorproject/rancher-images/$1"
     upgradeStrategy:
