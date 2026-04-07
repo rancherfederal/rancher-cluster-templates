@@ -1,15 +1,15 @@
 apiVersion: v2
 name: rancher-cluster-templates
-version: 0.7.3
-appVersion: 0.7.3
+version: 0.7.4
+appVersion: 0.7.4
 
 type: application
 description: Hardened Rancher Cluster Templates by Rancher Government
-icon: https://raw.githubusercontent.com/rancherfederal/carbide-docs/main/static/img/carbide-logo.svg
+icon: https://raw.githubusercontent.com/ranchergovernment/carbide-docs/main/static/img/carbide-logo.svg
 
-home: https://github.com/rancherfederal
+home: https://github.com/ranchergovernment
 sources:
-  - https://github.com/rancherfederal/rancher-cluster-templates
+  - https://github.com/ranchergovernment/rancher-cluster-templates
 
 maintainers:
   - name: Rancher Government

@@ -2,7 +2,7 @@
 
 |    Type     | Chart Version | App Version |
 | :---------: | :-----------: | :---------: |
-| application |    `0.7.3`    |   `0.7.3`   |
+| application |    `0.7.4`    |   `0.7.4`   |
 
 ⚠️ This project is still in active development. As we continued to develop it, there will be breaking changes. ⚠️
 
@@ -26,13 +26,13 @@
 ### Helm Install via Repository
 
 ```bash
-helm repo add cluster-templates https://rancherfederal.github.io/rancher-cluster-templates
+helm repo add cluster-templates https://ranchergovernment.github.io/rancher-cluster-templates
 helm upgrade -i cluster cluster-templates/rancher-cluster-templates -n fleet-default -f values.yaml
 ```
 
 ## Helm Install via Registry
 ```bash
-helm upgrade -i cluster oci://ghcr.io/rancherfederal/charts/rancher-cluster-templates -n fleet-default -f values.yaml
+helm upgrade -i cluster oci://ghcr.io/ranchergovernment/charts/rancher-cluster-templates -n fleet-default -f values.yaml
 ```
 
 ## Helm Chart Deployment Status
