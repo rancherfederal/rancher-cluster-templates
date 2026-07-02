@@ -67,6 +67,7 @@ spec:
         folder: {{ .Values.cluster.config.etcd.s3.folder }}
         {{- end }}
         region: {{ .Values.cluster.config.etcd.s3.region }}
+        retention: {{ .Values.cluster.config.etcd.s3.retention }}
         skipSSLVerify: {{ .Values.cluster.config.etcd.s3.skipSSLVerify }}
         endpoint: {{ .Values.cluster.config.etcd.s3.endpoint }}
         {{- if .Values.cluster.config.etcd.s3.endpointCA }}
