@@ -47,6 +47,7 @@ cluster:
     #     cloudCredentialSecretName: minio-creds
     #     folder: rancher
     #     region: dummyregion
+    #     retention: 5
     #     skipSSLVerify: false
     #     endpoint: # minio.example.com
     #     endpointCA: |-
