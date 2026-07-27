@@ -108,6 +108,9 @@ spec:
       {{- if .Values.cluster.config.globalConfig.etcd_expose_metrics }}
       etcd-expose-metrics: {{ .Values.cluster.config.globalConfig.etcd_expose_metrics }}
       {{- end }}
+      {{- if .Values.cluster.config.globalConfig.etcd_arg }}
+      etcd-arg: {{ .Values.cluster.config.globalConfig.etcd_arg | toRawJson }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.profile }}
       profile: {{ .Values.cluster.config.globalConfig.profile }}
       {{- end }}
@@ -240,6 +243,9 @@ spec:
         {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.etcd_expose_metrics }}
         etcd-expose-metrics: {{ .Values.cluster.config.controlPlaneConfig.etcd_expose_metrics }}
+        {{- end }}
+        {{- if .Values.cluster.config.controlPlaneConfig.etcd_arg }}
+        etcd-arg: {{ .Values.cluster.config.controlPlaneConfig.etcd_arg | toRawJson }}
         {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.profile }}
         profile: {{ .Values.cluster.config.controlPlaneConfig.profile }}

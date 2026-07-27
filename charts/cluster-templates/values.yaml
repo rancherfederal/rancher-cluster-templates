@@ -98,6 +98,9 @@ cluster:
         # - kube proxy arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy)
       # kubelet_arg:
         # - kubelet arguments here (https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet)
+      # etcd_arg:
+        # - etcd arguments here (https://etcd.io/docs/latest/op-guide/configuration/)
+        # - "quota-backend-bytes=5368709120" # increase keyspace to 5GB (default 2GB, max 8GB)
     # controlPlaneConfig:
       # same options as globalConfig
       # only will apply to the control plane nodes
