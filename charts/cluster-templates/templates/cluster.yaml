@@ -81,6 +81,10 @@ spec:
     # infrastructureRef:
     {{- if .Values.cluster.config.globalConfig }}
     machineGlobalConfig:
+      {{- if .Values.cluster.config.controlPlaneConfig.audit_policy_file }}
+      audit-policy-file: |-
+{{ .Values.cluster.config.controlPlaneConfig.audit_policy_file | indent 8 }}
+      {{- end }}
       {{- if .Values.cluster.config.globalConfig.cni }}
       cni: {{ .Values.cluster.config.globalConfig.cni }}
       {{- end }}
@@ -223,6 +227,10 @@ spec:
     machineSelectorConfig:
     {{- if .Values.cluster.config.controlPlaneConfig }}
     - config:
+        {{- if .Values.cluster.config.controlPlaneConfig.audit_policy_file }}
+        audit-policy-file: |-
+{{ .Values.cluster.config.controlPlaneConfig.audit_policy_file | indent 10 }}
+        {{- end }}
         {{- if .Values.cluster.config.controlPlaneConfig.cni }}
         cni: {{ .Values.cluster.config.controlPlaneConfig.cni }}
         {{- end }}
@@ -301,6 +309,10 @@ spec:
     {{- end }}
     {{- if .Values.cluster.config.workerConfig }}
     - config:
+        {{- if .Values.cluster.config.controlPlaneConfig.audit_policy_file }}
+        audit-policy-file: |-
+{{ .Values.cluster.config.controlPlaneConfig.audit_policy_file | indent 10 }}
+        {{- end }}
         {{- if .Values.cluster.config.workerConfig.cni }}
         cni: {{ .Values.cluster.config.workerConfig.cni }}
         {{- end }}
